@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">CraftLog</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="name">Name</string>
+    <string name="expense_placeholder">e.g., Grocery, Rent, Utilities</string>
+    <string name="amount">Amount</string>
+    <string name="amount_placeholder">e.g. 10</string>
+    <string name="category">Category</string>
+    <string name="date">Date</string>
+    <string name="value_is_empty">Please enter a valid %s</string>
+    <string name="success">Success</string>
+    <string name="save">Save</string>
 </resources>
