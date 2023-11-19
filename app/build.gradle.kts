@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -50,20 +52,59 @@ android {
 }
 
 dependencies {
+    val compose_ui_version = "1.6.0-beta01"
+    val compose_version = "1.5.4"
+    val nav_version = "2.7.5"
+    val hilt_version = "2.48"
+    val androidx_hilt_version = "1.1.0"
+    val gson_version = "2.10"
+    val room_version = "2.6.0"
+    val okhttp_version = "4.10.0"
+    val core_version = "1.12.0"
+    val material3_version = "1.2.0-alpha11"
+    val lifecycle_version = "2.7.0-rc01"
+    val activity_version = "1.8.1"
+    val firebase_version = "32.5.0"
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.activity:activity-compose:1.7.0")
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+    implementation("androidx.core:core-ktx:$core_version")
+    implementation("androidx.compose.ui:ui:$compose_ui_version")
+    implementation("androidx.compose.material3:material3:$material3_version")
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation("androidx.compose.foundation:foundation:$compose_version")
+
+    implementation("androidx.compose.ui:ui-tooling-preview:$compose_ui_version")
+
+    implementation("androidx.activity:activity-compose:$activity_version")
+
+    // Lifecycle
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:$hilt_version")
+    implementation("androidx.hilt:hilt-navigation-compose:$androidx_hilt_version")
+
+    // Gson
+    implementation("com.google.code.gson:gson:$gson_version")
+
+    // Room
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+
+    // OkHttp
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:$firebase_version"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-crashlytics")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_ui_version")
+    debugImplementation("androidx.compose.ui:ui-tooling:$compose_ui_version")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_ui_version")
 }

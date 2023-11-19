@@ -2,4 +2,6 @@
 plugins {
     id("com.android.application") version "8.1.3" apply false
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
+    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
+    id("com.google.devtools.ksp") version "1.9.0-1.0.12" apply false
 }
