@@ -10,4 +10,8 @@
     <string name="value_is_empty">Please enter a valid %s</string>
     <string name="success">Success</string>
     <string name="save">Save</string>
+    <string name="add">Add</string>
+    <string name="home">Home</string>
+    <string name="expenses">Expenses</string>
+    <string name="no_expenses_yet">No expenses yet</string>
 </resources>
