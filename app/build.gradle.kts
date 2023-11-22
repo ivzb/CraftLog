@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("kotlin-parcelize")
     id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -56,7 +57,7 @@ dependencies {
     val compose_ui_version = "1.6.0-beta01"
     val compose_version = "1.5.4"
     val nav_version = "2.7.5"
-    val hilt_version = "2.48"
+    val hilt_version = "2.47"
     val androidx_hilt_version = "1.1.0"
     val gson_version = "2.10"
     val room_version = "2.6.0"
@@ -83,6 +84,7 @@ dependencies {
 
     // Hilt
     implementation("com.google.dagger:hilt-android:$hilt_version")
+    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
     implementation("androidx.hilt:hilt-navigation-compose:$androidx_hilt_version")
 
     // Gson
@@ -108,4 +110,9 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_ui_version")
     debugImplementation("androidx.compose.ui:ui-tooling:$compose_ui_version")
     debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_ui_version")
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }
