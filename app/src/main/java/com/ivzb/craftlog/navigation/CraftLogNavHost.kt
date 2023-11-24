@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.ivzb.craftlog.feature.expensedetails.ExpenseDetailDestination
 import com.ivzb.craftlog.feature.expenses.EXPENSE
+import com.ivzb.craftlog.feature.expenses.expensesGraph
 import com.ivzb.craftlog.feature.home.HomeDestination
 import com.ivzb.craftlog.feature.home.homeGraph
 
@@ -39,18 +40,18 @@ fun CraftLogNavHost(
             }
         )
 
-//        expensesGraph(
-//            bottomBarVisibility = bottomBarVisibility,
-//            fabVisibility = fabVisibility,
-//            navigateToExpenseDetail = {
-//                val bundle = Bundle()
-//                bundle.putParcelable(EXPENSE, it)
-//                navController.currentBackStackEntry?.savedStateHandle.apply {
-//                    this?.set(EXPENSE, bundle)
-//                }
-//                navController.navigate(ExpenseDetailDestination.route)
-//            }
-//        )
+        expensesGraph(
+            bottomBarVisibility = bottomBarVisibility,
+            fabVisibility = fabVisibility,
+            navigateToExpenseDetail = {
+                val bundle = Bundle()
+                bundle.putParcelable(EXPENSE, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(EXPENSE, bundle)
+                }
+                navController.navigate(ExpenseDetailDestination.route)
+            }
+        )
 //
 //        expensesDetailGraph(
 //            navController = navController,
