@@ -1,6 +1,10 @@
 package com.waseefakhtar.doseapp.di
 
-import com.ivzb.craftlog.domain.repository.ExpensesRepository
+import android.app.Application
+import androidx.room.Room
+import com.ivzb.craftlog.data.CraftLogDatabase
+import com.ivzb.craftlog.domain.repository.ExpenseRepository
+import com.waseefakhtar.doseapp.data.repository.ExpenseRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,8 +43,8 @@ object CraftLogDataModule {
     @Singleton
     fun provideCraftLogRepository(
         db: CraftLogDatabase
-    ): ExpensesRepository {
-        return ExpensesRepositoryImpl(
+    ): ExpenseRepository {
+        return ExpenseRepositoryImpl(
             dao = db.dao
         )
     }
