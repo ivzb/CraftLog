@@ -42,8 +42,8 @@ import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Expense
-import com.waseefakhtar.doseapp.feature.home.viewmodel.HomeState
-import com.waseefakhtar.doseapp.feature.home.viewmodel.HomeViewModel
+import com.ivzb.craftlog.feature.home.viewmodel.HomeState
+import com.ivzb.craftlog.feature.home.viewmodel.HomeViewModel
 import java.util.Calendar
 import java.util.Date
 

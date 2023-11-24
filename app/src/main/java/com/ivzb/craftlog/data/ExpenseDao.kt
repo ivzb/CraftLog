@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.waseefakhtar.doseapp.data.entity.ExpenseEntity
+import com.ivzb.craftlog.data.entity.ExpenseEntity
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 

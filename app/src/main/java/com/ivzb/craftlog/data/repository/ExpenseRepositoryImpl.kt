@@ -1,10 +1,10 @@
-package com.waseefakhtar.doseapp.data.repository
+package com.ivzb.craftlog.data.repository
 
 import com.ivzb.craftlog.data.ExpenseDao
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.repository.ExpenseRepository
-import com.waseefakhtar.doseapp.data.mapper.toExpense
-import com.waseefakhtar.doseapp.data.mapper.toExpenseEntity
+import com.ivzb.craftlog.data.mapper.toExpense
+import com.ivzb.craftlog.data.mapper.toExpenseEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.Date

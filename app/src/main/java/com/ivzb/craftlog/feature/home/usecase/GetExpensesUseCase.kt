@@ -1,4 +1,4 @@
-package com.waseefakhtar.doseapp.feature.home.usecase
+package com.ivzb.craftlog.feature.home.usecase
 
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.repository.ExpenseRepository

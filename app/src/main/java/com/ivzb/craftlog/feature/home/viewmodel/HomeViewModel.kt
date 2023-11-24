@@ -1,4 +1,4 @@
-package com.waseefakhtar.doseapp.feature.home.viewmodel
+package com.ivzb.craftlog.feature.home.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivzb.craftlog.domain.model.Expense
-import com.waseefakhtar.doseapp.feature.home.usecase.GetExpensesUseCase
-import com.waseefakhtar.doseapp.feature.home.usecase.UpdateExpenseUseCase
+import com.ivzb.craftlog.feature.home.usecase.GetExpensesUseCase
+import com.ivzb.craftlog.feature.home.usecase.UpdateExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

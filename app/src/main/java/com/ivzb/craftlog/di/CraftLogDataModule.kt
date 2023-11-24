@@ -1,10 +1,10 @@
-package com.waseefakhtar.doseapp.di
+package com.ivzb.craftlog.di
 
 import android.app.Application
 import androidx.room.Room
 import com.ivzb.craftlog.data.CraftLogDatabase
 import com.ivzb.craftlog.domain.repository.ExpenseRepository
-import com.waseefakhtar.doseapp.data.repository.ExpenseRepositoryImpl
+import com.ivzb.craftlog.data.repository.ExpenseRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

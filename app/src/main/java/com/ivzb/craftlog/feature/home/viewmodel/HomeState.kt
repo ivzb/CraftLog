@@ -1,4 +1,4 @@
-package com.waseefakhtar.doseapp.feature.home.viewmodel
+package com.ivzb.craftlog.feature.home.viewmodel
 
 import com.ivzb.craftlog.domain.model.Expense
 

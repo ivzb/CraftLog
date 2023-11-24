@@ -11,9 +11,9 @@ const val EXPENSE = "expense"
 
 object ExpensesDestination : CraftLogNavigationDestination {
 
-    override val route = "history_route"
+    override val route = "expenses_route"
 
-    override val destination = "history_destination"
+    override val destination = "expenses_destination"
 }
 
 fun NavGraphBuilder.expensesGraph(

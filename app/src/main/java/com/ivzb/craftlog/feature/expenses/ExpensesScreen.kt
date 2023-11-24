@@ -27,8 +27,8 @@ import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.feature.home.ExpenseCard
 import com.ivzb.craftlog.feature.home.ExpenseListItem
-import com.waseefakhtar.doseapp.feature.history.viewmodel.ExpensesState
-import com.waseefakhtar.doseapp.feature.history.viewmodel.ExpensesViewModel
+import com.ivzb.craftlog.feature.expenses.viewmodel.ExpensesState
+import com.ivzb.craftlog.feature.expenses.viewmodel.ExpensesViewModel
 
 @Composable
 fun ExpensesRoute(

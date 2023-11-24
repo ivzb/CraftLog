@@ -1,4 +1,4 @@
-package com.waseefakhtar.doseapp.data.entity
+package com.ivzb.craftlog.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
