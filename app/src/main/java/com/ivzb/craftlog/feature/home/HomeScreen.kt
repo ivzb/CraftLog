@@ -31,6 +31,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -42,6 +44,7 @@ import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Expense
+import com.ivzb.craftlog.feature.addexpense.navigation.AddExpenseDestination
 import com.ivzb.craftlog.feature.home.viewmodel.HomeState
 import com.ivzb.craftlog.feature.home.viewmodel.HomeViewModel
 import java.util.Calendar
@@ -98,8 +101,8 @@ fun DailyOverviewCard(
             contentColor = MaterialTheme.colorScheme.tertiary
         ),
         onClick = {
-//            analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_CLICKED_DAILY_OVERVIEW)
-//            navController.navigate(AddExpenseDestination.route)
+            analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_CLICKED_DAILY_OVERVIEW)
+            navController.navigate(AddExpenseDestination.route)
         }
     ) {
         Row(
@@ -160,8 +163,8 @@ fun EmptyCard(navController: NavController, analyticsHelper: AnalyticsHelper) {
             contentColor = MaterialTheme.colorScheme.tertiary
         ),
         onClick = {
-//            analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_CLICKED_EMPTY_CARD)
-//            navController.navigate(AddExpenseDestination.route)
+            analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_CLICKED_EMPTY_CARD)
+            navController.navigate(AddExpenseDestination.route)
         }
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
@@ -174,15 +177,15 @@ fun EmptyCard(navController: NavController, analyticsHelper: AnalyticsHelper) {
             ) {
 
                 Text(
-                    text = "hello there",
+                    text = stringResource(R.string.home_screen_empty_card_title),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge,
                 )
-//
-//                Text(
-//                    text = stringResource(R.string.home_screen_empty_card_message),
-//                    style = MaterialTheme.typography.titleSmall,
-//                )
+
+                Text(
+                    text = stringResource(R.string.home_screen_empty_card_message),
+                    style = MaterialTheme.typography.titleSmall,
+                )
             }
 
             Row(
@@ -190,9 +193,11 @@ fun EmptyCard(navController: NavController, analyticsHelper: AnalyticsHelper) {
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.Bottom
             ) {
-//                Image(
-//                    painter = painterResource(id = R.drawable.doctor), contentDescription = ""
-//                )
+                Image(
+                    painter = painterResource(id = R.drawable.ic_money),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary)
+                )
             }
         }
     }
@@ -219,26 +224,26 @@ fun LastExpenses(
 //        filteredExpenses = newExpenseList
 //        analyticsHelper.logEvent(AnalyticsEvents.HOME_NEW_DATE_SELECTED)
 //    }
-//
-//    if (filteredExpenses.isEmpty()) {
-//        EmptyCard(navController, analyticsHelper)
-//    } else {
-//        LazyColumn(
-//            modifier = Modifier,
-//        ) {
-//            items(
-//                items = filteredExpenses,
-//                itemContent = {
-//                    ExpenseCard(
-//                        expense = it,
-//                        navigateToExpenseDetail = { expense ->
-//                            navigateToExpenseDetail(expense)
-//                        }
-//                    )
-//                }
-//            )
-//        }
-//    }
+
+    if (filteredExpenses.isEmpty()) {
+        EmptyCard(navController, analyticsHelper)
+    } else {
+        LazyColumn(
+            modifier = Modifier,
+        ) {
+            items(
+                items = filteredExpenses,
+                itemContent = {
+                    ExpenseCard(
+                        expense = it,
+                        navigateToExpenseDetail = { expense ->
+                            navigateToExpenseDetail(expense)
+                        }
+                    )
+                }
+            )
+        }
+    }
 }
 
 //@Composable

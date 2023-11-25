@@ -45,6 +45,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ivzb.craftlog.ui.theme.CraftLogTheme
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
+import com.ivzb.craftlog.feature.addexpense.navigation.AddExpenseDestination
 import com.ivzb.craftlog.feature.expenses.ExpensesDestination
 import com.ivzb.craftlog.feature.home.HomeDestination
 import com.ivzb.craftlog.navigation.CraftLogNavHost
@@ -208,7 +209,7 @@ fun CraftLogFAB(navController: NavController, analyticsHelper: AnalyticsHelper) 
         },
         onClick = {
             analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_CLICKED_FAB)
-//            navController.navigate(AddExpenseDestination.route)
+            navController.navigate(AddExpenseDestination.route)
         },
         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp),
         containerColor = MaterialTheme.colorScheme.tertiary

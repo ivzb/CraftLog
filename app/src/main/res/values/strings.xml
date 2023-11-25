@@ -19,4 +19,6 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="error">Error</string>
+    <string name="home_screen_empty_card_title">Hey there! 👋</string>
+    <string name="home_screen_empty_card_message">It seems like you haven\'t added any expenses yet. Why not tap the button below to create your first one? 📊💸</string>
 </resources>
