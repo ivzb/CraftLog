@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.ivzb.craftlog.feature.addexpense.navigation.addExpenseGraph
 import com.ivzb.craftlog.feature.expensedetails.ExpenseDetailDestination
 import com.ivzb.craftlog.feature.expenses.EXPENSE
 import com.ivzb.craftlog.feature.expenses.expensesGraph
@@ -62,21 +63,22 @@ fun CraftLogNavHost(
 //
 //        calendarGraph(bottomBarVisibility, fabVisibility)
 //
-//        addExpenseGraph(
-//            navController = navController,
-//            bottomBarVisibility = bottomBarVisibility,
-//            fabVisibility = fabVisibility,
-//            onBackClicked = { navController.navigateUp() },
-//            navigateToExpenseConfirm = {
-//                // TODO: Replace with expense id
-//                val bundle = Bundle()
-//                bundle.putParcelableArrayList(EXPENSE, ArrayList(it))
-//                navController.currentBackStackEntry?.savedStateHandle.apply {
-//                    this?.set(EXPENSE, bundle)
-//                }
+        addExpenseGraph(
+            navController = navController,
+            bottomBarVisibility = bottomBarVisibility,
+            fabVisibility = fabVisibility,
+            onBackClicked = { navController.navigateUp() },
+            navigateToExpenseConfirm = {
+                // TODO: Replace with expense id
+                val bundle = Bundle()
+                bundle.putParcelable(EXPENSE, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(EXPENSE, bundle)
+                }
+                // TODO
 //                navController.navigate(ExpenseConfirmDestination.route)
-//            }
-//        )
+            }
+        )
 //
 //        expenseConfirmGraph(
 //            navController = navController,
