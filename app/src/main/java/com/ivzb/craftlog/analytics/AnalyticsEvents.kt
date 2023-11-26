@@ -16,6 +16,9 @@ object AnalyticsEvents {
     const val EXPENSE_CONFIRM_ON_CONFIRM_CLICKED = "expense_confirm_on_confirm_clicked"
 
     const val EXPENSE_SAVED = "expense_saved"
+    
+    const val EXPENSE_DETAIL_ON_BACK_CLICKED = "expense_detail_on_back_clicked"
+    const val EXPENSE_DETAIL_DONE_CLICKED = "expense_detail_done_clicked"
 
     const val HOME_TAB_CLICKED = "home_tab_clicked"
     const val EXPENSES_TAB_CLICKED = "expenses_tab_clicked"

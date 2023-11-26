@@ -10,7 +10,8 @@ import androidx.navigation.compose.rememberNavController
 import com.ivzb.craftlog.feature.addexpense.navigation.addExpenseGraph
 import com.ivzb.craftlog.feature.expenseconfirm.navigation.ExpenseConfirmDestination
 import com.ivzb.craftlog.feature.expenseconfirm.navigation.expenseConfirmGraph
-import com.ivzb.craftlog.feature.expensedetails.ExpenseDetailDestination
+import com.ivzb.craftlog.feature.expensedetail.ExpenseDetailDestination
+import com.ivzb.craftlog.feature.expensedetail.expenseDetailGraph
 import com.ivzb.craftlog.feature.expenses.EXPENSE
 import com.ivzb.craftlog.feature.expenses.expensesGraph
 import com.ivzb.craftlog.feature.home.HomeDestination
@@ -56,16 +57,14 @@ fun CraftLogNavHost(
                 navController.navigate(ExpenseDetailDestination.route)
             }
         )
-//
-//        expensesDetailGraph(
-//            navController = navController,
-//            bottomBarVisibility = bottomBarVisibility,
-//            fabVisibility = fabVisibility,
-//            onBackClicked = { navController.navigateUp() }
-//        )
-//
-//        calendarGraph(bottomBarVisibility, fabVisibility)
-//
+
+        expenseDetailGraph(
+            navController = navController,
+            bottomBarVisibility = bottomBarVisibility,
+            fabVisibility = fabVisibility,
+            onBackClicked = { navController.navigateUp() }
+        )
+
         addExpenseGraph(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility,

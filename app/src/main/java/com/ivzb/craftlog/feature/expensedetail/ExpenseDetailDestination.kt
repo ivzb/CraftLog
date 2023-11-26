@@ -1,4 +1,4 @@
-package com.ivzb.craftlog.feature.expensedetails
+package com.ivzb.craftlog.feature.expensedetail
 
 import android.os.Bundle
 import androidx.compose.runtime.LaunchedEffect
@@ -13,17 +13,11 @@ import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
 object ExpenseDetailDestination : CraftLogNavigationDestination {
 
     override val route = "expense_detail_route"
-
     override val destination = "expense_detail_destination"
 
 }
 
-fun NavGraphBuilder.expenseDetailGraph(
-    navController: NavController,
-    bottomBarVisibility: MutableState<Boolean>,
-    fabVisibility: MutableState<Boolean>,
-    onBackClicked: () -> Unit
-) {
+fun NavGraphBuilder.expenseDetailGraph(navController: NavController, bottomBarVisibility: MutableState<Boolean>, fabVisibility: MutableState<Boolean>, onBackClicked: () -> Unit) {
 
     composable(
         route = ExpenseDetailDestination.route,
@@ -32,12 +26,10 @@ fun NavGraphBuilder.expenseDetailGraph(
             bottomBarVisibility.value = false
             fabVisibility.value = false
         }
-
         val expenseBundle = navController.previousBackStackEntry?.savedStateHandle?.get<Bundle>(
             EXPENSE
         )
-
         val expense = expenseBundle?.getParcelable<Expense>(EXPENSE)
-//        ExpenseDetailRoute(expense, onBackClicked)
+        ExpenseDetailRoute(expense, onBackClicked)
     }
 }
