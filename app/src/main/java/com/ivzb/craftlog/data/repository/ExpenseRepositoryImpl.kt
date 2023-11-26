@@ -13,10 +13,9 @@ class ExpenseRepositoryImpl(
     private val dao: ExpenseDao
 ) : ExpenseRepository {
 
-    override suspend fun insertExpenses(expenses: List<Expense>) {
-        expenses.map { it.toExpenseEntity() }.forEach {
-            dao.insertExpense(it)
-        }
+    override suspend fun insertExpense(expense: Expense) {
+        val entity = expense.toExpenseEntity()
+        dao.insertExpense(entity)
     }
 
     override suspend fun deleteExpense(expense: Expense) {

@@ -12,6 +12,9 @@ object AnalyticsEvents {
     const val ADD_EXPENSE_EXPENSE_VALUE_INVALIDATED = "add_expense_expense_%s_invalidated"
     const val ADD_EXPENSE_NAVIGATING_TO_EXPENSE_CONFIRM = "add_expense_navigating_to_expense_confirm"
 
+    const val EXPENSE_CONFIRM_ON_BACK_CLICKED = "expense_confirm_on_back_clicked"
+    const val EXPENSE_CONFIRM_ON_CONFIRM_CLICKED = "expense_confirm_on_confirm_clicked"
+
     const val EXPENSE_SAVED = "expense_saved"
 
     const val HOME_TAB_CLICKED = "home_tab_clicked"

@@ -21,4 +21,7 @@
     <string name="error">Error</string>
     <string name="home_screen_empty_card_title">Hey there! 👋</string>
     <string name="home_screen_empty_card_message">It seems like you haven\'t added any expenses yet. Why not tap the button below to create your first one? 📊💸</string>
+    <string name="confirm">Confirm</string>
+    <string name="all_done">All done!</string>
+    <string name="all_set">Your expense is saved.</string>
 </resources>

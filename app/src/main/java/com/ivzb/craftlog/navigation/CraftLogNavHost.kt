@@ -8,11 +8,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.ivzb.craftlog.feature.addexpense.navigation.addExpenseGraph
+import com.ivzb.craftlog.feature.expenseconfirm.navigation.ExpenseConfirmDestination
+import com.ivzb.craftlog.feature.expenseconfirm.navigation.expenseConfirmGraph
 import com.ivzb.craftlog.feature.expensedetails.ExpenseDetailDestination
 import com.ivzb.craftlog.feature.expenses.EXPENSE
 import com.ivzb.craftlog.feature.expenses.expensesGraph
 import com.ivzb.craftlog.feature.home.HomeDestination
 import com.ivzb.craftlog.feature.home.homeGraph
+import com.ivzb.craftlog.util.navigateSingleTop
 
 @Composable
 fun CraftLogNavHost(
@@ -75,19 +78,18 @@ fun CraftLogNavHost(
                 navController.currentBackStackEntry?.savedStateHandle.apply {
                     this?.set(EXPENSE, bundle)
                 }
-                // TODO
-//                navController.navigate(ExpenseConfirmDestination.route)
+                navController.navigate(ExpenseConfirmDestination.route)
             }
         )
-//
-//        expenseConfirmGraph(
-//            navController = navController,
-//            bottomBarVisibility = bottomBarVisibility,
-//            fabVisibility = fabVisibility,
-//            onBackClicked = { navController.navigateUp() },
-//            navigateToHome = {
-//                navController.navigateSingleTop(HomeDestination.route)
-//            }
-//        )
+
+        expenseConfirmGraph(
+            navController = navController,
+            bottomBarVisibility = bottomBarVisibility,
+            fabVisibility = fabVisibility,
+            onBackClicked = { navController.navigateUp() },
+            navigateToHome = {
+                navController.navigateSingleTop(HomeDestination.route)
+            }
+        )
     }
 }

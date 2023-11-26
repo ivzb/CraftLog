@@ -6,7 +6,7 @@ import java.util.Date
 
 interface ExpenseRepository {
 
-    suspend fun insertExpenses(expenses: List<Expense>)
+    suspend fun insertExpense(expense: Expense)
 
     suspend fun deleteExpense(expense: Expense)
 
