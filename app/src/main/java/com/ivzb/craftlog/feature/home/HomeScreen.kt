@@ -44,7 +44,12 @@ import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Expense
+import com.ivzb.craftlog.extenstion.toFormattedDateShortString
+import com.ivzb.craftlog.extenstion.toFormattedDateString
+import com.ivzb.craftlog.extenstion.toFormattedMonthDateString
 import com.ivzb.craftlog.feature.addexpense.navigation.AddExpenseDestination
+import com.ivzb.craftlog.feature.home.data.CalendarDataSource
+import com.ivzb.craftlog.feature.home.model.CalendarModel
 import com.ivzb.craftlog.feature.home.viewmodel.HomeState
 import com.ivzb.craftlog.feature.home.viewmodel.HomeViewModel
 import java.util.Calendar
@@ -149,7 +154,6 @@ fun DailyOverviewCard(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmptyCard(navController: NavController, analyticsHelper: AnalyticsHelper) {
     analyticsHelper.logEvent(AnalyticsEvents.EMPTY_CARD_SHOWN)
@@ -214,16 +218,16 @@ fun LastExpenses(
 
     var filteredExpenses: List<Expense> by remember { mutableStateOf(emptyList()) }
 
-//    DatesHeader(analyticsHelper) { selectedDate ->
-//        val newExpenseList = state.expenses
-//            .filter { expense ->
-//                expense.expenseTime.toFormattedDateString() == selectedDate.date.toFormattedDateString()
-//            }
-//            .sortedBy { it.expenseTime }
-//
-//        filteredExpenses = newExpenseList
-//        analyticsHelper.logEvent(AnalyticsEvents.HOME_NEW_DATE_SELECTED)
-//    }
+    DatesHeader(analyticsHelper) { selectedDate ->
+        val newExpenseList = state.expenses
+            .filter { expense ->
+                expense.date.toFormattedDateString() == selectedDate.date.toFormattedDateString()
+            }
+            .sortedBy { it.date }
+
+        filteredExpenses = newExpenseList
+        analyticsHelper.logEvent(AnalyticsEvents.HOME_NEW_DATE_SELECTED)
+    }
 
     if (filteredExpenses.isEmpty()) {
         EmptyCard(navController, analyticsHelper)
@@ -246,175 +250,175 @@ fun LastExpenses(
     }
 }
 
-//@Composable
-//fun DatesHeader(
-//    analyticsHelper: AnalyticsHelper,
-//    onDateSelected: (CalendarModel.DateModel) -> Unit // Callback to pass the selected date
-//) {
-//    val dataSource = CalendarDataSource()
-//    var calendarModel by remember { mutableStateOf(dataSource.getData(lastSelectedDate = dataSource.today)) }
-//    Column(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(8.dp)
-//    ) {
-//        DateHeader(
-//            data = calendarModel,
-//            onPrevClickListener = { startDate ->
-//                // refresh the CalendarModel with new data
-//                // by get data with new Start Date (which is the startDate-1 from the visibleDates)
-//                val calendar = Calendar.getInstance()
-//                calendar.time = startDate
-//
-//                calendar.add(Calendar.DAY_OF_YEAR, -2) // Subtract one day from startDate
-//                val finalStartDate = calendar.time
-//
-//                calendarModel = dataSource.getData(
-//                    startDate = finalStartDate,
-//                    lastSelectedDate = calendarModel.selectedDate.date
-//                )
-//                analyticsHelper.logEvent(AnalyticsEvents.HOME_CALENDAR_PREVIOUS_WEEK_CLICKED)
-//            },
-//            onNextClickListener = { endDate ->
-//                // refresh the CalendarModel with new data
-//                // by get data with new Start Date (which is the endDate+2 from the visibleDates)
-//                val calendar = Calendar.getInstance()
-//                calendar.time = endDate
-//
-//                calendar.add(Calendar.DAY_OF_YEAR, 2)
-//                val finalStartDate = calendar.time
-//
-//                calendarModel = dataSource.getData(
-//                    startDate = finalStartDate,
-//                    lastSelectedDate = calendarModel.selectedDate.date
-//                )
-//                analyticsHelper.logEvent(AnalyticsEvents.HOME_CALENDAR_NEXT_WEEK_CLICKED)
-//            }
-//        )
-//        DateList(
-//            data = calendarModel,
-//            onDateClickListener = { date ->
-//                calendarModel = calendarModel.copy(
-//                    selectedDate = date,
-//                    visibleDates = calendarModel.visibleDates.map {
-//                        it.copy(
-//                            isSelected = it.date.toFormattedDateString() == date.date.toFormattedDateString()
-//                        )
-//                    }
-//                )
-//                onDateSelected(date)
-//            }
-//        )
-//    }
-//}
-//
-//@Composable
-//fun DateList(
-//    data: CalendarModel,
-//    onDateClickListener: (CalendarModel.DateModel) -> Unit
-//) {
-//    LazyRow(
-//        modifier = Modifier.fillMaxWidth(),
-//        horizontalArrangement = Arrangement.SpaceBetween
-//    ) {
-//        items(items = data.visibleDates) { date ->
-//            DateItem(date, onDateClickListener)
-//        }
-//    }
-//}
-//
-//@Composable
-//fun DateItem(
-//    date: CalendarModel.DateModel,
-//    onClickListener: (CalendarModel.DateModel) -> Unit,
-//) {
-//    Column {
-//        Text(
-//            text = date.day, // day "Mon", "Tue"
-//            modifier = Modifier.align(Alignment.CenterHorizontally),
-//            style = MaterialTheme.typography.titleMedium,
-//            fontWeight = FontWeight.Normal,
-//            color = MaterialTheme.colorScheme.outline
-//        )
-//        Card(
-//            modifier = Modifier
-//                .padding(vertical = 4.dp, horizontal = 4.dp)
-//                .clickable { onClickListener(date) },
-//            colors = cardColors(
-//                // background colors of the selected date
-//                // and the non-selected date are different
-//                containerColor = if (date.isSelected) {
-//                    MaterialTheme.colorScheme.tertiary
-//                } else {
-//                    MaterialTheme.colorScheme.surface
-//                }
-//            ),
-//        ) {
-//            Column(
-//                modifier = Modifier
-//                    .width(42.dp)
-//                    .height(42.dp)
-//                    .padding(8.dp)
-//                    .fillMaxSize(), // Fill the available size in the Column
-//                verticalArrangement = Arrangement.Center, // Center vertically
-//                horizontalAlignment = Alignment.CenterHorizontally // Center horizontally
-//            ) {
-//                Text(
-//                    text = date.date.toFormattedDateShortString(),
-//                    style = MaterialTheme.typography.titleMedium,
-//                    fontWeight = if (date.isSelected) {
-//                        FontWeight.Medium
-//                    } else {
-//                        FontWeight.Normal
-//                    }
-//                )
-//            }
-//        }
-//    }
-//}
-//
-//@Composable
-//fun DateHeader(
-//    data: CalendarModel,
-//    onPrevClickListener: (Date) -> Unit,
-//    onNextClickListener: (Date) -> Unit
-//) {
-//    Row(
-//        modifier = Modifier.padding(vertical = 16.dp),
-//    ) {
-//        Text(
-//            modifier = Modifier
-//                .weight(1f)
-//                .align(Alignment.CenterVertically),
-//            text = if (data.selectedDate.isToday) {
-//                "Today"
-//            } else {
-//                data.selectedDate.date.toFormattedMonthDateString()
-//            },
-//            style = MaterialTheme.typography.displaySmall,
-//            fontWeight = FontWeight.Bold,
-//            color = MaterialTheme.colorScheme.tertiary
-//        )
-//        IconButton(onClick = {
-//            onPrevClickListener(data.startDate.date)
-//        }) {
-//            Icon(
-//                imageVector = Icons.Filled.KeyboardArrowLeft,
-//                tint = MaterialTheme.colorScheme.tertiary,
-//                contentDescription = "Back"
-//            )
-//        }
-//        IconButton(onClick = {
-//            onNextClickListener(data.endDate.date)
-//        }) {
-//            Icon(
-//                imageVector = Icons.Filled.KeyboardArrowRight,
-//                tint = MaterialTheme.colorScheme.tertiary,
-//                contentDescription = "Next"
-//            )
-//        }
-//    }
-//}
+@Composable
+fun DatesHeader(
+    analyticsHelper: AnalyticsHelper,
+    onDateSelected: (CalendarModel.DateModel) -> Unit // Callback to pass the selected date
+) {
+    val dataSource = CalendarDataSource()
+    var calendarModel by remember { mutableStateOf(dataSource.getData(lastSelectedDate = dataSource.today)) }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+        DateHeader(
+            data = calendarModel,
+            onPrevClickListener = { startDate ->
+                // refresh the CalendarModel with new data
+                // by get data with new Start Date (which is the startDate-1 from the visibleDates)
+                val calendar = Calendar.getInstance()
+                calendar.time = startDate
+
+                calendar.add(Calendar.DAY_OF_YEAR, -2) // Subtract one day from startDate
+                val finalStartDate = calendar.time
+
+                calendarModel = dataSource.getData(
+                    startDate = finalStartDate,
+                    lastSelectedDate = calendarModel.selectedDate.date
+                )
+                analyticsHelper.logEvent(AnalyticsEvents.HOME_CALENDAR_PREVIOUS_WEEK_CLICKED)
+            },
+            onNextClickListener = { endDate ->
+                // refresh the CalendarModel with new data
+                // by get data with new Start Date (which is the endDate+2 from the visibleDates)
+                val calendar = Calendar.getInstance()
+                calendar.time = endDate
+
+                calendar.add(Calendar.DAY_OF_YEAR, 2)
+                val finalStartDate = calendar.time
+
+                calendarModel = dataSource.getData(
+                    startDate = finalStartDate,
+                    lastSelectedDate = calendarModel.selectedDate.date
+                )
+                analyticsHelper.logEvent(AnalyticsEvents.HOME_CALENDAR_NEXT_WEEK_CLICKED)
+            }
+        )
+        DateList(
+            data = calendarModel,
+            onDateClickListener = { date ->
+                calendarModel = calendarModel.copy(
+                    selectedDate = date,
+                    visibleDates = calendarModel.visibleDates.map {
+                        it.copy(
+                            isSelected = it.date.toFormattedDateString() == date.date.toFormattedDateString()
+                        )
+                    }
+                )
+                onDateSelected(date)
+            }
+        )
+    }
+}
+
+@Composable
+fun DateList(
+    data: CalendarModel,
+    onDateClickListener: (CalendarModel.DateModel) -> Unit
+) {
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        items(items = data.visibleDates) { date ->
+            DateItem(date, onDateClickListener)
+        }
+    }
+}
+
+@Composable
+fun DateItem(
+    date: CalendarModel.DateModel,
+    onClickListener: (CalendarModel.DateModel) -> Unit,
+) {
+    Column {
+        Text(
+            text = date.day, // day "Mon", "Tue"
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Normal,
+            color = MaterialTheme.colorScheme.outline
+        )
+        Card(
+            modifier = Modifier
+                .padding(vertical = 4.dp, horizontal = 4.dp)
+                .clickable { onClickListener(date) },
+            colors = cardColors(
+                // background colors of the selected date
+                // and the non-selected date are different
+                containerColor = if (date.isSelected) {
+                    MaterialTheme.colorScheme.tertiary
+                } else {
+                    MaterialTheme.colorScheme.surface
+                }
+            ),
+        ) {
+            Column(
+                modifier = Modifier
+                    .width(42.dp)
+                    .height(42.dp)
+                    .padding(8.dp)
+                    .fillMaxSize(), // Fill the available size in the Column
+                verticalArrangement = Arrangement.Center, // Center vertically
+                horizontalAlignment = Alignment.CenterHorizontally // Center horizontally
+            ) {
+                Text(
+                    text = date.date.toFormattedDateShortString(),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = if (date.isSelected) {
+                        FontWeight.Medium
+                    } else {
+                        FontWeight.Normal
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun DateHeader(
+    data: CalendarModel,
+    onPrevClickListener: (Date) -> Unit,
+    onNextClickListener: (Date) -> Unit
+) {
+    Row(
+        modifier = Modifier.padding(vertical = 16.dp),
+    ) {
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically),
+            text = if (data.selectedDate.isToday) {
+                "Today"
+            } else {
+                data.selectedDate.date.toFormattedMonthDateString()
+            },
+            style = MaterialTheme.typography.displaySmall,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.tertiary
+        )
+        IconButton(onClick = {
+            onPrevClickListener(data.startDate.date)
+        }) {
+            Icon(
+                imageVector = Icons.Filled.KeyboardArrowLeft,
+                tint = MaterialTheme.colorScheme.tertiary,
+                contentDescription = "Back"
+            )
+        }
+        IconButton(onClick = {
+            onNextClickListener(data.endDate.date)
+        }) {
+            Icon(
+                imageVector = Icons.Filled.KeyboardArrowRight,
+                tint = MaterialTheme.colorScheme.tertiary,
+                contentDescription = "Next"
+            )
+        }
+    }
+}
 
 sealed class ExpenseListItem {
 
