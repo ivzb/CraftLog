@@ -35,14 +35,13 @@ fun ExpensesRoute(
     navigateToExpenseDetail: (Expense) -> Unit,
     viewModel: ExpensesViewModel = hiltViewModel()
 ) {
-    val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
     val state = viewModel.state
-    ExpensesScreen(analyticsHelper, state, navigateToExpenseDetail)
+    ExpensesScreen(state, navigateToExpenseDetail)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpensesScreen(analyticsHelper: AnalyticsHelper, state: ExpensesState, navigateToExpenseDetail: (Expense) -> Unit) {
+fun ExpensesScreen(state: ExpensesState, navigateToExpenseDetail: (Expense) -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -63,20 +62,22 @@ fun ExpensesScreen(analyticsHelper: AnalyticsHelper, state: ExpensesState, navig
             modifier = Modifier.padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            ExpenseList(analyticsHelper, state, navigateToExpenseDetail)
+            ExpenseList(state, navigateToExpenseDetail)
         }
     }
 }
 
 @Composable
-fun ExpenseList(analyticsHelper: AnalyticsHelper, state: ExpensesState, navigateToExpenseDetail: (Expense) -> Unit) {
-
+fun ExpenseList(state: ExpensesState, navigateToExpenseDetail: (Expense) -> Unit) {
     val filteredExpenseList = state.expenses
-    val sortedExpenseList: List<ExpenseListItem> = filteredExpenseList.sortedBy { it.date }.map { ExpenseListItem.ExpenseItem(it) }
+    val sortedExpenseList = filteredExpenseList
+        .sortedByDescending { it.date }
+        .map { ExpenseListItem.ExpenseItem(it) }
 
-    when (sortedExpenseList.isEmpty()) {
-        true -> EmptyView()
-        false -> ExpenseLazyColumn(sortedExpenseList, navigateToExpenseDetail)
+    if (sortedExpenseList.isEmpty()) {
+        EmptyView()
+    } else {
+        ExpenseLazyColumn(sortedExpenseList, navigateToExpenseDetail)
     }
 }
 
