@@ -41,7 +41,8 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             getExpensesUseCase.getExpenses().onEach { expensesList ->
                 state = state.copy(
-                    expenses = expensesList
+                    expenses = expensesList,
+                    loading = false,
                 )
             }.launchIn(viewModelScope)
         }
@@ -51,9 +52,5 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             updateExpenseUseCase.updateExpense(expense)
         }
-    }
-
-    fun getUserPlan() {
-        // TODO: Get user plan
     }
 }

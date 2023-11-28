@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -155,12 +156,11 @@ fun DailyOverviewCard(
 }
 
 @Composable
-fun EmptyCard(navController: NavController, analyticsHelper: AnalyticsHelper) {
+fun EmptyCard(navController: NavController, analyticsHelper: AnalyticsHelper, selectedDateString: String) {
     analyticsHelper.logEvent(AnalyticsEvents.EMPTY_CARD_SHOWN)
+
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(156.dp),
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(36.dp),
         colors = cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -171,36 +171,23 @@ fun EmptyCard(navController: NavController, analyticsHelper: AnalyticsHelper) {
             navController.navigate(AddExpenseDestination.route)
         }
     ) {
-        Row(modifier = Modifier.fillMaxSize()) {
+        Row(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier
                     .padding(24.dp, 24.dp, 0.dp, 16.dp)
-                    .fillMaxWidth(.50F)
                     .align(Alignment.CenterVertically),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
 
                 Text(
-                    text = stringResource(R.string.home_screen_empty_card_title),
+                    text = stringResource(R.string.home_screen_empty_card_title, selectedDateString),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge,
                 )
 
                 Text(
-                    text = stringResource(R.string.home_screen_empty_card_message),
+                    text = stringResource(R.string.home_screen_empty_card_message, selectedDateString),
                     style = MaterialTheme.typography.titleSmall,
-                )
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.Bottom
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_money),
-                    contentDescription = "",
-                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary)
                 )
             }
         }
@@ -216,21 +203,27 @@ fun LastExpenses(
     navigateToExpenseDetail: (Expense) -> Unit
 ) {
 
+    if (state.loading) {
+        return
+    }
+
     var filteredExpenses: List<Expense> by remember { mutableStateOf(emptyList()) }
+    var selectedDateString = ""
 
     DatesHeader(analyticsHelper) { selectedDate ->
         val newExpenseList = state.expenses
             .filter { expense ->
                 expense.date.toFormattedDateString() == selectedDate.date.toFormattedDateString()
             }
-            .sortedBy { it.date }
+            .sortedByDescending { it.date }
 
         filteredExpenses = newExpenseList
+        selectedDateString = selectedDate.date.toFormattedDateString()
         analyticsHelper.logEvent(AnalyticsEvents.HOME_NEW_DATE_SELECTED)
     }
 
     if (filteredExpenses.isEmpty()) {
-        EmptyCard(navController, analyticsHelper)
+        EmptyCard(navController, analyticsHelper, selectedDateString)
     } else {
         LazyColumn(
             modifier = Modifier,
@@ -257,6 +250,10 @@ fun DatesHeader(
 ) {
     val dataSource = CalendarDataSource()
     var calendarModel by remember { mutableStateOf(dataSource.getData(lastSelectedDate = dataSource.today)) }
+
+    // trigger initial selection callback
+    onDateSelected(calendarModel.selectedDate)
+
     Column(
         modifier = Modifier
             .fillMaxWidth()

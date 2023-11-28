@@ -23,7 +23,7 @@ fun NavGraphBuilder.homeGraph(
     navigateToExpenseDetail: (Expense) -> Unit
 ) {
     composable(route = HomeDestination.route) {
-        LaunchedEffect(null) {
+        LaunchedEffect(Unit) {
             bottomBarVisibility.value = true
             fabVisibility.value = true
         }
