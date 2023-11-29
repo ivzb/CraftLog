@@ -1,7 +1,7 @@
 package com.ivzb.craftlog
 
 enum class ExpenseCategory {
-    Empty,
+    None,
     Bills,
     Food,
     Car,

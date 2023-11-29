@@ -50,7 +50,8 @@ fun ExpenseCard(
 
             Column(
                 modifier = Modifier
-                    .weight(2f),
+                    .weight(2f)
+                    .padding(8.dp, 0.dp),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
@@ -61,7 +62,7 @@ fun ExpenseCard(
                 )
 
                 Text(
-                    text = expense.name,
+                    text = "${expense.name} - ${expense.amount}",
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )

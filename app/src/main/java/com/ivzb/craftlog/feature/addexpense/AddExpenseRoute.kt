@@ -52,6 +52,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -99,7 +100,7 @@ fun AddExpenseScreen(
 ) {
     var name by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableStateOf("") }
-    var category by rememberSaveable { mutableStateOf(ExpenseCategory.Empty.name) }
+    var category by rememberSaveable { mutableStateOf(ExpenseCategory.None.name) }
     var date by rememberSaveable { mutableStateOf(Date()) }
 
     val context = LocalContext.current
@@ -194,6 +195,11 @@ fun AddExpenseScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = name,
                 onValueChange = { name = it },
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Text
+                ),
                 placeholder = { Text(text = stringResource(R.string.expense_placeholder)) },
             )
 
@@ -213,8 +219,12 @@ fun AddExpenseScreen(
                         modifier = Modifier.width(128.dp),
                         value = amount,
                         onValueChange = { amount = it },
+                        maxLines = 1,
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Done,
+                            keyboardType = KeyboardType.Number
+                        ),
                         placeholder = { Text(text = stringResource(R.string.amount_placeholder)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
                 }
 
