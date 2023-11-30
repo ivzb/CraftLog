@@ -1,6 +1,8 @@
 package com.ivzb.craftlog
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
@@ -42,7 +44,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.ivzb.craftlog.ui.theme.CraftLogTheme
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.feature.addexpense.navigation.AddExpenseDestination
@@ -52,6 +53,7 @@ import com.ivzb.craftlog.navigation.CraftLogNavHost
 import com.ivzb.craftlog.navigation.CraftLogTopLevelNavigation
 import com.ivzb.craftlog.navigation.TOP_LEVEL_DESTINATIONS
 import com.ivzb.craftlog.navigation.TopLevelDestination
+import com.ivzb.craftlog.ui.theme.CraftLogTheme
 import com.ivzb.craftlog.util.SnackbarUtil
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,11 +85,22 @@ fun CraftLogApp() {
                 containerColor = Color.Transparent,
                 contentColor = MaterialTheme.colorScheme.onBackground,
                 floatingActionButton = {
-
                     AnimatedVisibility(
                         visible = fabVisibility.value,
-                        enter = slideInVertically(initialOffsetY = { it }),
-                        exit = slideOutVertically(targetOffsetY = { it }),
+                        enter = slideInVertically(
+                            initialOffsetY = { 600 }, // small slide 300px
+                            animationSpec = tween(
+                                durationMillis = 1000,
+                                easing = FastOutSlowInEasing
+                            )
+                        ),
+                        exit = slideOutVertically(
+                            targetOffsetY = { 600 },
+                            animationSpec = tween(
+                                durationMillis = 1000,
+                                easing = FastOutSlowInEasing
+                            )
+                        ),
                         content = {
                             CraftLogFAB(navController, analyticsHelper)
                         }
@@ -104,8 +117,20 @@ fun CraftLogApp() {
 
                         AnimatedVisibility(
                             visible = bottomBarVisibility.value,
-                            enter = slideInVertically(initialOffsetY = { it }),
-                            exit = slideOutVertically(targetOffsetY = { it }),
+                            enter = slideInVertically(
+                                initialOffsetY = { 300 },
+                                animationSpec = tween(
+                                    durationMillis = 1000,
+                                    easing = FastOutSlowInEasing
+                                )
+                            ),
+                            exit = slideOutVertically(
+                                targetOffsetY = { 300 },
+                                animationSpec = tween(
+                                    durationMillis = 1000,
+                                    easing = FastOutSlowInEasing
+                                )
+                            ),
                             content = {
                                 CraftLogBottomBar(
                                     onNavigateToTopLevelDestination = topLevelNavigation::navigateTo,
@@ -126,7 +151,6 @@ fun CraftLogApp() {
                             )
                         )
                 ) {
-
                     CraftLogNavHost(
                         bottomBarVisibility = bottomBarVisibility,
                         fabVisibility = fabVisibility,
