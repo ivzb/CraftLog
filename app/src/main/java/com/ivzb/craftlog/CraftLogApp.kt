@@ -34,8 +34,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -195,12 +197,14 @@ private fun CraftLogBottomBar(
                         onNavigateToTopLevelDestination(destination)
                     },
                     icon = {
+                        val imageId = if (selected) {
+                            destination.selectedIconId
+                        } else {
+                            destination.unselectedIconId
+                        }
+
                         Icon(
-                            if (selected) {
-                                destination.selectedIcon
-                            } else {
-                                destination.unselectedIcon
-                            },
+                            ImageVector.vectorResource(imageId),
                             contentDescription = null
                         )
                     },

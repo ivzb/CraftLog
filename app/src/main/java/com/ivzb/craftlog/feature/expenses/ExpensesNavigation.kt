@@ -24,7 +24,7 @@ fun NavGraphBuilder.expensesGraph(
     composable(route = ExpensesDestination.route) {
         LaunchedEffect(null) {
             bottomBarVisibility.value = true
-            fabVisibility.value = false
+            fabVisibility.value = true
         }
 
         ExpensesRoute(navigateToExpenseDetail)

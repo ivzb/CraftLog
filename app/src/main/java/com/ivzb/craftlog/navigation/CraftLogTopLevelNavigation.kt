@@ -5,10 +5,10 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.ivzb.craftlog.R
+import com.ivzb.craftlog.feature.budget.BudgetDestination
 import com.ivzb.craftlog.feature.expenses.ExpensesDestination
 import com.ivzb.craftlog.feature.home.HomeDestination
 
@@ -33,22 +33,30 @@ class CraftLogTopLevelNavigation (private val navController: NavHostController) 
 
 data class TopLevelDestination(
     val route: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
+    val selectedIconId: Int,
+    val unselectedIconId: Int,
     val iconTextId: Int
 )
 
 val TOP_LEVEL_DESTINATIONS = listOf(
     TopLevelDestination(
         route = HomeDestination.route,
-        selectedIcon = Icons.Filled.Home,
-        unselectedIcon = Icons.Outlined.Home,
+        selectedIconId = R.drawable.ic_home_filled,
+        unselectedIconId = R.drawable.ic_home_outlined,
         iconTextId = R.string.home
     ),
+
     TopLevelDestination(
         route = ExpensesDestination.route,
-        selectedIcon = Icons.Filled.DateRange,
-        unselectedIcon = Icons.Outlined.DateRange,
+        selectedIconId = R.drawable.ic_expenses_filled,
+        unselectedIconId = R.drawable.ic_expenses_outlined,
         iconTextId = R.string.expenses
+    ),
+
+    TopLevelDestination(
+        route = BudgetDestination.route,
+        selectedIconId = R.drawable.ic_calculate_filled,
+        unselectedIconId = R.drawable.ic_calculate_outlined,
+        iconTextId = R.string.budget
     ),
 )
