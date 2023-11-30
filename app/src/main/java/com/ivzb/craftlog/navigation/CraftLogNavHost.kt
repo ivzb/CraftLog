@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.ivzb.craftlog.feature.addexpense.navigation.addExpenseGraph
+import com.ivzb.craftlog.feature.budget.budgetGraph
 import com.ivzb.craftlog.feature.expenseconfirm.navigation.ExpenseConfirmDestination
 import com.ivzb.craftlog.feature.expenseconfirm.navigation.expenseConfirmGraph
 import com.ivzb.craftlog.feature.expensedetail.ExpenseDetailDestination
@@ -56,6 +57,11 @@ fun CraftLogNavHost(
                 }
                 navController.navigate(ExpenseDetailDestination.route)
             }
+        )
+
+        budgetGraph(
+            bottomBarVisibility = bottomBarVisibility,
+            fabVisibility = fabVisibility,
         )
 
         expenseDetailGraph(

@@ -26,6 +26,7 @@ fun NavGraphBuilder.expensesGraph(
             bottomBarVisibility.value = true
             fabVisibility.value = false
         }
+
         ExpensesRoute(navigateToExpenseDetail)
     }
 }
