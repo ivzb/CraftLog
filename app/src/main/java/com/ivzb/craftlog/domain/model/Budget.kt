@@ -13,7 +13,7 @@ data class Budget(
     val saved: BigDecimal,
 ) : Parcelable {
 
-    val finalBalance: BigDecimal by lazy {
+    val total: BigDecimal by lazy {
         income - spent - saved
     }
 

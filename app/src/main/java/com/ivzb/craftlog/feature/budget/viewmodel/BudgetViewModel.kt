@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,12 +22,16 @@ class BudgetViewModel @Inject constructor(
         private set
 
     init {
-        loadExpenses()
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH) + 1
+
+        loadBudget(year, month)
     }
 
-    fun loadExpenses() {
+    fun loadBudget(year: Int, month: Int) {
         viewModelScope.launch {
-            val budget = getBudgetUseCase.getBudget().onEach { budget ->
+            val budget = getBudgetUseCase.getBudget(year, month).onEach { budget ->
                 state = state.copy(
                     budget = budget
                 )

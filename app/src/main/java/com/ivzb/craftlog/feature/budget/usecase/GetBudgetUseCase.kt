@@ -11,9 +11,10 @@ class GetBudgetUseCase @Inject constructor(
     private val repository: ExpenseRepository
 ) {
 
-    suspend fun getBudget(): Flow<List<Budget>> {
+    suspend fun getBudget(year: Int, month: Int): Flow<Budget> {
         return repository.getAllExpenses().map {
-            listOf(Budget(2023, 11, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO))
+            // todo: compute budget out of filtered expenses
+            Budget(year, month, 1234.56.toBigDecimal(), 567.89.toBigDecimal(), 723.56.toBigDecimal())
         }
     }
 }

@@ -174,7 +174,7 @@ fun EmptyCard(navController: NavController, analyticsHelper: AnalyticsHelper, se
         Row(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier
-                    .padding(24.dp, 24.dp, 0.dp, 16.dp)
+                    .padding(24.dp)
                     .align(Alignment.CenterVertically),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {

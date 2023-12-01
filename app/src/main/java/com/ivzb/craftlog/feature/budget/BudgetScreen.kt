@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.feature.budget.viewmodel.BudgetState
 import com.ivzb.craftlog.feature.budget.viewmodel.BudgetViewModel
+import com.ivzb.craftlog.feature.home.ExpenseCard
 
 @Composable
 fun BudgetRoute(
@@ -61,17 +62,11 @@ fun BudgetScreen(state: BudgetState) {
 
 @Composable
 fun BudgetList(state: BudgetState) {
-    val budget = state.budget
-//    BudgetLazyColumn(budget)
-
-    Text(
-        modifier = Modifier
-            .padding(4.dp, 12.dp, 8.dp, 0.dp)
-            .fillMaxWidth(),
-        text = "budget here",
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.titleMedium,
-    )
+    state.budget?.let {
+        BudgetCard(
+            budget = it
+        )
+    }
 }
 
 //@Composable

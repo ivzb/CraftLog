@@ -26,4 +26,8 @@
     <string name="all_set">Your expense is saved.</string>
     <string name="done">Done</string>
     <string name="budget">Budget</string>
+    <string name="income">Income</string>
+    <string name="spent">Spent</string>
+    <string name="saved">Saved</string>
+    <string name="total">Total</string>
 </resources>
