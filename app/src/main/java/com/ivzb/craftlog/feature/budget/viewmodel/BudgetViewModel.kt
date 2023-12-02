@@ -24,7 +24,7 @@ class BudgetViewModel @Inject constructor(
     init {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH) + 1
+        val month = calendar.get(Calendar.MONTH)
 
         loadBudget(year, month)
     }

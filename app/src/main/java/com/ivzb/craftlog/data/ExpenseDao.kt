@@ -38,4 +38,13 @@ interface ExpenseDao {
         """
     )
     fun getExpensesForDate(date: Date): Flow<List<ExpenseEntity>>
+
+    @Query(
+        """
+            SELECT *
+            FROM expenseentity
+            WHERE date >= :dateStart and date <= :dateEnd
+        """
+    )
+    fun getExpensesForDateRange(dateStart: Date, dateEnd: Date): Flow<List<ExpenseEntity>>
 }

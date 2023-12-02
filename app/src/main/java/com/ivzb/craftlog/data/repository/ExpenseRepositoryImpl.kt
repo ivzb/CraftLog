@@ -1,10 +1,11 @@
 package com.ivzb.craftlog.data.repository
 
 import com.ivzb.craftlog.data.ExpenseDao
-import com.ivzb.craftlog.domain.model.Expense
-import com.ivzb.craftlog.domain.repository.ExpenseRepository
 import com.ivzb.craftlog.data.mapper.toExpense
 import com.ivzb.craftlog.data.mapper.toExpenseEntity
+import com.ivzb.craftlog.domain.model.Expense
+import com.ivzb.craftlog.domain.repository.ExpenseRepository
+import com.ivzb.craftlog.util.getDateRange
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.Date
@@ -35,6 +36,17 @@ class ExpenseRepositoryImpl(
     override fun getExpensesForDate(date: Date): Flow<List<Expense>> {
         return dao.getExpensesForDate(
             date = date
+        ).map { entities ->
+            entities.map { it.toExpense() }
+        }
+    }
+
+    override fun getExpensesForRange(year: Int, month: Int): Flow<List<Expense>> {
+        val (startDate, endDate) = getDateRange(year, month)
+
+        return dao.getExpensesForDateRange(
+            startDate,
+            endDate
         ).map { entities ->
             entities.map { it.toExpense() }
         }

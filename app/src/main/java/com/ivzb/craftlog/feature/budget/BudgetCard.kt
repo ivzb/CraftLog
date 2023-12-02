@@ -107,7 +107,7 @@ fun BudgetCard(
                     text = "",
                     color = MaterialTheme.colorScheme.primary,
                 )
-                
+
                 Spacer(modifier = Modifier.padding(4.dp))
 
                 Text(
@@ -158,5 +158,5 @@ private fun BudgetCardPreview() {
 }
 
 private fun Int.toFormattedMonth(): String {
-    return DateFormatSymbols().months[this - 1]
+    return DateFormatSymbols().months[this]
 }
