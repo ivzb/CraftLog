@@ -8,7 +8,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.ivzb.craftlog.feature.addexpense.navigation.addExpenseGraph
+import com.ivzb.craftlog.feature.budget.BUDGET
 import com.ivzb.craftlog.feature.budget.budgetGraph
+import com.ivzb.craftlog.feature.budgetdetail.BudgetDetailDestination
+import com.ivzb.craftlog.feature.budgetdetail.budgetDetailGraph
 import com.ivzb.craftlog.feature.expenseconfirm.navigation.ExpenseConfirmDestination
 import com.ivzb.craftlog.feature.expenseconfirm.navigation.expenseConfirmGraph
 import com.ivzb.craftlog.feature.expensedetail.ExpenseDetailDestination
@@ -59,11 +62,6 @@ fun CraftLogNavHost(
             }
         )
 
-        budgetGraph(
-            bottomBarVisibility = bottomBarVisibility,
-            fabVisibility = fabVisibility,
-        )
-
         expenseDetailGraph(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility,
@@ -95,6 +93,26 @@ fun CraftLogNavHost(
             navigateToHome = {
                 navController.navigateSingleTop(HomeDestination.route)
             }
+        )
+
+        budgetGraph(
+            bottomBarVisibility = bottomBarVisibility,
+            fabVisibility = fabVisibility,
+            navigateToBudgetDetail = {
+                val bundle = Bundle()
+                bundle.putParcelable(BUDGET, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(BUDGET, bundle)
+                }
+                navController.navigate(BudgetDetailDestination.route)
+            }
+        )
+
+        budgetDetailGraph(
+            navController = navController,
+            bottomBarVisibility = bottomBarVisibility,
+            fabVisibility = fabVisibility,
+            onBackClicked = { navController.navigateUp() }
         )
     }
 }

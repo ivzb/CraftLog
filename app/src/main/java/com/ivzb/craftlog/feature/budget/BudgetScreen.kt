@@ -20,21 +20,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
+import com.ivzb.craftlog.domain.model.Budget
 import com.ivzb.craftlog.feature.budget.viewmodel.BudgetState
 import com.ivzb.craftlog.feature.budget.viewmodel.BudgetViewModel
 import com.ivzb.craftlog.feature.home.ExpenseCard
 
 @Composable
 fun BudgetRoute(
+    navigateToBudgetDetail: (Budget) -> Unit,
     viewModel: BudgetViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
-    BudgetScreen(state)
+    BudgetScreen(state, navigateToBudgetDetail)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BudgetScreen(state: BudgetState) {
+fun BudgetScreen(
+    state: BudgetState,
+    navigateToBudgetDetail: (Budget) -> Unit
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -55,17 +60,25 @@ fun BudgetScreen(state: BudgetState) {
             modifier = Modifier.padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            BudgetList(state)
+            BudgetList(
+                state,
+                navigateToBudgetDetail
+            )
         }
     }
 }
 
 @Composable
-fun BudgetList(state: BudgetState) {
+fun BudgetList(
+    state: BudgetState,
+    navigateToBudgetDetail: (Budget) -> Unit
+) {
     state.budget?.let {
         BudgetCard(
             budget = it
-        )
+        ) { budget ->
+            navigateToBudgetDetail(budget)
+        }
     }
 }
 

@@ -93,7 +93,7 @@ fun ExpenseDetailScreen(
                         .height(56.dp),
                     onClick = {
                         analyticsHelper.logEvent(AnalyticsEvents.EXPENSE_DETAIL_DONE_CLICKED)
-                        showSnackbar(context.getString(R.string.all_set))
+                        showSnackbar(context.getString(R.string.expense_all_set))
                         onBackClicked()
                     },
                     shape = MaterialTheme.shapes.extraLarge

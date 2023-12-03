@@ -1,4 +1,4 @@
-package com.ivzb.craftlog.feature.expensedetail
+package com.ivzb.craftlog.feature.budgetdetail
 
 import android.os.Bundle
 import androidx.compose.runtime.LaunchedEffect
@@ -6,18 +6,18 @@ import androidx.compose.runtime.MutableState
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.ivzb.craftlog.domain.model.Expense
-import com.ivzb.craftlog.feature.expenses.EXPENSE
+import com.ivzb.craftlog.domain.model.Budget
+import com.ivzb.craftlog.feature.budget.BUDGET
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
 
-object ExpenseDetailDestination : CraftLogNavigationDestination {
+object BudgetDetailDestination : CraftLogNavigationDestination {
 
-    override val route = "expense_detail_route"
-    override val destination = "expense_detail_destination"
+    override val route = "budget_detail_route"
+    override val destination = "budget_detail_destination"
 
 }
 
-fun NavGraphBuilder.expenseDetailGraph(
+fun NavGraphBuilder.budgetDetailGraph(
     navController: NavController,
     bottomBarVisibility: MutableState<Boolean>,
     fabVisibility: MutableState<Boolean>,
@@ -25,16 +25,16 @@ fun NavGraphBuilder.expenseDetailGraph(
 ) {
 
     composable(
-        route = ExpenseDetailDestination.route,
+        route = BudgetDetailDestination.route,
     ) {
         LaunchedEffect(null) {
             bottomBarVisibility.value = false
             fabVisibility.value = false
         }
-        val expenseBundle = navController.previousBackStackEntry?.savedStateHandle?.get<Bundle>(
-            EXPENSE
+        val budgetBundle = navController.previousBackStackEntry?.savedStateHandle?.get<Bundle>(
+            BUDGET
         )
-        val expense = expenseBundle?.getParcelable<Expense>(EXPENSE)
-        ExpenseDetailRoute(expense, onBackClicked)
+        val budget = budgetBundle?.getParcelable<Budget>(BUDGET)
+        BudgetDetailRoute(budget, onBackClicked)
     }
 }

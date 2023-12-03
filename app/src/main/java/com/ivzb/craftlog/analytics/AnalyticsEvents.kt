@@ -27,4 +27,7 @@ object AnalyticsEvents {
     const val HOME_CALENDAR_NEXT_WEEK_CLICKED = "home_calendar_next_week_clicked"
     const val HOME_NEW_DATE_SELECTED = "home_new_date_clicked"
 
+    const val BUDGET_DETAIL_ON_BACK_CLICKED = "budget_detail_on_back_clicked"
+    const val BUDGET_DETAIL_DONE_CLICKED = "budget_detail_done_clicked"
+
 }

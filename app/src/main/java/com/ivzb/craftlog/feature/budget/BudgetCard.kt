@@ -33,7 +33,7 @@ import java.text.DateFormatSymbols
 @Composable
 fun BudgetCard(
     budget: Budget,
-//    navigateToBudgetDetail: (Budget) -> Unit
+    navigateToBudgetDetail: (Budget) -> Unit
 ) {
 
     Card(
@@ -41,7 +41,7 @@ fun BudgetCard(
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable {
-//                navigateToBudgetDetail(budget)
+                navigateToBudgetDetail(budget)
             },
         shape = RoundedCornerShape(30.dp),
         colors = CardDefaults.cardColors(
@@ -154,7 +154,7 @@ private fun BudgetCardPreview() {
             spent = BigDecimal.ZERO,
             saved = BigDecimal.ZERO
         )
-    )
+    ) { }
 }
 
 private fun Int.toFormattedMonth(): String {

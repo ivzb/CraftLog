@@ -23,7 +23,8 @@
     <string name="home_screen_empty_card_message">It seems like you haven\'t logged any expenses for %1$s yet. Start by recording your spending for the day to keep a detailed record of your financial activities. Tap the \'Add Expense\' button to add expense. Let\'s get those transactions in and watch your financial progress unfold!</string>
     <string name="confirm">Confirm</string>
     <string name="all_done">All done!</string>
-    <string name="all_set">Your expense is saved.</string>
+    <string name="expense_all_set">Your expense is saved.</string>
+    <string name="budget_all_set">Your budget is saved.</string>
     <string name="done">Done</string>
     <string name="budget">Budget</string>
     <string name="income">Income</string>

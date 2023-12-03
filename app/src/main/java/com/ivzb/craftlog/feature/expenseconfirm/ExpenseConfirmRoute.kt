@@ -95,7 +95,7 @@ fun ExpenseConfirmScreen(
         )
 
         Text(
-            text = stringResource(R.string.all_set),
+            text = stringResource(R.string.budget_all_set),
             style = MaterialTheme.typography.titleMedium
         )
     }
