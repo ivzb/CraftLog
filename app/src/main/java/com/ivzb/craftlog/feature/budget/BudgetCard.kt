@@ -54,6 +54,8 @@ fun BudgetCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
+            // todo: make all budget computed fields automatic - create sheet for each column dynamically - don't hardcode them
+
             Column(
                 modifier = Modifier
                     .weight(2f)
@@ -93,6 +95,58 @@ fun BudgetCard(
                     style = MaterialTheme.typography.titleLarge
                 )
 
+                Spacer(modifier = Modifier.padding(4.dp))
+
+                Text(
+                    text = stringResource(id = R.string.bank_start),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                Text(
+                    text = budget.bankStart.toPlainString(),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge
+                )
+
+                Spacer(modifier = Modifier.padding(4.dp))
+
+                Text(
+                    text = stringResource(id = R.string.emergency_fund),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                Text(
+                    text = budget.emergencyFund.toPlainString(),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge
+                )
+
+                Spacer(modifier = Modifier.padding(4.dp))
+
+                Text(
+                    text = stringResource(id = R.string.mortgage),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                Text(
+                    text = budget.mortgage.toPlainString(),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge
+                )
+
+                Spacer(modifier = Modifier.padding(4.dp))
+
+                Text(
+                    text = stringResource(id = R.string.stocks),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                Text(
+                    text = budget.stocks.toPlainString(),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge
+                )
+
             }
 
             Column(
@@ -124,12 +178,64 @@ fun BudgetCard(
                 Spacer(modifier = Modifier.padding(4.dp))
 
                 Text(
-                    text = stringResource(id = R.string.total),
+                    text = stringResource(id = R.string.balance),
                     style = MaterialTheme.typography.bodyLarge
                 )
 
                 Text(
-                    text = budget.total.toPlainString(),
+                    text = budget.balance.toPlainString(),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge
+                )
+
+                Spacer(modifier = Modifier.padding(4.dp))
+
+                Text(
+                    text = stringResource(id = R.string.bank_end),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                Text(
+                    text = budget.bankEnd.toPlainString(),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge
+                )
+
+                Spacer(modifier = Modifier.padding(4.dp))
+
+                Text(
+                    text = stringResource(id = R.string.cost_of_living),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                Text(
+                    text = budget.costOfLiving.toPlainString(),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge
+                )
+
+                Spacer(modifier = Modifier.padding(4.dp))
+
+                Text(
+                    text = stringResource(id = R.string.crypto),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                Text(
+                    text = budget.crypto.toPlainString(),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge
+                )
+
+                Spacer(modifier = Modifier.padding(4.dp))
+
+                Text(
+                    text = stringResource(id = R.string.company),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                Text(
+                    text = budget.company.toPlainString(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
