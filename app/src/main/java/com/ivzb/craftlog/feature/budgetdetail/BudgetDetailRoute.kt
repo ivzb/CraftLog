@@ -133,7 +133,7 @@ fun BudgetDetailScreen(
                 onValueChange = { income = it },
                 maxLines = 1,
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done,
+                    imeAction = ImeAction.Next,
                     keyboardType = KeyboardType.Number
                 ),
                 placeholder = { Text(text = stringResource(R.string.budget_amount_placeholder)) },
@@ -171,7 +171,7 @@ fun BudgetDetailScreen(
                 onValueChange = { bankEnd = it },
                 maxLines = 1,
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
+                    imeAction = ImeAction.Done,
                     keyboardType = KeyboardType.Number
                 ),
                 placeholder = { Text(text = stringResource(R.string.budget_amount_placeholder)) },
