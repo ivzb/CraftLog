@@ -5,6 +5,8 @@ import androidx.room.Room
 import com.ivzb.craftlog.data.CraftLogDatabase
 import com.ivzb.craftlog.domain.repository.ExpenseRepository
 import com.ivzb.craftlog.data.repository.ExpenseRepositoryImpl
+import com.ivzb.craftlog.data.repository.InvestmentRepositoryImpl
+import com.ivzb.craftlog.domain.repository.InvestmentRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,11 +43,21 @@ object CraftLogDataModule {
 
     @Provides
     @Singleton
-    fun provideCraftLogRepository(
+    fun provideExpensesRepository(
         db: CraftLogDatabase
     ): ExpenseRepository {
         return ExpenseRepositoryImpl(
-            dao = db.dao
+            dao = db.expensesDao
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideInvestmentsRepository(
+        db: CraftLogDatabase
+    ): InvestmentRepository {
+        return InvestmentRepositoryImpl(
+            dao = db.investmentsDao
         )
     }
 }

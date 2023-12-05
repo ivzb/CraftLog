@@ -3,7 +3,9 @@ package com.ivzb.craftlog
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -89,15 +91,15 @@ fun CraftLogApp() {
                 floatingActionButton = {
                     AnimatedVisibility(
                         visible = fabVisibility.value,
-                        enter = slideInVertically(
-                            initialOffsetY = { 600 }, // small slide 300px
+                        enter = slideInHorizontally(
+                            initialOffsetX = { 600 }, // small slide 300px
                             animationSpec = tween(
                                 durationMillis = 1000,
                                 easing = FastOutSlowInEasing
                             )
                         ),
-                        exit = slideOutVertically(
-                            targetOffsetY = { 600 },
+                        exit = slideOutHorizontally(
+                            targetOffsetX = { 600 },
                             animationSpec = tween(
                                 durationMillis = 1000,
                                 easing = FastOutSlowInEasing

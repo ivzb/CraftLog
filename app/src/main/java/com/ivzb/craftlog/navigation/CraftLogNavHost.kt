@@ -20,6 +20,8 @@ import com.ivzb.craftlog.feature.expenses.EXPENSE
 import com.ivzb.craftlog.feature.expenses.expensesGraph
 import com.ivzb.craftlog.feature.home.HomeDestination
 import com.ivzb.craftlog.feature.home.homeGraph
+import com.ivzb.craftlog.feature.investments.INVESTMENT
+import com.ivzb.craftlog.feature.investments.investmentsGraph
 import com.ivzb.craftlog.util.navigateSingleTop
 
 @Composable
@@ -113,6 +115,19 @@ fun CraftLogNavHost(
             bottomBarVisibility = bottomBarVisibility,
             fabVisibility = fabVisibility,
             onBackClicked = { navController.navigateUp() }
+        )
+
+        investmentsGraph(
+            bottomBarVisibility = bottomBarVisibility,
+            fabVisibility = fabVisibility,
+            navigateToInvestmentDetail = {
+                val bundle = Bundle()
+                bundle.putParcelable(INVESTMENT, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(INVESTMENT, bundle)
+                }
+//                navController.navigate(InvestmentDetailDestination.route)
+            }
         )
     }
 }

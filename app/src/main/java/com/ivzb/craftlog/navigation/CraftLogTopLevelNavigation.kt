@@ -11,6 +11,7 @@ import com.ivzb.craftlog.R
 import com.ivzb.craftlog.feature.budget.BudgetDestination
 import com.ivzb.craftlog.feature.expenses.ExpensesDestination
 import com.ivzb.craftlog.feature.home.HomeDestination
+import com.ivzb.craftlog.feature.investments.InvestmentsDestination
 
 class CraftLogTopLevelNavigation (private val navController: NavHostController) {
 
@@ -58,5 +59,12 @@ val TOP_LEVEL_DESTINATIONS = listOf(
         selectedIconId = R.drawable.ic_calculate_filled,
         unselectedIconId = R.drawable.ic_calculate_outlined,
         iconTextId = R.string.budget
+    ),
+
+    TopLevelDestination(
+        route = InvestmentsDestination.route,
+        selectedIconId = R.drawable.ic_chart_filled,
+        unselectedIconId = R.drawable.ic_chart_outlined,
+        iconTextId = R.string.investments
     ),
 )
