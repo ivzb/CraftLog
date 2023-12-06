@@ -1,9 +1,9 @@
-package com.ivzb.craftlog.feature.addexpense
+package com.ivzb.craftlog.ui.components
 
 import android.app.TimePickerDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import com.ivzb.craftlog.feature.addexpense.model.CalendarInformation
+import com.ivzb.craftlog.ui.model.CalendarInformation
 import java.util.Calendar
 
 @Composable

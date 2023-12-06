@@ -1,4 +1,4 @@
-package com.ivzb.craftlog.feature.addexpense
+package com.ivzb.craftlog.ui.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button

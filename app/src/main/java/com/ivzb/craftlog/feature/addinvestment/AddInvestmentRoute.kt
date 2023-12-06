@@ -1,4 +1,4 @@
-package com.ivzb.craftlog.feature.addexpense
+package com.ivzb.craftlog.feature.addinvestment
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -19,10 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -46,13 +42,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ivzb.craftlog.ExpenseCategory
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
-import com.ivzb.craftlog.domain.model.Expense
-import com.ivzb.craftlog.feature.addexpense.viewmodel.AddExpenseViewModel
-import com.ivzb.craftlog.getExpenseCategoryList
+import com.ivzb.craftlog.domain.model.Investment
+import com.ivzb.craftlog.feature.addinvestment.viewmodel.AddInvestmentViewModel
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
 import java.math.BigDecimal
 import java.text.DateFormatSymbols
@@ -64,30 +58,30 @@ import java.util.Locale
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AddExpenseRoute(onBackClicked = {}, navigateToExpenseConfirm = {})
+    AddInvestmentRoute(onBackClicked = {}, navigateToInvestmentConfirm = {})
 }
 
 @Composable
-fun AddExpenseRoute(
+fun AddInvestmentRoute(
     onBackClicked: () -> Unit,
-    navigateToExpenseConfirm: (Expense) -> Unit,
-    viewModel: AddExpenseViewModel = hiltViewModel()
+    navigateToInvestmentConfirm: (Investment) -> Unit,
+    viewModel: AddInvestmentViewModel = hiltViewModel()
 ) {
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    AddExpenseScreen(onBackClicked, viewModel, analyticsHelper, navigateToExpenseConfirm)
+    AddInvestmentScreen(onBackClicked, viewModel, analyticsHelper, navigateToInvestmentConfirm)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddExpenseScreen(
+fun AddInvestmentScreen(
     onBackClicked: () -> Unit,
-    viewModel: AddExpenseViewModel,
+    viewModel: AddInvestmentViewModel,
     analyticsHelper: AnalyticsHelper,
-    navigateToExpenseConfirm: (Expense) -> Unit,
+    navigateToInvestmentConfirm: (Investment) -> Unit,
 ) {
     var name by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableStateOf("") }
-    var category by rememberSaveable { mutableStateOf(ExpenseCategory.None.name) }
+    var cost by rememberSaveable { mutableStateOf("") }
     var date by rememberSaveable { mutableStateOf(Date()) }
 
     val context = LocalContext.current
@@ -114,7 +108,7 @@ fun AddExpenseScreen(
                 title = {
                     Text(
                         modifier = Modifier.padding(16.dp),
-                        text = stringResource(id = R.string.add_expense),
+                        text = stringResource(id = R.string.add_investment),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.displaySmall
                     )
@@ -128,10 +122,10 @@ fun AddExpenseScreen(
                     .padding(vertical = 16.dp)
                     .height(56.dp),
                 onClick = {
-                    validateExpense(
+                    validateInvestment(
                         name = name,
                         amount = amount.toBigDecimalOrNull(),
-                        category = category,
+                        cost = cost.toBigDecimalOrNull(),
                         date = date,
                         onInvalidate = {
                             val invalidatedValue = context.getString(it)
@@ -151,7 +145,7 @@ fun AddExpenseScreen(
                             analyticsHelper.logEvent(event)
                         },
                         onValidate = {
-                            navigateToExpenseConfirm(it)
+                            navigateToInvestmentConfirm(it)
                             analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_NAVIGATING_TO_EXPENSE_CONFIRM)
                         },
                         viewModel = viewModel
@@ -187,7 +181,7 @@ fun AddExpenseScreen(
                     imeAction = ImeAction.Next,
                     keyboardType = KeyboardType.Text
                 ),
-                placeholder = { Text(text = stringResource(R.string.expense_placeholder)) },
+                placeholder = { Text(text = stringResource(R.string.investment_placeholder)) },
             )
 
             Spacer(modifier = Modifier.padding(4.dp))
@@ -209,7 +203,7 @@ fun AddExpenseScreen(
                         onValueChange = { amount = it },
                         maxLines = 1,
                         keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Done,
+                            imeAction = ImeAction.Next,
                             keyboardType = KeyboardType.Number
                         ),
                         placeholder = { Text(text = stringResource(R.string.amount_placeholder)) },
@@ -221,60 +215,27 @@ fun AddExpenseScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
 
-                    CategoryDropdownMenu { category = it }
+                    Text(
+                        text = stringResource(id = R.string.cost),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+
+                    TextField(
+                        value = cost,
+                        onValueChange = { cost = it },
+                        maxLines = 1,
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Done,
+                            keyboardType = KeyboardType.Number
+                        ),
+                        placeholder = { Text(text = stringResource(R.string.amount_placeholder)) },
+                    )
                 }
             }
 
             Spacer(modifier = Modifier.padding(4.dp))
 
             DateTextField { date = it }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CategoryDropdownMenu(onCategorySelected: (String) -> Unit) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text(
-            text = stringResource(id = R.string.category),
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        val options = getExpenseCategoryList().map { it.name }
-        var expanded by remember { mutableStateOf(false) }
-        var selectedOptionText by remember { mutableStateOf(options[0]) }
-
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded },
-        ) {
-            TextField(
-                modifier = Modifier.menuAnchor(),
-                readOnly = true,
-                value = selectedOptionText,
-                onValueChange = {},
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                colors = ExposedDropdownMenuDefaults.textFieldColors(),
-            )
-
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-            ) {
-                options.forEach { selectionOption ->
-                    DropdownMenuItem(
-                        text = { Text(selectionOption) },
-                        onClick = {
-                            selectedOptionText = selectionOption
-                            onCategorySelected(selectionOption)
-                            expanded = false
-                        }
-                    )
-                }
-            }
         }
     }
 }
@@ -336,14 +297,14 @@ fun Date.toFormattedString(): String {
     return simpleDateFormat.format(this)
 }
 
-private fun validateExpense(
+private fun validateInvestment(
     name: String,
     amount: BigDecimal?,
-    category: String,
+    cost: BigDecimal?,
     date: Date,
     onInvalidate: (Int) -> Unit,
-    onValidate: (Expense) -> Unit,
-    viewModel: AddExpenseViewModel
+    onValidate: (Investment) -> Unit,
+    viewModel: AddInvestmentViewModel
 ) {
     if (name.isEmpty()) {
         onInvalidate(R.string.name)
@@ -355,8 +316,8 @@ private fun validateExpense(
         return
     }
 
-    if (category.isEmpty()) {
-        onInvalidate(R.string.category)
+    if (cost == null) {
+        onInvalidate(R.string.cost)
         return
     }
 
@@ -365,12 +326,12 @@ private fun validateExpense(
         return
     }
 
-    val expense = viewModel.createExpense(
+    val investment = viewModel.createInvestment(
         name,
         amount,
-        category,
+        cost,
         date
     )
 
-    onValidate(expense)
+    onValidate(investment)
 }

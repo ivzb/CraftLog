@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.feature.addexpense.navigation.addExpenseGraph
+import com.ivzb.craftlog.feature.addinvestment.navigation.addInvestmentGraph
 import com.ivzb.craftlog.feature.budget.BUDGET
 import com.ivzb.craftlog.feature.budget.budgetGraph
 import com.ivzb.craftlog.feature.budgetdetail.BudgetDetailDestination
@@ -127,7 +128,24 @@ fun CraftLogNavHost(
                 navController.currentBackStackEntry?.savedStateHandle.apply {
                     this?.set(INVESTMENT, bundle)
                 }
+                // todo
 //                navController.navigate(InvestmentDetailDestination.route)
+            }
+        )
+
+        addInvestmentGraph(
+            navController = navController,
+            bottomBarVisibility = bottomBarVisibility,
+            fabBehaviour = fabBehaviour,
+            onBackClicked = { navController.navigateUp() },
+            navigateToInvestmentConfirm = {
+                // TODO: Replace with investment id
+                val bundle = Bundle()
+                bundle.putParcelable(INVESTMENT, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(INVESTMENT, bundle)
+                }
+//                navController.navigate(InvestmentConfirmDestination.route)
             }
         )
     }

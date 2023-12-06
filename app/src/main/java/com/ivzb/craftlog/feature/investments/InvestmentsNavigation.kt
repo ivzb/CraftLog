@@ -11,6 +11,7 @@ import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.feature.addexpense.navigation.AddExpenseDestination
+import com.ivzb.craftlog.feature.addinvestment.navigation.AddInvestmentDestination
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
 
 const val INVESTMENT = "investment"
@@ -35,8 +36,7 @@ fun NavGraphBuilder.investmentsGraph(
                 textId = R.string.add_investment,
                 icon = Icons.Default.Add,
                 analyticsEvent = AnalyticsEvents.ADD_INVESTMENT_CLICKED_FAB,
-//                destinationRoute = AddInvestmentDestination.route,
-                destinationRoute = AddExpenseDestination.route,
+                destinationRoute = AddInvestmentDestination.route,
             )
         }
 

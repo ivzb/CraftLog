@@ -1,4 +1,4 @@
-package com.ivzb.craftlog.feature.addexpense.model
+package com.ivzb.craftlog.ui.model
 
 import androidx.compose.runtime.saveable.Saver
 import java.text.SimpleDateFormat
