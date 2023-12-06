@@ -79,7 +79,7 @@ fun CraftLogApp() {
             val currentDestination = navBackStackEntry?.destination
 
             val bottomBarVisibility = rememberSaveable { (mutableStateOf(true)) }
-            val fabVisibility = rememberSaveable { (mutableStateOf(true)) }
+            val fabBehaviour = rememberSaveable { (mutableStateOf<FabBehaviour?>(null)) }
 
             val context = LocalContext.current
             val analyticsHelper = AnalyticsHelper.getInstance(context)
@@ -90,7 +90,7 @@ fun CraftLogApp() {
                 contentColor = MaterialTheme.colorScheme.onBackground,
                 floatingActionButton = {
                     AnimatedVisibility(
-                        visible = fabVisibility.value,
+                        visible = fabBehaviour.value?.visibility ?: false,
                         enter = slideInHorizontally(
                             initialOffsetX = { 600 }, // small slide 300px
                             animationSpec = tween(
@@ -106,7 +106,7 @@ fun CraftLogApp() {
                             )
                         ),
                         content = {
-                            CraftLogFAB(navController, analyticsHelper)
+                            CraftLogFAB(navController, analyticsHelper, fabBehaviour.value)
                         }
                     )
                 },
@@ -157,7 +157,7 @@ fun CraftLogApp() {
                 ) {
                     CraftLogNavHost(
                         bottomBarVisibility = bottomBarVisibility,
-                        fabVisibility = fabVisibility,
+                        fabBehaviour = fabBehaviour,
                         navController = navController,
                         modifier = Modifier
                             .padding(padding)
@@ -228,18 +228,24 @@ private fun trackTabClicked(analyticsHelper: AnalyticsHelper, route: String) {
 }
 
 @Composable
-fun CraftLogFAB(navController: NavController, analyticsHelper: AnalyticsHelper) {
+fun CraftLogFAB(navController: NavController, analyticsHelper: AnalyticsHelper, fabBehaviour: FabBehaviour?) {
+    if (fabBehaviour == null) {
+        return
+    }
+
     ExtendedFloatingActionButton(
-        text = { Text(text = stringResource(id = R.string.add_expense)) },
+        text = {
+            Text(text = stringResource(fabBehaviour.textId))
+        },
         icon = {
             Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = stringResource(R.string.add)
+                imageVector = fabBehaviour.icon,
+                contentDescription = stringResource(fabBehaviour.textId)
             )
         },
         onClick = {
-            analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_CLICKED_FAB)
-            navController.navigate(AddExpenseDestination.route)
+            analyticsHelper.logEvent(fabBehaviour.analyticsEvent)
+            navController.navigate(fabBehaviour.destinationRoute)
         },
         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp),
         containerColor = MaterialTheme.colorScheme.tertiary

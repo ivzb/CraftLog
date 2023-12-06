@@ -30,4 +30,6 @@ object AnalyticsEvents {
     const val BUDGET_DETAIL_ON_BACK_CLICKED = "budget_detail_on_back_clicked"
     const val BUDGET_DETAIL_DONE_CLICKED = "budget_detail_done_clicked"
 
+    const val ADD_INVESTMENT_CLICKED_FAB = "add_investment_clicked_fab"
+
 }

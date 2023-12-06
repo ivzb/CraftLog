@@ -42,4 +42,5 @@
     <string name="company">Company</string>
     <string name="investments">Investments</string>
     <string name="no_investments_yet">No investments yet</string>
+    <string name="add_investment">Add Investment</string>
 </resources>

@@ -6,6 +6,7 @@ import androidx.compose.runtime.MutableState
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.feature.expenses.EXPENSE
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
@@ -20,7 +21,7 @@ object ExpenseDetailDestination : CraftLogNavigationDestination {
 fun NavGraphBuilder.expenseDetailGraph(
     navController: NavController,
     bottomBarVisibility: MutableState<Boolean>,
-    fabVisibility: MutableState<Boolean>,
+    fabBehaviour: MutableState<FabBehaviour?>,
     onBackClicked: () -> Unit
 ) {
 
@@ -29,7 +30,7 @@ fun NavGraphBuilder.expenseDetailGraph(
     ) {
         LaunchedEffect(null) {
             bottomBarVisibility.value = false
-            fabVisibility.value = false
+            fabBehaviour.value = null
         }
         val expenseBundle = navController.previousBackStackEntry?.savedStateHandle?.get<Bundle>(
             EXPENSE

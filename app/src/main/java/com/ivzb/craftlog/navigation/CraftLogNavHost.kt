@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.feature.addexpense.navigation.addExpenseGraph
 import com.ivzb.craftlog.feature.budget.BUDGET
 import com.ivzb.craftlog.feature.budget.budgetGraph
@@ -27,7 +28,7 @@ import com.ivzb.craftlog.util.navigateSingleTop
 @Composable
 fun CraftLogNavHost(
     bottomBarVisibility: MutableState<Boolean>,
-    fabVisibility: MutableState<Boolean>,
+    fabBehaviour: MutableState<FabBehaviour?>,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = HomeDestination.route
@@ -40,7 +41,7 @@ fun CraftLogNavHost(
         homeGraph(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility,
-            fabVisibility = fabVisibility,
+            fabBehaviour = fabBehaviour,
             navigateToExpenseDetail = {
                 val bundle = Bundle()
                 bundle.putParcelable(EXPENSE, it)
@@ -53,7 +54,7 @@ fun CraftLogNavHost(
 
         expensesGraph(
             bottomBarVisibility = bottomBarVisibility,
-            fabVisibility = fabVisibility,
+            fabBehaviour = fabBehaviour,
             navigateToExpenseDetail = {
                 val bundle = Bundle()
                 bundle.putParcelable(EXPENSE, it)
@@ -67,14 +68,14 @@ fun CraftLogNavHost(
         expenseDetailGraph(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility,
-            fabVisibility = fabVisibility,
+            fabBehaviour = fabBehaviour,
             onBackClicked = { navController.navigateUp() }
         )
 
         addExpenseGraph(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility,
-            fabVisibility = fabVisibility,
+            fabBehaviour = fabBehaviour,
             onBackClicked = { navController.navigateUp() },
             navigateToExpenseConfirm = {
                 // TODO: Replace with expense id
@@ -90,7 +91,7 @@ fun CraftLogNavHost(
         expenseConfirmGraph(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility,
-            fabVisibility = fabVisibility,
+            fabBehaviour = fabBehaviour,
             onBackClicked = { navController.navigateUp() },
             navigateToHome = {
                 navController.navigateSingleTop(HomeDestination.route)
@@ -99,7 +100,7 @@ fun CraftLogNavHost(
 
         budgetGraph(
             bottomBarVisibility = bottomBarVisibility,
-            fabVisibility = fabVisibility,
+            fabBehaviour = fabBehaviour,
             navigateToBudgetDetail = {
                 val bundle = Bundle()
                 bundle.putParcelable(BUDGET, it)
@@ -113,13 +114,13 @@ fun CraftLogNavHost(
         budgetDetailGraph(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility,
-            fabVisibility = fabVisibility,
+            fabBehaviour = fabBehaviour,
             onBackClicked = { navController.navigateUp() }
         )
 
         investmentsGraph(
             bottomBarVisibility = bottomBarVisibility,
-            fabVisibility = fabVisibility,
+            fabBehaviour = fabBehaviour,
             navigateToInvestmentDetail = {
                 val bundle = Bundle()
                 bundle.putParcelable(INVESTMENT, it)
