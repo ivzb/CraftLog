@@ -14,8 +14,6 @@ import com.ivzb.craftlog.feature.budget.BUDGET
 import com.ivzb.craftlog.feature.budget.budgetGraph
 import com.ivzb.craftlog.feature.budgetdetail.BudgetDetailDestination
 import com.ivzb.craftlog.feature.budgetdetail.budgetDetailGraph
-import com.ivzb.craftlog.feature.expenseconfirm.navigation.ExpenseConfirmDestination
-import com.ivzb.craftlog.feature.expenseconfirm.navigation.expenseConfirmGraph
 import com.ivzb.craftlog.feature.expensedetail.ExpenseDetailDestination
 import com.ivzb.craftlog.feature.expensedetail.expenseDetailGraph
 import com.ivzb.craftlog.feature.expenses.EXPENSE
@@ -78,22 +76,6 @@ fun CraftLogNavHost(
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
             onBackClicked = { navController.navigateUp() },
-            navigateToExpenseConfirm = {
-                // TODO: Replace with expense id
-                val bundle = Bundle()
-                bundle.putParcelable(EXPENSE, it)
-                navController.currentBackStackEntry?.savedStateHandle.apply {
-                    this?.set(EXPENSE, bundle)
-                }
-                navController.navigate(ExpenseConfirmDestination.route)
-            }
-        )
-
-        expenseConfirmGraph(
-            navController = navController,
-            bottomBarVisibility = bottomBarVisibility,
-            fabBehaviour = fabBehaviour,
-            onBackClicked = { navController.navigateUp() },
             navigateToHome = {
                 navController.navigateSingleTop(HomeDestination.route)
             }
@@ -145,6 +127,7 @@ fun CraftLogNavHost(
                 navController.currentBackStackEntry?.savedStateHandle.apply {
                     this?.set(INVESTMENT, bundle)
                 }
+                // todo: create investment confirmation or remove confirmation screen
 //                navController.navigate(InvestmentConfirmDestination.route)
             }
         )

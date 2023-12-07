@@ -32,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,6 +52,7 @@ import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Expense
+import com.ivzb.craftlog.feature.addexpense.viewmodel.AddExpenseState
 import com.ivzb.craftlog.feature.addexpense.viewmodel.AddExpenseViewModel
 import com.ivzb.craftlog.getExpenseCategoryList
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
@@ -64,26 +66,26 @@ import java.util.Locale
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AddExpenseRoute(onBackClicked = {}, navigateToExpenseConfirm = {})
+    AddExpenseRoute(onBackClicked = {}, navigateToHome = {})
 }
 
 @Composable
 fun AddExpenseRoute(
     onBackClicked: () -> Unit,
-    navigateToExpenseConfirm: (Expense) -> Unit,
+    navigateToHome: () -> Unit,
     viewModel: AddExpenseViewModel = hiltViewModel()
 ) {
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    AddExpenseScreen(onBackClicked, viewModel, analyticsHelper, navigateToExpenseConfirm)
+    AddExpenseScreen(onBackClicked, navigateToHome, viewModel, analyticsHelper)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddExpenseScreen(
     onBackClicked: () -> Unit,
+    navigateToHome: () -> Unit,
     viewModel: AddExpenseViewModel,
     analyticsHelper: AnalyticsHelper,
-    navigateToExpenseConfirm: (Expense) -> Unit,
 ) {
     var name by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableStateOf("") }
@@ -91,6 +93,16 @@ fun AddExpenseScreen(
     var date by rememberSaveable { mutableStateOf(Date()) }
 
     val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel
+            .isExpenseSaved
+            .collect {
+                navigateToHome()
+                showSnackbar(context.getString(R.string.your_expense_is_saved))
+                analyticsHelper.logEvent(AnalyticsEvents.EXPENSE_SAVED)
+            }
+    }
 
     Scaffold(
         topBar = {
@@ -144,15 +156,15 @@ fun AddExpenseScreen(
                             )
 
                             val event = String.format(
-                                AnalyticsEvents.ADD_EXPENSE_EXPENSE_VALUE_INVALIDATED,
+                                AnalyticsEvents.ADD_EXPENSE_VALUE_INVALIDATED,
                                 invalidatedValue
                             )
 
                             analyticsHelper.logEvent(event)
                         },
-                        onValidate = {
-                            navigateToExpenseConfirm(it)
-                            analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_NAVIGATING_TO_EXPENSE_CONFIRM)
+                        onValidate = { expense ->
+                            viewModel.addExpense(context, AddExpenseState(expense))
+                            analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_ON_SAVE_CLICKED)
                         },
                         viewModel = viewModel
                     )
@@ -160,7 +172,7 @@ fun AddExpenseScreen(
                 shape = MaterialTheme.shapes.extraLarge
             ) {
                 Text(
-                    text = stringResource(id = R.string.next),
+                    text = stringResource(id = R.string.save),
                     style = MaterialTheme.typography.bodyLarge
                 )
             }

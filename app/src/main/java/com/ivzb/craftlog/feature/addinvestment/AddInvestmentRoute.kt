@@ -138,7 +138,7 @@ fun AddInvestmentScreen(
                             )
 
                             val event = String.format(
-                                AnalyticsEvents.ADD_EXPENSE_EXPENSE_VALUE_INVALIDATED,
+                                AnalyticsEvents.ADD_INVESTMENT_VALUE_INVALIDATED,
                                 invalidatedValue
                             )
 
@@ -146,7 +146,7 @@ fun AddInvestmentScreen(
                         },
                         onValidate = {
                             navigateToInvestmentConfirm(it)
-                            analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_NAVIGATING_TO_EXPENSE_CONFIRM)
+                            analyticsHelper.logEvent(AnalyticsEvents.ADD_INVESTMENT_ON_SAVE_CLICKED)
                         },
                         viewModel = viewModel
                     )
@@ -154,7 +154,7 @@ fun AddInvestmentScreen(
                 shape = MaterialTheme.shapes.extraLarge
             ) {
                 Text(
-                    text = stringResource(id = R.string.next),
+                    text = stringResource(id = R.string.done),
                     style = MaterialTheme.typography.bodyLarge
                 )
             }

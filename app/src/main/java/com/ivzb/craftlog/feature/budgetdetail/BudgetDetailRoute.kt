@@ -100,7 +100,7 @@ fun BudgetDetailScreen(
                     onClick = {
                         // todo: save data
                         analyticsHelper.logEvent(AnalyticsEvents.BUDGET_DETAIL_DONE_CLICKED)
-                        showSnackbar(context.getString(R.string.budget_all_set))
+                        showSnackbar(context.getString(R.string.your_budget_is_saved))
                         onBackClicked()
                     },
                     shape = MaterialTheme.shapes.extraLarge
