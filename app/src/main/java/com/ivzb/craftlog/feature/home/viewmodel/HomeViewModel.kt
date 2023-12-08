@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivzb.craftlog.domain.model.Expense
-import com.ivzb.craftlog.feature.home.usecase.GetExpensesUseCase
-import com.ivzb.craftlog.feature.home.usecase.UpdateExpenseUseCase
+import com.ivzb.craftlog.feature.expenses.usecase.GetExpensesUseCase
+import com.ivzb.craftlog.feature.expenses.usecase.UpdateExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

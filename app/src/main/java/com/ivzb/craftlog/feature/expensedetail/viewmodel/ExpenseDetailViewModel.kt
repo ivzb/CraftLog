@@ -3,7 +3,7 @@ package com.ivzb.craftlog.feature.expensedetail.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivzb.craftlog.domain.model.Expense
-import com.ivzb.craftlog.feature.home.usecase.UpdateExpenseUseCase
+import com.ivzb.craftlog.feature.expenses.usecase.UpdateExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
