@@ -6,7 +6,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
-import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.feature.addexpense.AddExpenseRoute
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
 

@@ -120,15 +120,8 @@ fun CraftLogNavHost(
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
             onBackClicked = { navController.navigateUp() },
-            navigateToInvestmentConfirm = {
-                // TODO: Replace with investment id
-                val bundle = Bundle()
-                bundle.putParcelable(INVESTMENT, it)
-                navController.currentBackStackEntry?.savedStateHandle.apply {
-                    this?.set(INVESTMENT, bundle)
-                }
-                // todo: create investment confirmation or remove confirmation screen
-//                navController.navigate(InvestmentConfirmDestination.route)
+            navigateToHome = {
+                navController.navigateSingleTop(HomeDestination.route)
             }
         )
     }

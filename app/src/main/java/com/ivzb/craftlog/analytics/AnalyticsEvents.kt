@@ -32,4 +32,6 @@ object AnalyticsEvents {
     const val ADD_INVESTMENT_VALUE_INVALIDATED = "add_investment_%s_invalidated"
     const val ADD_INVESTMENT_ON_SAVE_CLICKED = "add_investment_on_save_clicked"
 
+    const val INVESTMENT_SAVED = "investment_saved"
+
 }

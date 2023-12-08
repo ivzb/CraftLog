@@ -25,6 +25,7 @@
     <string name="all_done">All done!</string>
     <string name="your_expense_is_saved">Your expense is saved.</string>
     <string name="your_budget_is_saved">Your budget is saved.</string>
+    <string name="your_investment_is_saved">Your investment is saved.</string>
     <string name="done">Done</string>
     <string name="budget">Budget</string>
     <string name="income">Income</string>

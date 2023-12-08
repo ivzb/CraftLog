@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +47,8 @@ import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Investment
+import com.ivzb.craftlog.feature.addexpense.viewmodel.AddExpenseState
+import com.ivzb.craftlog.feature.addinvestment.viewmodel.AddInvestmentState
 import com.ivzb.craftlog.feature.addinvestment.viewmodel.AddInvestmentViewModel
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
 import java.math.BigDecimal
@@ -58,26 +61,26 @@ import java.util.Locale
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AddInvestmentRoute(onBackClicked = {}, navigateToInvestmentConfirm = {})
+    AddInvestmentRoute(onBackClicked = {}, navigateToHome = {})
 }
 
 @Composable
 fun AddInvestmentRoute(
     onBackClicked: () -> Unit,
-    navigateToInvestmentConfirm: (Investment) -> Unit,
+    navigateToHome: () -> Unit,
     viewModel: AddInvestmentViewModel = hiltViewModel()
 ) {
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    AddInvestmentScreen(onBackClicked, viewModel, analyticsHelper, navigateToInvestmentConfirm)
+    AddInvestmentScreen(onBackClicked, navigateToHome, viewModel, analyticsHelper)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddInvestmentScreen(
     onBackClicked: () -> Unit,
+    navigateToHome: () -> Unit,
     viewModel: AddInvestmentViewModel,
     analyticsHelper: AnalyticsHelper,
-    navigateToInvestmentConfirm: (Investment) -> Unit,
 ) {
     var name by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableStateOf("") }
@@ -85,6 +88,16 @@ fun AddInvestmentScreen(
     var date by rememberSaveable { mutableStateOf(Date()) }
 
     val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel
+            .isInvestmentSaved
+            .collect {
+                navigateToHome()
+                showSnackbar(context.getString(R.string.your_investment_is_saved))
+                analyticsHelper.logEvent(AnalyticsEvents.INVESTMENT_SAVED)
+            }
+    }
 
     Scaffold(
         topBar = {
@@ -144,8 +157,8 @@ fun AddInvestmentScreen(
 
                             analyticsHelper.logEvent(event)
                         },
-                        onValidate = {
-                            navigateToInvestmentConfirm(it)
+                        onValidate = { investment ->
+                            viewModel.addInvestment(context, AddInvestmentState(investment))
                             analyticsHelper.logEvent(AnalyticsEvents.ADD_INVESTMENT_ON_SAVE_CLICKED)
                         },
                         viewModel = viewModel
