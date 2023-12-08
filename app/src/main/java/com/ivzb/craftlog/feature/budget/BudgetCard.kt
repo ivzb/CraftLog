@@ -111,25 +111,12 @@ fun BudgetCard(
                 Spacer(modifier = Modifier.padding(8.dp))
 
                 Text(
-                    text = stringResource(id = R.string.stocks),
+                    text = stringResource(id = R.string.investments),
                     style = MaterialTheme.typography.bodyLarge
                 )
 
                 Text(
-                    text = budget.stocks.toPlainString(),
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleLarge
-                )
-
-                Spacer(modifier = Modifier.padding(8.dp))
-
-                Text(
-                    text = stringResource(id = R.string.company),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-
-                Text(
-                    text = budget.company.toPlainString(),
+                    text = budget.investments.toPlainString(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -197,19 +184,6 @@ fun BudgetCard(
 
                 Text(
                     text = budget.emergencyFund.toPlainString(),
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleLarge
-                )
-
-                Spacer(modifier = Modifier.padding(8.dp))
-
-                Text(
-                    text = stringResource(id = R.string.crypto),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-
-                Text(
-                    text = budget.crypto.toPlainString(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )

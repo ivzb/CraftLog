@@ -4,7 +4,6 @@ import com.ivzb.craftlog.domain.model.Budget
 import com.ivzb.craftlog.domain.repository.ExpenseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.math.BigDecimal
 import javax.inject.Inject
 
 class GetBudgetUseCase @Inject constructor(

@@ -1,9 +1,5 @@
 package com.ivzb.craftlog.feature.addinvestment
 
-import android.app.DatePickerDialog
-import android.widget.DatePicker
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +12,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -31,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -47,16 +41,15 @@ import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Investment
-import com.ivzb.craftlog.feature.addexpense.viewmodel.AddExpenseState
 import com.ivzb.craftlog.feature.addinvestment.viewmodel.AddInvestmentState
 import com.ivzb.craftlog.feature.addinvestment.viewmodel.AddInvestmentViewModel
+import com.ivzb.craftlog.ui.components.CategoryDropdownMenu
+import com.ivzb.craftlog.ui.components.DateTextField
+import com.ivzb.craftlog.util.InvestmentCategory
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
+import com.ivzb.craftlog.util.getInvestmentCategoryList
 import java.math.BigDecimal
-import java.text.DateFormatSymbols
-import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 @Preview(showBackground = true)
 @Composable
@@ -85,6 +78,7 @@ fun AddInvestmentScreen(
     var name by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableStateOf("") }
     var cost by rememberSaveable { mutableStateOf("") }
+    var category by rememberSaveable { mutableStateOf(InvestmentCategory.values().first().name) }
     var date by rememberSaveable { mutableStateOf(Date()) }
 
     val context = LocalContext.current
@@ -139,6 +133,7 @@ fun AddInvestmentScreen(
                         name = name,
                         amount = amount.toBigDecimalOrNull(),
                         cost = cost.toBigDecimalOrNull(),
+                        category = category,
                         date = date,
                         onInvalidate = {
                             val invalidatedValue = context.getString(it)
@@ -248,72 +243,20 @@ fun AddInvestmentScreen(
 
             Spacer(modifier = Modifier.padding(4.dp))
 
+            CategoryDropdownMenu(getInvestmentCategoryList().map { it.name }) { category = it }
+
+            Spacer(modifier = Modifier.padding(4.dp))
+
             DateTextField { date = it }
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DateTextField(onDateSelected: (Date) -> Unit) {
-    Text(
-        text = stringResource(id = R.string.date),
-        style = MaterialTheme.typography.bodyLarge
-    )
-
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed: Boolean by interactionSource.collectIsPressedAsState()
-
-    val currentDate = Date().toFormattedString()
-    var selectedDate by rememberSaveable { mutableStateOf(currentDate) }
-
-    val context = LocalContext.current
-
-    val calendar = Calendar.getInstance()
-    val year: Int = calendar.get(Calendar.YEAR)
-    val month: Int = calendar.get(Calendar.MONTH)
-    val day: Int = calendar.get(Calendar.DAY_OF_MONTH)
-    calendar.time = Date()
-
-    val datePickerDialog =
-        DatePickerDialog(context, { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            val newDate = Calendar.getInstance()
-            newDate.set(year, month, dayOfMonth)
-            selectedDate = "${month.toMonthName()} $dayOfMonth, $year"
-            onDateSelected(newDate.timeInMillis.toDate())
-        }, year, month, day)
-
-    TextField(
-        modifier = Modifier.fillMaxWidth(),
-        readOnly = true,
-        value = selectedDate,
-        onValueChange = {},
-        trailingIcon = { Icons.Default.DateRange },
-        interactionSource = interactionSource
-    )
-
-    if (isPressed) {
-        datePickerDialog.show()
-    }
-}
-
-fun Long.toDate(): Date {
-    return Date(this)
-}
-
-fun Int.toMonthName(): String {
-    return DateFormatSymbols().months[this]
-}
-
-fun Date.toFormattedString(): String {
-    val simpleDateFormat = SimpleDateFormat("dd LLLL yyyy", Locale.getDefault())
-    return simpleDateFormat.format(this)
 }
 
 private fun validateInvestment(
     name: String,
     amount: BigDecimal?,
     cost: BigDecimal?,
+    category: String,
     date: Date,
     onInvalidate: (Int) -> Unit,
     onValidate: (Investment) -> Unit,
@@ -334,6 +277,11 @@ private fun validateInvestment(
         return
     }
 
+    if (category.isEmpty()) {
+        onInvalidate(R.string.category)
+        return
+    }
+
     if (date.time < 1) {
         onInvalidate(R.string.date)
         return
@@ -343,6 +291,7 @@ private fun validateInvestment(
         name,
         amount,
         cost,
+        category,
         date
     )
 

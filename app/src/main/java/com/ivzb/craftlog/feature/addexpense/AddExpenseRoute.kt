@@ -1,9 +1,5 @@
 package com.ivzb.craftlog.feature.addexpense
 
-import android.app.DatePickerDialog
-import android.widget.DatePicker
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,18 +7,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -35,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -47,21 +37,19 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ivzb.craftlog.ExpenseCategory
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.feature.addexpense.viewmodel.AddExpenseState
 import com.ivzb.craftlog.feature.addexpense.viewmodel.AddExpenseViewModel
-import com.ivzb.craftlog.getExpenseCategoryList
+import com.ivzb.craftlog.ui.components.CategoryDropdownMenu
+import com.ivzb.craftlog.ui.components.DateTextField
+import com.ivzb.craftlog.util.ExpenseCategory
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
+import com.ivzb.craftlog.util.getExpenseCategoryList
 import java.math.BigDecimal
-import java.text.DateFormatSymbols
-import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 @Preview(showBackground = true)
 @Composable
@@ -89,7 +77,7 @@ fun AddExpenseScreen(
 ) {
     var name by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableStateOf("") }
-    var category by rememberSaveable { mutableStateOf(ExpenseCategory.None.name) }
+    var category by rememberSaveable { mutableStateOf(ExpenseCategory.values().first().name) }
     var date by rememberSaveable { mutableStateOf(Date()) }
 
     val context = LocalContext.current
@@ -233,7 +221,7 @@ fun AddExpenseScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
 
-                    CategoryDropdownMenu { category = it }
+                    CategoryDropdownMenu(getExpenseCategoryList().map { it.name }) { category = it }
                 }
             }
 
@@ -242,110 +230,6 @@ fun AddExpenseScreen(
             DateTextField { date = it }
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CategoryDropdownMenu(onCategorySelected: (String) -> Unit) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text(
-            text = stringResource(id = R.string.category),
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        val options = getExpenseCategoryList().map { it.name }
-        var expanded by remember { mutableStateOf(false) }
-        var selectedOptionText by remember { mutableStateOf(options[0]) }
-
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded },
-        ) {
-            TextField(
-                modifier = Modifier.menuAnchor(),
-                readOnly = true,
-                value = selectedOptionText,
-                onValueChange = {},
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                colors = ExposedDropdownMenuDefaults.textFieldColors(),
-            )
-
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-            ) {
-                options.forEach { selectionOption ->
-                    DropdownMenuItem(
-                        text = { Text(selectionOption) },
-                        onClick = {
-                            selectedOptionText = selectionOption
-                            onCategorySelected(selectionOption)
-                            expanded = false
-                        }
-                    )
-                }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DateTextField(onDateSelected: (Date) -> Unit) {
-    Text(
-        text = stringResource(id = R.string.date),
-        style = MaterialTheme.typography.bodyLarge
-    )
-
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed: Boolean by interactionSource.collectIsPressedAsState()
-
-    val currentDate = Date().toFormattedString()
-    var selectedDate by rememberSaveable { mutableStateOf(currentDate) }
-
-    val context = LocalContext.current
-
-    val calendar = Calendar.getInstance()
-    val year: Int = calendar.get(Calendar.YEAR)
-    val month: Int = calendar.get(Calendar.MONTH)
-    val day: Int = calendar.get(Calendar.DAY_OF_MONTH)
-    calendar.time = Date()
-
-    val datePickerDialog =
-        DatePickerDialog(context, { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            val newDate = Calendar.getInstance()
-            newDate.set(year, month, dayOfMonth)
-            selectedDate = "${month.toMonthName()} $dayOfMonth, $year"
-            onDateSelected(newDate.timeInMillis.toDate())
-        }, year, month, day)
-
-    TextField(
-        modifier = Modifier.fillMaxWidth(),
-        readOnly = true,
-        value = selectedDate,
-        onValueChange = {},
-        trailingIcon = { Icons.Default.DateRange },
-        interactionSource = interactionSource
-    )
-
-    if (isPressed) {
-        datePickerDialog.show()
-    }
-}
-
-fun Long.toDate(): Date {
-    return Date(this)
-}
-
-fun Int.toMonthName(): String {
-    return DateFormatSymbols().months[this]
-}
-
-fun Date.toFormattedString(): String {
-    val simpleDateFormat = SimpleDateFormat("dd LLLL yyyy", Locale.getDefault())
-    return simpleDateFormat.format(this)
 }
 
 private fun validateExpense(

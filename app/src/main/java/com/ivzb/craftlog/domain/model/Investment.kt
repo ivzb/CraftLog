@@ -11,5 +11,6 @@ data class Investment(
     val name: String,
     val amount: BigDecimal,
     val cost: BigDecimal,
+    val category: String,
     val date: Date
 ) : Parcelable

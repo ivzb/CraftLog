@@ -27,10 +27,6 @@ data class Budget(
 
     val mortgage: BigDecimal = BigDecimal.ZERO
 
-    val crypto: BigDecimal = BigDecimal.ZERO
-
-    val stocks: BigDecimal = BigDecimal.ZERO
-
-    val company: BigDecimal = BigDecimal.ZERO
+    val investments: BigDecimal = BigDecimal.ZERO
 
 }

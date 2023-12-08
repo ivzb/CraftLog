@@ -11,5 +11,6 @@ data class InvestmentEntity(
     val name: String,
     val amount: BigDecimal,
     val cost: BigDecimal,
+    val category: String,
     val date: Date,
 )

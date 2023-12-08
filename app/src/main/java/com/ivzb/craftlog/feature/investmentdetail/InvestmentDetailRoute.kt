@@ -137,16 +137,15 @@ fun InvestmentDetailScreen(
             }
 
             Text(
-                text = investment.amount.toPlainString(),
+                text = "${investment.amount.toPlainString()} - ${investment.cost.toPlainString()}",
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.primary
             )
 
             Text(
-                text = investment.cost.toPlainString(),
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.headlineLarge,
+                text = investment.category,
+                style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.primary
             )
 

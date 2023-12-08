@@ -1,4 +1,4 @@
-package com.ivzb.craftlog
+package com.ivzb.craftlog.util
 
 enum class ExpenseCategory {
     None,
@@ -9,6 +9,7 @@ enum class ExpenseCategory {
     Apartment,
     House,
     Entertainment,
+    Other,
 }
 
 fun getExpenseCategoryList(): List<ExpenseCategory> {

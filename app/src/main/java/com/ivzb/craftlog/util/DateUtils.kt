@@ -1,8 +1,11 @@
 package com.ivzb.craftlog.util
 
+import java.text.DateFormatSymbols
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
+import java.util.Locale
 
 fun getDateRange(year: Int, month: Int): Pair<Date, Date> {
     val calendar = getCalendarFor(year, month)
@@ -14,6 +17,19 @@ fun getDateRange(year: Int, month: Int): Pair<Date, Date> {
     val end = calendar.time
 
     return start to end
+}
+
+fun Long.toDate(): Date {
+    return Date(this)
+}
+
+fun Int.toMonthName(): String {
+    return DateFormatSymbols().months[this]
+}
+
+fun Date.toFormattedString(): String {
+    val simpleDateFormat = SimpleDateFormat("dd LLLL yyyy", Locale.getDefault())
+    return simpleDateFormat.format(this)
 }
 
 private fun getCalendarFor(year: Int, month: Int): Calendar {

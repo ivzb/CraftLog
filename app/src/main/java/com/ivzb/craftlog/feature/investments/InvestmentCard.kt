@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.extenstion.toFormattedDateString
+import com.ivzb.craftlog.util.InvestmentCategory
 import java.util.Date
 
 @Composable
@@ -82,6 +83,7 @@ private fun InvestmentCardPreview() {
             name = "dinner",
             amount = 12.5.toBigDecimal(),
             cost = 50.toBigDecimal(),
+            category = InvestmentCategory.Stocks.name,
             date = Date(),
         )
     ) { }
