@@ -11,12 +11,15 @@ data class Budget(
     val income: BigDecimal,
     val spent: BigDecimal,
     val saved: BigDecimal,
+    val invested: BigDecimal,
 ) : Parcelable {
 
     val balance: BigDecimal by lazy {
         income - spent - saved
     }
-    
+
+    // todo: provide these as parameter which will be calculated by the use case
+
     val bankStart: BigDecimal = BigDecimal.ZERO
 
     val bankEnd: BigDecimal = BigDecimal.ZERO
@@ -26,7 +29,5 @@ data class Budget(
     val costOfLiving: BigDecimal = BigDecimal.ZERO
 
     val mortgage: BigDecimal = BigDecimal.ZERO
-
-    val investments: BigDecimal = BigDecimal.ZERO
 
 }

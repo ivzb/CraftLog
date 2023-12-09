@@ -42,6 +42,7 @@
     <string name="stocks">Stocks</string>
     <string name="company">Company</string>
     <string name="investments">Investments</string>
+    <string name="invested">Invested</string>
     <string name="no_investments_yet">No investments yet</string>
     <string name="add_investment">Add Investment</string>
     <string name="investment_placeholder">e.g., Stocks, Gold, Crypto</string>

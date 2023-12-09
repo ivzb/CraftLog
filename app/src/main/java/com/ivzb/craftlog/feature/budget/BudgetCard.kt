@@ -111,12 +111,12 @@ fun BudgetCard(
                 Spacer(modifier = Modifier.padding(8.dp))
 
                 Text(
-                    text = stringResource(id = R.string.investments),
+                    text = stringResource(id = R.string.invested),
                     style = MaterialTheme.typography.bodyLarge
                 )
 
                 Text(
-                    text = budget.investments.toPlainString(),
+                    text = budget.invested.toPlainString(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -233,7 +233,8 @@ private fun BudgetCardPreview() {
             month = 11,
             income = BigDecimal.ZERO,
             spent = BigDecimal.ZERO,
-            saved = BigDecimal.ZERO
+            saved = BigDecimal.ZERO,
+            invested = BigDecimal.ZERO
         )
     ) { }
 }
