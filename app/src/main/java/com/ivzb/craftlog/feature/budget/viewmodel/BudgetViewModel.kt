@@ -18,10 +18,10 @@ class BudgetViewModel @Inject constructor(
     private val getBudgetUseCase: GetBudgetUseCase
 ) : ViewModel() {
 
-    var state by mutableStateOf(BudgetState())
+    var state by mutableStateOf(BudgetOverviewState())
         private set
 
-    init {
+    fun loadBudget() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -29,11 +29,11 @@ class BudgetViewModel @Inject constructor(
         loadBudget(year, month)
     }
 
-    fun loadBudget(year: Int, month: Int) {
+    private fun loadBudget(year: Int, month: Int) {
         viewModelScope.launch {
-            val budget = getBudgetUseCase.getBudget(year, month).onEach { budget ->
+            val budgetOverview = getBudgetUseCase.getBudgetOverview(year, month).onEach { budgetOverview ->
                 state = state.copy(
-                    budget = budget
+                    budgetOverview = budgetOverview
                 )
             }.launchIn(viewModelScope)
         }

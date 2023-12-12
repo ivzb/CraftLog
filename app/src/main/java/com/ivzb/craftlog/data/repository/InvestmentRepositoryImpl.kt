@@ -1,6 +1,6 @@
 package com.ivzb.craftlog.data.repository
 
-import com.ivzb.craftlog.data.InvestmentDao
+import com.ivzb.craftlog.data.dao.InvestmentDao
 import com.ivzb.craftlog.data.mapper.toInvestment
 import com.ivzb.craftlog.data.mapper.toInvestmentEntity
 import com.ivzb.craftlog.domain.model.Investment

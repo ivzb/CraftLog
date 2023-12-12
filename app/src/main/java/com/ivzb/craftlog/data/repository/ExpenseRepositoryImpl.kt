@@ -1,6 +1,6 @@
 package com.ivzb.craftlog.data.repository
 
-import com.ivzb.craftlog.data.ExpenseDao
+import com.ivzb.craftlog.data.dao.ExpenseDao
 import com.ivzb.craftlog.data.mapper.toExpense
 import com.ivzb.craftlog.data.mapper.toExpenseEntity
 import com.ivzb.craftlog.domain.model.Expense

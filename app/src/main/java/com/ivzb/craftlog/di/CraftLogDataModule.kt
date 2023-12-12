@@ -3,9 +3,11 @@ package com.ivzb.craftlog.di
 import android.app.Application
 import androidx.room.Room
 import com.ivzb.craftlog.data.CraftLogDatabase
+import com.ivzb.craftlog.data.repository.BudgetRepositoryImpl
 import com.ivzb.craftlog.domain.repository.ExpenseRepository
 import com.ivzb.craftlog.data.repository.ExpenseRepositoryImpl
 import com.ivzb.craftlog.data.repository.InvestmentRepositoryImpl
+import com.ivzb.craftlog.domain.repository.BudgetRepository
 import com.ivzb.craftlog.domain.repository.InvestmentRepository
 import dagger.Module
 import dagger.Provides
@@ -47,7 +49,7 @@ object CraftLogDataModule {
         db: CraftLogDatabase
     ): ExpenseRepository {
         return ExpenseRepositoryImpl(
-            dao = db.expensesDao
+            dao = db.expenseDao
         )
     }
 
@@ -57,7 +59,17 @@ object CraftLogDataModule {
         db: CraftLogDatabase
     ): InvestmentRepository {
         return InvestmentRepositoryImpl(
-            dao = db.investmentsDao
+            dao = db.investmentDao
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideBudgetRepository(
+        db: CraftLogDatabase
+    ): BudgetRepository {
+        return BudgetRepositoryImpl(
+            dao = db.budgetDao
         )
     }
 }

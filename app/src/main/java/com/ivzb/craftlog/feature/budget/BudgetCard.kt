@@ -27,12 +27,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Budget
+import com.ivzb.craftlog.domain.model.BudgetOverview
 import java.math.BigDecimal
 import java.text.DateFormatSymbols
 
 @Composable
 fun BudgetCard(
-    budget: Budget,
+    budgetOverview: BudgetOverview,
     navigateToBudgetDetail: (Budget) -> Unit
 ) {
 
@@ -41,7 +42,7 @@ fun BudgetCard(
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable {
-                navigateToBudgetDetail(budget)
+                navigateToBudgetDetail(budgetOverview.budget)
             },
         shape = RoundedCornerShape(30.dp),
         colors = CardDefaults.cardColors(
@@ -65,7 +66,7 @@ fun BudgetCard(
 
                 Text(
                     style = MaterialTheme.typography.titleMedium,
-                    text = "${budget.month.toFormattedMonth()}, ${budget.year}",
+                    text = "${budgetOverview.budget.month.toFormattedMonth()}, ${budgetOverview.budget.year}",
                     color = MaterialTheme.colorScheme.primary
                 )
 
@@ -77,7 +78,7 @@ fun BudgetCard(
                 )
 
                 Text(
-                    text = budget.income.toPlainString(),
+                    text = budgetOverview.budget.income?.toPlainString() ?: "-",
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -90,7 +91,7 @@ fun BudgetCard(
                 )
 
                 Text(
-                    text = budget.saved.toPlainString(),
+                    text = budgetOverview.saved.toPlainString(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -103,7 +104,7 @@ fun BudgetCard(
                 )
 
                 Text(
-                    text = budget.costOfLiving.toPlainString(),
+                    text = budgetOverview.costOfLiving.toPlainString(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -116,7 +117,7 @@ fun BudgetCard(
                 )
 
                 Text(
-                    text = budget.invested.toPlainString(),
+                    text = budgetOverview.invested.toPlainString(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -129,7 +130,7 @@ fun BudgetCard(
                 )
 
                 Text(
-                    text = budget.bankStart.toPlainString(),
+                    text = budgetOverview.budget.bankStart?.toPlainString() ?: "-",
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -157,7 +158,7 @@ fun BudgetCard(
                 )
 
                 Text(
-                    text = budget.spent.toPlainString(),
+                    text = budgetOverview.spent.toPlainString(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -170,7 +171,7 @@ fun BudgetCard(
                 )
 
                 Text(
-                    text = budget.balance.toPlainString(),
+                    text = budgetOverview.balance.toPlainString(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -183,7 +184,7 @@ fun BudgetCard(
                 )
 
                 Text(
-                    text = budget.emergencyFund.toPlainString(),
+                    text = budgetOverview.emergencyFund.toPlainString(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -196,7 +197,7 @@ fun BudgetCard(
                 )
 
                 Text(
-                    text = budget.mortgage.toPlainString(),
+                    text = budgetOverview.mortgage.toPlainString(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -209,7 +210,7 @@ fun BudgetCard(
                 )
 
                 Text(
-                    text = budget.bankEnd.toPlainString(),
+                    text = budgetOverview.budget.bankEnd?.toPlainString() ?: "-",
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -228,13 +229,10 @@ fun BudgetCard(
 @Composable
 private fun BudgetCardPreview() {
     BudgetCard(
-        Budget(
-            year = 2023,
-            month = 11,
-            income = BigDecimal.ZERO,
-            spent = BigDecimal.ZERO,
-            saved = BigDecimal.ZERO,
-            invested = BigDecimal.ZERO
+        BudgetOverview(
+            Budget(0, 2023, 12, 0.toBigDecimal(), 0.toBigDecimal(), 0.toBigDecimal()),
+            listOf(),
+            listOf()
         )
     ) { }
 }

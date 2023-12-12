@@ -25,7 +25,9 @@ object AnalyticsEvents {
     const val HOME_NEW_DATE_SELECTED = "home_new_date_clicked"
 
     const val BUDGET_DETAIL_ON_BACK_CLICKED = "budget_detail_on_back_clicked"
+    const val BUDGET_DETAIL_VALUE_INVALIDATED = "budget_detail_%s_invalidated"
     const val BUDGET_DETAIL_DONE_CLICKED = "budget_detail_done_clicked"
+    const val BUDGET_DETAIL_SAVED = "budget_detail_saved"
 
     const val ADD_INVESTMENT_CLICKED_FAB = "add_investment_clicked_fab"
 

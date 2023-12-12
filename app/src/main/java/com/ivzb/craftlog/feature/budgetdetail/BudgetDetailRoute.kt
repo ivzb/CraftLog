@@ -2,7 +2,6 @@ package com.ivzb.craftlog.feature.budgetdetail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -40,8 +40,10 @@ import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Budget
+import com.ivzb.craftlog.feature.budgetdetail.viewmodel.BudgetDetailState
 import com.ivzb.craftlog.feature.budgetdetail.viewmodel.BudgetDetailViewModel
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
+import java.math.BigDecimal
 
 @Composable
 fun BudgetDetailRoute(
@@ -61,12 +63,23 @@ fun BudgetDetailScreen(
     viewModel: BudgetDetailViewModel,
     onBackClicked: () -> Unit
 ) {
-    var income by rememberSaveable { mutableStateOf("") }
-    var bankStart by rememberSaveable { mutableStateOf("") }
-    var bankEnd by rememberSaveable { mutableStateOf("") }
+
+    var income by rememberSaveable { mutableStateOf(budget.income?.toPlainString() ?: "") }
+    var bankStart by rememberSaveable { mutableStateOf(budget.bankStart?.toPlainString() ?: "") }
+    var bankEnd by rememberSaveable { mutableStateOf(budget.bankEnd?.toPlainString() ?: "") }
 
     val context = LocalContext.current
     val analyticsHelper = AnalyticsHelper.getInstance(context)
+
+    LaunchedEffect(Unit) {
+        viewModel
+            .isBudgetSaved
+            .collect {
+                onBackClicked()
+                showSnackbar(context.getString(R.string.your_budget_is_saved))
+                analyticsHelper.logEvent(AnalyticsEvents.BUDGET_DETAIL_SAVED)
+            }
+    }
 
     Scaffold(
         topBar = {
@@ -98,10 +111,36 @@ fun BudgetDetailScreen(
                         .padding(vertical = 16.dp)
                         .height(56.dp),
                     onClick = {
-                        // todo: save data
-                        analyticsHelper.logEvent(AnalyticsEvents.BUDGET_DETAIL_DONE_CLICKED)
-                        showSnackbar(context.getString(R.string.your_budget_is_saved))
-                        onBackClicked()
+                        validateBudget(
+                            budget.id,
+                            budget.year,
+                            budget.month,
+                            income.toBigDecimalOrNull(),
+                            bankStart.toBigDecimalOrNull(),
+                            bankEnd.toBigDecimalOrNull(),
+                            onInvalidate = {
+                                val invalidatedValue = context.getString(it)
+
+                                showSnackbar(
+                                    context.getString(
+                                        R.string.value_is_empty,
+                                        invalidatedValue
+                                    )
+                                )
+
+                                val event = String.format(
+                                    AnalyticsEvents.BUDGET_DETAIL_VALUE_INVALIDATED,
+                                    invalidatedValue
+                                )
+
+                                analyticsHelper.logEvent(event)
+                            },
+                            onValidate = {
+                                viewModel.addBudget(BudgetDetailState(it))
+                                analyticsHelper.logEvent(AnalyticsEvents.BUDGET_DETAIL_DONE_CLICKED)
+                            },
+                            viewModel
+                        )
                     },
                     shape = MaterialTheme.shapes.extraLarge
                 ) {
@@ -181,4 +220,43 @@ fun BudgetDetailScreen(
 
         }
     }
+}
+
+private fun validateBudget(
+    id: Long?,
+    year: Int,
+    month: Int,
+    income: BigDecimal?,
+    bankStart: BigDecimal?,
+    bankEnd: BigDecimal?,
+    onInvalidate: (Int) -> Unit,
+    onValidate: (Budget) -> Unit,
+    viewModel: BudgetDetailViewModel
+) {
+
+    if (income == null) {
+        onInvalidate(R.string.income)
+        return
+    }
+
+    if (bankStart == null) {
+        onInvalidate(R.string.bank_start)
+        return
+    }
+
+    if (bankEnd == null) {
+        onInvalidate(R.string.bank_end)
+        return
+    }
+
+    val budget = viewModel.createBudget(
+        id,
+        year,
+        month,
+        income,
+        bankStart,
+        bankEnd
+    )
+
+    onValidate(budget)
 }
