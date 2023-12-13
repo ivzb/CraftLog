@@ -10,6 +10,7 @@ data class Budget(
     val year: Int,
     val month: Int,
     val income: BigDecimal?,
+    val emergencyFund: BigDecimal?,
     val bankStart: BigDecimal?,
     val bankEnd: BigDecimal?,
 ) : Parcelable

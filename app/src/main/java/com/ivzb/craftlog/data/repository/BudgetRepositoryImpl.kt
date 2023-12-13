@@ -32,6 +32,7 @@ class BudgetRepositoryImpl(
                 year = year,
                 month = month,
                 income = null,
+                emergencyFund = null,
                 bankStart = null,
                 bankEnd = null
             )

@@ -11,29 +11,31 @@ data class BudgetOverview(
     val investments: List<Investment>,
 ) : Parcelable {
 
-    val balance: BigDecimal by lazy {
-        income - spent - saved
-    }
+    val balance: BigDecimal
+        get() = income - spent - saved
 
-    val income: BigDecimal by lazy {
-        budget.income ?: 0.toBigDecimal()
-    }
+    val income: BigDecimal
+        get() = budget.income ?: 0.toBigDecimal()
 
-    val spent: BigDecimal by lazy {
-        expenses.sumOf { it.amount }
-    }
+    val spent: BigDecimal
+        get() = expenses.sumOf { it.amount }
 
-    val invested = investments.sumOf { it.amount }
+    val invested: BigDecimal
+        get() = investments.sumOf { it.amount }
 
     // todo
-    val saved = 567.34.toBigDecimal()
+    val saved: BigDecimal
+        get() = 567.34.toBigDecimal()
+
+    val emergencyFund: BigDecimal
+        get() = budget.emergencyFund ?: 0.toBigDecimal()
 
     // todo: provide these as parameter which will be calculated by the use case
 
-    val emergencyFund: BigDecimal = BigDecimal.ZERO
+    val costOfLiving: BigDecimal
+        get() = BigDecimal.ZERO
 
-    val costOfLiving: BigDecimal = BigDecimal.ZERO
-
-    val mortgage: BigDecimal = BigDecimal.ZERO
+    val mortgage: BigDecimal
+        get() = BigDecimal.ZERO
 
 }

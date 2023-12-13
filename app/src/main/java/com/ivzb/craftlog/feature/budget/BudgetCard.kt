@@ -184,7 +184,7 @@ fun BudgetCard(
                 )
 
                 Text(
-                    text = budgetOverview.emergencyFund.toPlainString(),
+                    text = budgetOverview.budget.emergencyFund?.toPlainString() ?: "-",
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -230,7 +230,7 @@ fun BudgetCard(
 private fun BudgetCardPreview() {
     BudgetCard(
         BudgetOverview(
-            Budget(0, 2023, 12, 0.toBigDecimal(), 0.toBigDecimal(), 0.toBigDecimal()),
+            Budget(0, 2023, 12, null, null, null, null),
             listOf(),
             listOf()
         )

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "358751e8358a53d1ddcbdf0ae3ec881e",
+    "identityHash": "ef0670529d5e007d166f888d70c9892a",
     "entities": [
       {
         "tableName": "ExpenseEntity",
@@ -100,7 +100,7 @@
       },
       {
         "tableName": "BudgetEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `year` INTEGER NOT NULL, `month` INTEGER NOT NULL, `income` TEXT NOT NULL, `bankStart` TEXT NOT NULL, `bankEnd` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `year` INTEGER NOT NULL, `month` INTEGER NOT NULL, `income` TEXT NOT NULL, `emergencyFund` TEXT NOT NULL, `bankStart` TEXT NOT NULL, `bankEnd` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -123,6 +123,12 @@
           {
             "fieldPath": "income",
             "columnName": "income",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "emergencyFund",
+            "columnName": "emergencyFund",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -152,7 +158,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '358751e8358a53d1ddcbdf0ae3ec881e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ef0670529d5e007d166f888d70c9892a')"
     ]
   }
 }
