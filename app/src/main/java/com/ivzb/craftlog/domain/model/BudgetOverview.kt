@@ -23,19 +23,16 @@ data class BudgetOverview(
     val invested: BigDecimal
         get() = investments.sumOf { it.amount }
 
-    // todo
-    val saved: BigDecimal
-        get() = 567.34.toBigDecimal()
-
     val emergencyFund: BigDecimal
         get() = budget.emergencyFund ?: 0.toBigDecimal()
 
-    // todo: provide these as parameter which will be calculated by the use case
-
-    val costOfLiving: BigDecimal
-        get() = BigDecimal.ZERO
+    val saved: BigDecimal
+        get() = emergencyFund + invested
 
     val mortgage: BigDecimal
-        get() = BigDecimal.ZERO
+        get() = budget.mortgage ?: 0.toBigDecimal()
+
+    val costOfLiving: BigDecimal
+        get() = spent + mortgage
 
 }

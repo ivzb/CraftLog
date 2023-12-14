@@ -10,6 +10,7 @@ fun BudgetEntity.toBudget(): Budget {
         month = month,
         income = income,
         emergencyFund = emergencyFund,
+        mortgage = mortgage,
         bankStart = bankStart,
         bankEnd = bankEnd,
     )
@@ -22,6 +23,7 @@ fun Budget.toBudgetEntity(): BudgetEntity {
         month = month,
         income = income ?: 0.toBigDecimal(),
         emergencyFund = emergencyFund ?: 0.toBigDecimal(),
+        mortgage = mortgage ?: 0.toBigDecimal(),
         bankStart = bankStart ?: 0.toBigDecimal(),
         bankEnd = bankEnd ?: 0.toBigDecimal(),
     )

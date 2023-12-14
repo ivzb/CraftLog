@@ -176,6 +176,8 @@ fun BudgetCard(
                     style = MaterialTheme.typography.titleLarge
                 )
 
+                // todo: make them in 2 columns
+
                 Spacer(modifier = Modifier.padding(8.dp))
 
                 Text(
@@ -230,7 +232,7 @@ fun BudgetCard(
 private fun BudgetCardPreview() {
     BudgetCard(
         BudgetOverview(
-            Budget(0, 2023, 12, null, null, null, null),
+            Budget(0, 2023, 12, null, null, null, null, null),
             listOf(),
             listOf()
         )
