@@ -65,8 +65,6 @@ fun BudgetDetailScreen(
 ) {
 
     var income by rememberSaveable { mutableStateOf(budget.income?.toPlainString() ?: "") }
-    var emergencyFund by rememberSaveable { mutableStateOf(budget.emergencyFund?.toPlainString() ?: "") }
-    var mortgage by rememberSaveable { mutableStateOf(budget.mortgage?.toPlainString() ?: "") }
     var bankStart by rememberSaveable { mutableStateOf(budget.bankStart?.toPlainString() ?: "") }
     var bankEnd by rememberSaveable { mutableStateOf(budget.bankEnd?.toPlainString() ?: "") }
 
@@ -118,8 +116,6 @@ fun BudgetDetailScreen(
                             budget.year,
                             budget.month,
                             income.toBigDecimalOrNull(),
-                            emergencyFund.toBigDecimalOrNull(),
-                            mortgage.toBigDecimalOrNull(),
                             bankStart.toBigDecimalOrNull(),
                             bankEnd.toBigDecimalOrNull(),
                             onInvalidate = {
@@ -185,44 +181,6 @@ fun BudgetDetailScreen(
             Spacer(modifier = Modifier.padding(8.dp))
 
             Text(
-                text = stringResource(id = R.string.emergency_fund),
-                style = MaterialTheme.typography.bodyLarge
-            )
-
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = emergencyFund,
-                onValueChange = { emergencyFund = it },
-                maxLines = 1,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
-                    keyboardType = KeyboardType.Number
-                ),
-                placeholder = { Text(text = stringResource(R.string.budget_amount_placeholder)) },
-            )
-
-            Spacer(modifier = Modifier.padding(8.dp))
-
-            Text(
-                text = stringResource(id = R.string.emergency_fund),
-                style = MaterialTheme.typography.bodyLarge
-            )
-
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = mortgage,
-                onValueChange = { mortgage = it },
-                maxLines = 1,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
-                    keyboardType = KeyboardType.Number
-                ),
-                placeholder = { Text(text = stringResource(R.string.budget_amount_placeholder)) },
-            )
-
-            Spacer(modifier = Modifier.padding(8.dp))
-
-            Text(
                 text = stringResource(id = R.string.bank_start),
                 style = MaterialTheme.typography.bodyLarge
             )
@@ -269,8 +227,6 @@ private fun validateBudget(
     year: Int,
     month: Int,
     income: BigDecimal?,
-    emergencyFund: BigDecimal?,
-    mortgage: BigDecimal?,
     bankStart: BigDecimal?,
     bankEnd: BigDecimal?,
     onInvalidate: (Int) -> Unit,
@@ -280,16 +236,6 @@ private fun validateBudget(
 
     if (income == null) {
         onInvalidate(R.string.income)
-        return
-    }
-
-    if (emergencyFund == null) {
-        onInvalidate(R.string.emergency_fund)
-        return
-    }
-
-    if (mortgage == null) {
-        onInvalidate(R.string.mortgage)
         return
     }
 
@@ -308,8 +254,6 @@ private fun validateBudget(
         year,
         month,
         income,
-        emergencyFund,
-        mortgage,
         bankStart,
         bankEnd
     )

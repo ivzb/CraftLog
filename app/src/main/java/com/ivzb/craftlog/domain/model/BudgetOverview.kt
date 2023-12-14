@@ -20,19 +20,7 @@ data class BudgetOverview(
     val spent: BigDecimal
         get() = expenses.sumOf { it.amount }
 
-    val invested: BigDecimal
-        get() = investments.sumOf { it.amount }
-
-    val emergencyFund: BigDecimal
-        get() = budget.emergencyFund ?: 0.toBigDecimal()
-
     val saved: BigDecimal
-        get() = emergencyFund + invested
-
-    val mortgage: BigDecimal
-        get() = budget.mortgage ?: 0.toBigDecimal()
-
-    val costOfLiving: BigDecimal
-        get() = spent + mortgage
+        get() = investments.sumOf { it.amount }
 
 }

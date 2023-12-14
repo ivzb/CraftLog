@@ -2,7 +2,7 @@ package com.ivzb.craftlog.util
 
 enum class InvestmentCategory {
     Stocks,
-    Crypto,
+    Cryptocurrency,
     Commodity,
     Cash,
     Property,
@@ -10,6 +10,7 @@ enum class InvestmentCategory {
     Bond,
     Security,
     Option,
+    EmergencyFund,
 }
 
 fun getInvestmentCategoryList(): List<InvestmentCategory> {

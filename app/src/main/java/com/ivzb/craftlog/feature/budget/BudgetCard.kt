@@ -99,32 +99,6 @@ fun BudgetCard(
                 Spacer(modifier = Modifier.padding(8.dp))
 
                 Text(
-                    text = stringResource(id = R.string.cost_of_living),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-
-                Text(
-                    text = budgetOverview.costOfLiving.toPlainString(),
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleLarge
-                )
-
-                Spacer(modifier = Modifier.padding(8.dp))
-
-                Text(
-                    text = stringResource(id = R.string.invested),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-
-                Text(
-                    text = budgetOverview.invested.toPlainString(),
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleLarge
-                )
-
-                Spacer(modifier = Modifier.padding(8.dp))
-
-                Text(
                     text = stringResource(id = R.string.bank_start),
                     style = MaterialTheme.typography.bodyLarge
                 )
@@ -176,34 +150,6 @@ fun BudgetCard(
                     style = MaterialTheme.typography.titleLarge
                 )
 
-                // todo: make them in 2 columns
-
-                Spacer(modifier = Modifier.padding(8.dp))
-
-                Text(
-                    text = stringResource(id = R.string.emergency_fund),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-
-                Text(
-                    text = budgetOverview.budget.emergencyFund?.toPlainString() ?: "-",
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleLarge
-                )
-
-                Spacer(modifier = Modifier.padding(8.dp))
-
-                Text(
-                    text = stringResource(id = R.string.mortgage),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-
-                Text(
-                    text = budgetOverview.mortgage.toPlainString(),
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleLarge
-                )
-
                 Spacer(modifier = Modifier.padding(8.dp))
 
                 Text(
@@ -232,7 +178,7 @@ fun BudgetCard(
 private fun BudgetCardPreview() {
     BudgetCard(
         BudgetOverview(
-            Budget(0, 2023, 12, null, null, null, null, null),
+            Budget(0, 2023, 12, null, null, null),
             listOf(),
             listOf()
         )

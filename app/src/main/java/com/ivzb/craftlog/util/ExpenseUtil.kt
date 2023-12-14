@@ -6,6 +6,8 @@ enum class ExpenseCategory {
     Food,
     Car,
     Fuel,
+    Delivery,
+    Mortgage,
     Apartment,
     House,
     Entertainment,

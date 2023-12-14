@@ -60,6 +60,7 @@ fun DefaultPreview() {
 @Composable
 fun AddExpenseRoute(
     onBackClicked: () -> Unit,
+    // todo: navigate to expenses instead
     navigateToHome: () -> Unit,
     viewModel: AddExpenseViewModel = hiltViewModel()
 ) {

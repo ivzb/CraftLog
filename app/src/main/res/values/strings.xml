@@ -38,13 +38,13 @@
     <string name="emergency_fund">Emergency fund</string>
     <string name="cost_of_living">Cost of living</string>
     <string name="mortgage">Mortgage</string>
-    <string name="crypto">Crypto</string>
+    <string name="cryptocurrency">Cryptocurrency</string>
     <string name="stocks">Stocks</string>
     <string name="company">Company</string>
     <string name="investments">Investments</string>
     <string name="invested">Invested</string>
     <string name="no_investments_yet">No investments yet</string>
     <string name="add_investment">Add Investment</string>
-    <string name="investment_placeholder">e.g., Stocks, Gold, Crypto</string>
+    <string name="investment_placeholder">e.g., Stocks, Gold, Cryptocurrency</string>
     <string name="cost">Cost</string>
 </resources>

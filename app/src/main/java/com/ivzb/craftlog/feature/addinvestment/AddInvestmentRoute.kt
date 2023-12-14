@@ -60,6 +60,7 @@ fun DefaultPreview() {
 @Composable
 fun AddInvestmentRoute(
     onBackClicked: () -> Unit,
+    // todo: navigate to investments instead
     navigateToHome: () -> Unit,
     viewModel: AddInvestmentViewModel = hiltViewModel()
 ) {

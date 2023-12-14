@@ -24,8 +24,6 @@ class BudgetDetailViewModel @Inject constructor(
         year: Int,
         month: Int,
         income: BigDecimal,
-        emergencyFund: BigDecimal,
-        mortgage: BigDecimal,
         bankStart: BigDecimal,
         bankEnd: BigDecimal,
     ): Budget {
@@ -34,8 +32,6 @@ class BudgetDetailViewModel @Inject constructor(
             year,
             month,
             income,
-            emergencyFund,
-            mortgage,
             bankStart,
             bankEnd
         )
