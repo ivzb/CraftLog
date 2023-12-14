@@ -54,25 +54,24 @@ import java.util.Date
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AddExpenseRoute(onBackClicked = {}, navigateToHome = {})
+    AddExpenseRoute(onBackClicked = {}, navigateToExpenses = {})
 }
 
 @Composable
 fun AddExpenseRoute(
     onBackClicked: () -> Unit,
-    // todo: navigate to expenses instead
-    navigateToHome: () -> Unit,
+    navigateToExpenses: () -> Unit,
     viewModel: AddExpenseViewModel = hiltViewModel()
 ) {
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    AddExpenseScreen(onBackClicked, navigateToHome, viewModel, analyticsHelper)
+    AddExpenseScreen(onBackClicked, navigateToExpenses, viewModel, analyticsHelper)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddExpenseScreen(
     onBackClicked: () -> Unit,
-    navigateToHome: () -> Unit,
+    navigateToExpenses: () -> Unit,
     viewModel: AddExpenseViewModel,
     analyticsHelper: AnalyticsHelper,
 ) {
@@ -87,8 +86,7 @@ fun AddExpenseScreen(
         viewModel
             .isExpenseSaved
             .collect {
-                navigateToHome()
-                showSnackbar(context.getString(R.string.your_expense_is_saved))
+                navigateToExpenses()
                 analyticsHelper.logEvent(AnalyticsEvents.EXPENSE_SAVED)
             }
     }

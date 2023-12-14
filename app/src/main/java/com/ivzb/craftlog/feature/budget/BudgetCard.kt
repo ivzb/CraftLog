@@ -55,8 +55,6 @@ fun BudgetCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            // todo: reorder fields
-
             Column(
                 modifier = Modifier
                     .weight(2f)
@@ -127,12 +125,12 @@ fun BudgetCard(
                 Spacer(modifier = Modifier.padding(8.dp))
 
                 Text(
-                    text = stringResource(id = R.string.spent),
+                    text = stringResource(id = R.string.balance),
                     style = MaterialTheme.typography.bodyLarge
                 )
 
                 Text(
-                    text = budgetOverview.spent.toPlainString(),
+                    text = budgetOverview.balance.toPlainString(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -140,12 +138,12 @@ fun BudgetCard(
                 Spacer(modifier = Modifier.padding(8.dp))
 
                 Text(
-                    text = stringResource(id = R.string.balance),
+                    text = stringResource(id = R.string.spent),
                     style = MaterialTheme.typography.bodyLarge
                 )
 
                 Text(
-                    text = budgetOverview.balance.toPlainString(),
+                    text = budgetOverview.spent.toPlainString(),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )

@@ -22,7 +22,7 @@ fun NavGraphBuilder.addInvestmentGraph(
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
     onBackClicked: () -> Unit,
-    navigateToHome: () -> Unit,
+    navigateToInvestments: () -> Unit,
 ) {
     composable(route = AddInvestmentDestination.route) {
         LaunchedEffect(null) {
@@ -30,6 +30,6 @@ fun NavGraphBuilder.addInvestmentGraph(
             fabBehaviour.value = null
         }
 
-        AddInvestmentRoute(onBackClicked, navigateToHome)
+        AddInvestmentRoute(onBackClicked, navigateToInvestments)
     }
 }

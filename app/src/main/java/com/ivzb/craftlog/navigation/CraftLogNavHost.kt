@@ -17,12 +17,14 @@ import com.ivzb.craftlog.feature.budgetdetail.budgetDetailGraph
 import com.ivzb.craftlog.feature.expensedetail.ExpenseDetailDestination
 import com.ivzb.craftlog.feature.expensedetail.expenseDetailGraph
 import com.ivzb.craftlog.feature.expenses.EXPENSE
+import com.ivzb.craftlog.feature.expenses.ExpensesDestination
 import com.ivzb.craftlog.feature.expenses.expensesGraph
 import com.ivzb.craftlog.feature.home.HomeDestination
 import com.ivzb.craftlog.feature.home.homeGraph
 import com.ivzb.craftlog.feature.investmentdetail.InvestmentDetailDestination
 import com.ivzb.craftlog.feature.investmentdetail.investmentDetailGraph
 import com.ivzb.craftlog.feature.investments.INVESTMENT
+import com.ivzb.craftlog.feature.investments.InvestmentsDestination
 import com.ivzb.craftlog.feature.investments.investmentsGraph
 import com.ivzb.craftlog.util.navigateSingleTop
 
@@ -78,8 +80,8 @@ fun CraftLogNavHost(
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
             onBackClicked = { navController.navigateUp() },
-            navigateToHome = {
-                navController.navigateSingleTop(HomeDestination.route)
+            navigateToExpenses = {
+                navController.navigateSingleTop(ExpensesDestination.route)
             }
         )
 
@@ -128,8 +130,8 @@ fun CraftLogNavHost(
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
             onBackClicked = { navController.navigateUp() },
-            navigateToHome = {
-                navController.navigateSingleTop(HomeDestination.route)
+            navigateToInvestments = {
+                navController.navigateSingleTop(InvestmentsDestination.route)
             }
         )
     }
