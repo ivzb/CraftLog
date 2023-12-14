@@ -144,7 +144,7 @@ fun ExpenseDetailScreen(
             )
 
             Text(
-                text = expense.category,
+                text = expense.category.name,
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.primary
             )

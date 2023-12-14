@@ -9,7 +9,7 @@ fun InvestmentEntity.toInvestment(): Investment {
         name = name,
         amount = amount,
         cost = cost,
-        category = category,
+        categoryId = categoryId,
         date = date,
     )
 }
@@ -20,7 +20,7 @@ fun Investment.toInvestmentEntity(): InvestmentEntity {
         name = name,
         amount = amount,
         cost = cost,
-        category = category,
+        categoryId = categoryId,
         date = date,
     )
 }

@@ -47,4 +47,21 @@
     <string name="add_investment">Add Investment</string>
     <string name="investment_placeholder">e.g., Stocks, Gold, Cryptocurrency</string>
     <string name="cost">Cost</string>
+    <string name="commodity">Commodity</string>
+    <string name="cash">Cash</string>
+    <string name="property">Property</string>
+    <string name="etf">ETF</string>
+    <string name="bond">Bond</string>
+    <string name="security">Security</string>
+    <string name="option">Option</string>
+    <string name="none">None</string>
+    <string name="bills">Bills</string>
+    <string name="food">Food</string>
+    <string name="car">Car</string>
+    <string name="fuel">Fuel</string>
+    <string name="delivery">Delivery</string>
+    <string name="apartment">Apartment</string>
+    <string name="house">House</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="other">Other</string>
 </resources>

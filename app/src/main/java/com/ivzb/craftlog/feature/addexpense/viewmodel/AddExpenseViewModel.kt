@@ -24,19 +24,19 @@ class AddExpenseViewModel @Inject constructor(
     fun createExpense(
         name: String,
         amount: BigDecimal,
-        category: String,
+        categoryId: String,
         date: Date
     ): Expense {
         return Expense(
             id = 0,
             name = name,
             amount = amount,
-            category = category,
+            categoryId = categoryId,
             date = date,
         )
     }
 
-    fun addExpense(context: Context, state: AddExpenseState) {
+    fun addExpense(state: AddExpenseState) {
         viewModelScope.launch {
             val expense = state.expense
             val expenseAdded = addExpenseUseCase.addExpense(expense)

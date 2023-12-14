@@ -81,7 +81,7 @@ private fun ExpenseCardPreview() {
             id = 123L,
             name = "dinner",
             amount = 12.5.toBigDecimal(),
-            category = "food",
+            categoryId = "food",
             date = Date(),
         )
     ) { }

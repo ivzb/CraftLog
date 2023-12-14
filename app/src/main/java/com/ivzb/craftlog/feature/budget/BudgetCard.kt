@@ -55,7 +55,7 @@ fun BudgetCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            // todo: make all budget computed fields automatic - create sheet for each column dynamically - don't hardcode them
+            // todo: reorder fields
 
             Column(
                 modifier = Modifier

@@ -47,7 +47,7 @@ import com.ivzb.craftlog.ui.components.CategoryDropdownMenu
 import com.ivzb.craftlog.ui.components.DateTextField
 import com.ivzb.craftlog.util.InvestmentCategory
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
-import com.ivzb.craftlog.util.getInvestmentCategoryList
+import com.ivzb.craftlog.util.getInvestmentCategoryEntities
 import java.math.BigDecimal
 import java.util.Date
 
@@ -79,7 +79,7 @@ fun AddInvestmentScreen(
     var name by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableStateOf("") }
     var cost by rememberSaveable { mutableStateOf("") }
-    var category by rememberSaveable { mutableStateOf(InvestmentCategory.values().first().name) }
+    var categoryId by rememberSaveable { mutableStateOf(InvestmentCategory.entries.first().id) }
     var date by rememberSaveable { mutableStateOf(Date()) }
 
     val context = LocalContext.current
@@ -134,7 +134,7 @@ fun AddInvestmentScreen(
                         name = name,
                         amount = amount.toBigDecimalOrNull(),
                         cost = cost.toBigDecimalOrNull(),
-                        category = category,
+                        categoryId = categoryId,
                         date = date,
                         onInvalidate = {
                             val invalidatedValue = context.getString(it)
@@ -244,7 +244,7 @@ fun AddInvestmentScreen(
 
             Spacer(modifier = Modifier.padding(4.dp))
 
-            CategoryDropdownMenu(getInvestmentCategoryList().map { it.name }) { category = it }
+            CategoryDropdownMenu(getInvestmentCategoryEntities(context)) { categoryId = it.id }
 
             Spacer(modifier = Modifier.padding(4.dp))
 
@@ -257,7 +257,7 @@ private fun validateInvestment(
     name: String,
     amount: BigDecimal?,
     cost: BigDecimal?,
-    category: String,
+    categoryId: String,
     date: Date,
     onInvalidate: (Int) -> Unit,
     onValidate: (Investment) -> Unit,
@@ -278,7 +278,7 @@ private fun validateInvestment(
         return
     }
 
-    if (category.isEmpty()) {
+    if (categoryId.isEmpty()) {
         onInvalidate(R.string.category)
         return
     }
@@ -292,7 +292,7 @@ private fun validateInvestment(
         name,
         amount,
         cost,
-        category,
+        categoryId,
         date
     )
 

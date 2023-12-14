@@ -2,6 +2,7 @@ package com.ivzb.craftlog.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.ivzb.craftlog.util.InvestmentCategory
 import java.math.BigDecimal
 import java.util.Date
 
@@ -11,6 +12,6 @@ data class InvestmentEntity(
     val name: String,
     val amount: BigDecimal,
     val cost: BigDecimal,
-    val category: String,
+    val categoryId: String,
     val date: Date,
 )

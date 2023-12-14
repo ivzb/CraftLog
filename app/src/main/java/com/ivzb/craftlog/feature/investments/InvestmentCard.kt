@@ -83,7 +83,7 @@ private fun InvestmentCardPreview() {
             name = "dinner",
             amount = 12.5.toBigDecimal(),
             cost = 50.toBigDecimal(),
-            category = InvestmentCategory.Stocks.name,
+            categoryId = InvestmentCategory.Stocks.id,
             date = Date(),
         )
     ) { }

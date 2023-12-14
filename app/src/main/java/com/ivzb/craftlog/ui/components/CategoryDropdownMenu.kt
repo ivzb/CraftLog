@@ -19,10 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ivzb.craftlog.R
+import com.ivzb.craftlog.util.ItemEntity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryDropdownMenu(options: List<String>, onCategorySelected: (String) -> Unit) {
+fun CategoryDropdownMenu(options: List<ItemEntity>, onCategorySelected: (ItemEntity) -> Unit) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -32,7 +33,7 @@ fun CategoryDropdownMenu(options: List<String>, onCategorySelected: (String) -> 
         )
 
         var expanded by remember { mutableStateOf(false) }
-        var selectedOptionText by remember { mutableStateOf(options[0]) }
+        var selectedOptionText by remember { mutableStateOf(options[0].title) }
 
         ExposedDropdownMenuBox(
             expanded = expanded,
@@ -53,9 +54,9 @@ fun CategoryDropdownMenu(options: List<String>, onCategorySelected: (String) -> 
             ) {
                 options.forEach { selectionOption ->
                     DropdownMenuItem(
-                        text = { Text(selectionOption) },
+                        text = { Text(selectionOption.title) },
                         onClick = {
-                            selectedOptionText = selectionOption
+                            selectedOptionText = selectionOption.title
                             onCategorySelected(selectionOption)
                             expanded = false
                         }

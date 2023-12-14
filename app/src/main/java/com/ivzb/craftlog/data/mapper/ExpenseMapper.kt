@@ -8,7 +8,7 @@ fun ExpenseEntity.toExpense(): Expense {
         id = id,
         name = name,
         amount = amount,
-        category = category,
+        categoryId = categoryId,
         date = date,
     )
 }
@@ -18,7 +18,7 @@ fun Expense.toExpenseEntity(): ExpenseEntity {
         id = id ?: 0L,
         name = name,
         amount = amount,
-        category = category,
+        categoryId = categoryId,
         date = date,
     )
 }

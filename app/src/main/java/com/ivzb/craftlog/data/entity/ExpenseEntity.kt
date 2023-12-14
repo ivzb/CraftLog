@@ -10,6 +10,6 @@ data class ExpenseEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
     val amount: BigDecimal,
-    val category: String,
+    val categoryId: String,
     val date: Date,
 )

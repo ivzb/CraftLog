@@ -144,7 +144,7 @@ fun InvestmentDetailScreen(
             )
 
             Text(
-                text = investment.category,
+                text = investment.category.name,
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.primary
             )

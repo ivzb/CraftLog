@@ -47,7 +47,7 @@ import com.ivzb.craftlog.ui.components.CategoryDropdownMenu
 import com.ivzb.craftlog.ui.components.DateTextField
 import com.ivzb.craftlog.util.ExpenseCategory
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
-import com.ivzb.craftlog.util.getExpenseCategoryList
+import com.ivzb.craftlog.util.getExpenseCategoryEntities
 import java.math.BigDecimal
 import java.util.Date
 
@@ -78,7 +78,7 @@ fun AddExpenseScreen(
 ) {
     var name by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableStateOf("") }
-    var category by rememberSaveable { mutableStateOf(ExpenseCategory.values().first().name) }
+    var category by rememberSaveable { mutableStateOf(ExpenseCategory.entries.first().id) }
     var date by rememberSaveable { mutableStateOf(Date()) }
 
     val context = LocalContext.current
@@ -152,7 +152,7 @@ fun AddExpenseScreen(
                             analyticsHelper.logEvent(event)
                         },
                         onValidate = { expense ->
-                            viewModel.addExpense(context, AddExpenseState(expense))
+                            viewModel.addExpense(AddExpenseState(expense))
                             analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_ON_SAVE_CLICKED)
                         },
                         viewModel = viewModel
@@ -222,7 +222,7 @@ fun AddExpenseScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
 
-                    CategoryDropdownMenu(getExpenseCategoryList().map { it.name }) { category = it }
+                    CategoryDropdownMenu(getExpenseCategoryEntities(context)) { category = it.id }
                 }
             }
 
