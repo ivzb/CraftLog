@@ -51,4 +51,12 @@ class ExpenseRepositoryImpl(
             entities.map { it.toExpense() }
         }
     }
+
+    override fun findExpenses(name: String): Flow<List<Expense>> {
+        return dao.findExpenses(name).map {
+            it
+                .map { it.toExpense() }
+                .distinctBy { it.name to it.category }
+        }
+    }
 }

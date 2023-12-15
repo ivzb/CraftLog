@@ -1,5 +1,6 @@
 package com.ivzb.craftlog.feature.addexpense
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -67,6 +68,8 @@ fun AddExpenseRoute(
     AddExpenseScreen(onBackClicked, navigateToExpenses, viewModel, analyticsHelper)
 }
 
+// todo: suggest previous expenses in a tooltip
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddExpenseScreen(
@@ -88,6 +91,15 @@ fun AddExpenseScreen(
             .collect {
                 navigateToExpenses()
                 analyticsHelper.logEvent(AnalyticsEvents.EXPENSE_SAVED)
+            }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel
+            .suggestedExpenses
+            .collect {
+                // todo: use autocomplete text field to suggest it
+                Log.d("debug_log", "suggested expenses: size=${it.size}, $it")
             }
     }
 
@@ -180,7 +192,10 @@ fun AddExpenseScreen(
             TextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = name,
-                onValueChange = { name = it },
+                onValueChange = {
+                    name = it
+                    viewModel.suggestExpense(it)
+                },
                 maxLines = 1,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next,

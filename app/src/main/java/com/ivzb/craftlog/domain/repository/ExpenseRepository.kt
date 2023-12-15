@@ -17,4 +17,6 @@ interface ExpenseRepository {
     fun getExpensesForDate(date: Date): Flow<List<Expense>>
 
     fun getExpensesForRange(year: Int, month: Int): Flow<List<Expense>>
+
+    fun findExpenses(name: String): Flow<List<Expense>>
 }

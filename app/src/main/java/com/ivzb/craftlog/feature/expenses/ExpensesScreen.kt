@@ -37,6 +37,11 @@ fun ExpensesRoute(
     ExpensesScreen(state, navigateToExpenseDetail)
 }
 
+// todo: add search
+// todo: add notes
+// todo: add todo list
+// todo: add future reminders
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpensesScreen(state: ExpensesState, navigateToExpenseDetail: (Expense) -> Unit) {
