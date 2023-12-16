@@ -57,18 +57,18 @@ android {
 }
 
 dependencies {
-    val compose_ui_version = "1.6.0-beta01"
+    val compose_ui_version = "1.6.0-beta03"
     val compose_version = "1.5.4"
-    val nav_version = "2.7.5"
+    val nav_version = "2.7.6"
     val hilt_version = "2.47"
     val androidx_hilt_version = "1.1.0"
     val gson_version = "2.10"
-    val room_version = "2.6.0"
+    val room_version = "2.6.1"
     val okhttp_version = "4.10.0"
     val core_version = "1.12.0"
-    val material3_version = "1.2.0-alpha11"
-    val lifecycle_version = "2.7.0-rc01"
-    val activity_version = "1.8.1"
+    val material3_version = "1.2.0-beta01"
+    val lifecycle_version = "2.7.0-rc02"
+    val activity_version = "1.8.2"
     val firebase_version = "32.5.0"
 
     implementation("androidx.core:core-ktx:$core_version")
