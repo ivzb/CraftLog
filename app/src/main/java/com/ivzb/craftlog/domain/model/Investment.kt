@@ -2,6 +2,7 @@ package com.ivzb.craftlog.domain.model
 
 import android.os.Parcelable
 import com.ivzb.craftlog.util.InvestmentCategory
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
 import java.util.Date
@@ -16,6 +17,9 @@ data class Investment(
     val date: Date
 ) : Parcelable {
 
+    @IgnoredOnParcel
     val category: InvestmentCategory = InvestmentCategory.find(categoryId)
+
+    override fun toString() = "$name (${category.name})"
 
 }

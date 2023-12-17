@@ -51,4 +51,12 @@ class InvestmentRepositoryImpl(
             entities.map { it.toInvestment() }
         }
     }
+
+    override fun findInvestments(name: String): Flow<List<Investment>> {
+        return dao.findInvestments(name).map {
+            it
+                .map { it.toInvestment() }
+                .distinctBy { it.name to it.category }
+        }
+    }
 }

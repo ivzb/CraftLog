@@ -17,4 +17,7 @@ interface InvestmentRepository {
     fun getInvestmentsForDate(date: Date): Flow<List<Investment>>
 
     fun getInvestmentsForRange(year: Int, month: Int): Flow<List<Investment>>
+
+    fun findInvestments(name: String): Flow<List<Investment>>
+
 }

@@ -47,4 +47,15 @@ interface InvestmentDao {
         """
     )
     fun getInvestmentsForDateRange(dateStart: Date, dateEnd: Date): Flow<List<InvestmentEntity>>
+
+    @Query(
+        """
+            SELECT *
+            FROM investmententity
+            WHERE name LIKE :name || '%'
+            ORDER BY id DESC
+            LIMIT 3
+        """
+    )
+    fun findInvestments(name: String): Flow<List<InvestmentEntity>>
 }

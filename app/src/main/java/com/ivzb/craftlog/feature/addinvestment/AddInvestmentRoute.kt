@@ -29,7 +29,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -40,11 +42,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
+import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.feature.addinvestment.viewmodel.AddInvestmentState
 import com.ivzb.craftlog.feature.addinvestment.viewmodel.AddInvestmentViewModel
 import com.ivzb.craftlog.ui.components.CategoryDropdownMenu
 import com.ivzb.craftlog.ui.components.DateTextField
+import com.ivzb.craftlog.ui.components.SuggestionsDropdownMenu
 import com.ivzb.craftlog.util.InvestmentCategory
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
 import java.math.BigDecimal
@@ -80,9 +84,12 @@ fun AddInvestmentScreen(
     var category by rememberSaveable { mutableStateOf(InvestmentCategory.entries.first()) }
     var date by rememberSaveable { mutableStateOf(Date()) }
 
+    var suggestedInvestments by rememberSaveable { mutableStateOf(listOf<Investment>()) }
+    val nameState = mutableStateOf(name)
     val categoryState = mutableStateOf(category)
 
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(Unit) {
         viewModel
@@ -90,6 +97,14 @@ fun AddInvestmentScreen(
             .collect {
                 navigateToInvestments()
                 analyticsHelper.logEvent(AnalyticsEvents.INVESTMENT_SAVED)
+            }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel
+            .suggestedInvestments
+            .collect {
+                suggestedInvestments = it
             }
     }
 
@@ -153,7 +168,7 @@ fun AddInvestmentScreen(
                             analyticsHelper.logEvent(event)
                         },
                         onValidate = { investment ->
-                            viewModel.addInvestment(context, AddInvestmentState(investment))
+                            viewModel.addInvestment(AddInvestmentState(investment))
                             analyticsHelper.logEvent(AnalyticsEvents.ADD_INVESTMENT_ON_SAVE_CLICKED)
                         },
                         viewModel = viewModel
@@ -180,16 +195,19 @@ fun AddInvestmentScreen(
                 style = MaterialTheme.typography.bodyLarge
             )
 
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = name,
-                onValueChange = { name = it },
-                maxLines = 1,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
-                    keyboardType = KeyboardType.Text
-                ),
-                placeholder = { Text(text = stringResource(R.string.investment_placeholder)) },
+            SuggestionsDropdownMenu(
+                textFieldState = nameState,
+                stringResource(R.string.investment_placeholder),
+                onValueChange = {
+                    name = it
+                    viewModel.suggestInvestments(it)
+                },
+                suggestions = suggestedInvestments,
+                onSuggestionSelected = { selectedInvestment ->
+                    name = selectedInvestment.name
+                    category = selectedInvestment.category
+                    focusManager.moveFocus(FocusDirection.Next)
+                }
             )
 
             Spacer(modifier = Modifier.padding(4.dp))
@@ -227,8 +245,6 @@ fun AddInvestmentScreen(
                         text = stringResource(id = R.string.cost),
                         style = MaterialTheme.typography.bodyLarge
                     )
-
-                    // todo: suggest investment
 
                     TextField(
                         value = cost,

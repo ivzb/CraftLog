@@ -193,13 +193,14 @@ fun AddExpenseScreen(
             )
 
             SuggestionsDropdownMenu(
-                nameState,
-                {
+                textFieldState = nameState,
+                placeholderText = stringResource(R.string.expense_placeholder),
+                onValueChange = {
                     name = it
-                    viewModel.suggestExpense(it)
+                    viewModel.suggestExpenses(it)
                 },
-                suggestedExpenses,
-                { selectedExpense ->
+                suggestions = suggestedExpenses,
+                onSuggestionSelected = { selectedExpense ->
                     name = selectedExpense.name
                     category = selectedExpense.category
                     focusManager.moveFocus(FocusDirection.Next)

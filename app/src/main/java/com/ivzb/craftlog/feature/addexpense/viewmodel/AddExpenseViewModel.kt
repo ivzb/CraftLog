@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddExpenseViewModel @Inject constructor(
     private val addExpenseUseCase: AddExpenseUseCase,
-    private val findExpenseUseCase: FindExpensesUseCase
+    private val findExpensesUseCase: FindExpensesUseCase
 ) : ViewModel() {
 
     private val _isExpenseSaved = MutableSharedFlow<Unit>()
@@ -49,9 +49,9 @@ class AddExpenseViewModel @Inject constructor(
         }
     }
 
-    fun suggestExpense(name: String) {
+    fun suggestExpenses(name: String) {
         viewModelScope.launch {
-            val suggestedExpenses = findExpenseUseCase.findExpenses(name)
+            val suggestedExpenses = findExpensesUseCase.findExpenses(name)
             _suggestedExpenses.emitAll(suggestedExpenses)
         }
     }

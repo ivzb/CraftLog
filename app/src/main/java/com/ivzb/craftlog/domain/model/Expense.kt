@@ -2,6 +2,7 @@ package com.ivzb.craftlog.domain.model
 
 import android.os.Parcelable
 import com.ivzb.craftlog.util.ExpenseCategory
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
 import java.util.Date
@@ -15,10 +16,9 @@ data class Expense(
     val date: Date
 ) : Parcelable {
 
+    @IgnoredOnParcel
     val category: ExpenseCategory = ExpenseCategory.find(categoryId)
 
-    override fun toString(): String {
-        return "$name (${category.name})"
-    }
+    override fun toString() = "$name (${category.name})"
 
 }

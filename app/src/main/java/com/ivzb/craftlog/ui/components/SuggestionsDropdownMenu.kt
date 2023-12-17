@@ -27,6 +27,7 @@ import com.ivzb.craftlog.R
 @Composable
 fun <T> SuggestionsDropdownMenu(
     textFieldState: MutableState<String>,
+    placeholderText: String,
     onValueChange: (String) -> Unit,
     suggestions: List<T>,
     onSuggestionSelected: ((T) -> Unit))
@@ -55,7 +56,7 @@ fun <T> SuggestionsDropdownMenu(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Text
             ),
-            placeholder = { Text(text = stringResource(R.string.expense_placeholder)) },
+            placeholder = { Text(text = placeholderText) },
         )
 
         if (suggestions.isNotEmpty()) {
