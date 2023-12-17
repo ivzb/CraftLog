@@ -17,4 +17,8 @@ data class Expense(
 
     val category: ExpenseCategory = ExpenseCategory.find(categoryId)
 
+    override fun toString(): String {
+        return "$name (${category.name})"
+    }
+
 }
