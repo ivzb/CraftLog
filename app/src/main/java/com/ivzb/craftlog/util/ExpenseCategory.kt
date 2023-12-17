@@ -1,9 +1,9 @@
 package com.ivzb.craftlog.util
 
-import android.content.Context
+import com.ivzb.craftlog.App
 import com.ivzb.craftlog.R
 
-enum class ExpenseCategory(val id: String, val titleResId: Int) {
+enum class ExpenseCategory(override val id: String, private val titleResId: Int): ItemEntity {
     None("none", R.string.none),
     Bills("bills", R.string.bills),
     Food("food", R.string.food),
@@ -16,17 +16,14 @@ enum class ExpenseCategory(val id: String, val titleResId: Int) {
     Entertainment("entertainment", R.string.entertainment),
     Other("other", R.string.other);
 
+    override val title: String
+        get() = App.applicationContext().getString(titleResId);
+
     companion object {
 
         fun find(id: String): ExpenseCategory {
             return entries.find { it.id == id } ?: None
         }
 
-    }
-}
-
-fun getExpenseCategoryEntities(context: Context): List<ItemEntity> {
-    return ExpenseCategory.entries.map {
-        ItemEntity(it.id, context.getString(it.titleResId))
     }
 }

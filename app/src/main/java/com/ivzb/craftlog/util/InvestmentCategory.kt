@@ -1,9 +1,10 @@
 package com.ivzb.craftlog.util
 
 import android.content.Context
+import com.ivzb.craftlog.App
 import com.ivzb.craftlog.R
 
-enum class InvestmentCategory(val id: String, val titleResId: Int) {
+enum class InvestmentCategory(override val id: String, val titleResId: Int): ItemEntity {
     Stocks("stocks", R.string.stocks),
     Cryptocurrency("cryptocurrency", R.string.cryptocurrency),
     Commodity("commodity", R.string.commodity),
@@ -16,17 +17,14 @@ enum class InvestmentCategory(val id: String, val titleResId: Int) {
     EmergencyFund("emergency_fund", R.string.emergency_fund),
     None("none", R.string.none);
 
+    override val title: String
+        get() = App.applicationContext().getString(titleResId);
+
     companion object {
 
         fun find(id: String): InvestmentCategory {
             return entries.find { it.id == id } ?: None
         }
 
-    }
-}
-
-fun getInvestmentCategoryEntities(context: Context): List<ItemEntity> {
-    return InvestmentCategory.entries.map {
-        ItemEntity(it.id, context.getString(it.titleResId))
     }
 }

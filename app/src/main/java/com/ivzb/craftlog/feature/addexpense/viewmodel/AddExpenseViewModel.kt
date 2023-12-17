@@ -1,6 +1,5 @@
 package com.ivzb.craftlog.feature.addexpense.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivzb.craftlog.domain.model.Expense
@@ -52,11 +51,8 @@ class AddExpenseViewModel @Inject constructor(
 
     fun suggestExpense(name: String) {
         viewModelScope.launch {
-            if (name.length >= 3) {
-                Log.d("debug_log", "match previous expense: input=$name")
-                val suggestedExpenses = findExpenseUseCase.findExpenses(name)
-                _suggestedExpenses.emitAll(suggestedExpenses)
-            }
+            val suggestedExpenses = findExpenseUseCase.findExpenses(name)
+            _suggestedExpenses.emitAll(suggestedExpenses)
         }
     }
 

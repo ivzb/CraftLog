@@ -47,7 +47,6 @@ import com.ivzb.craftlog.ui.components.CategoryDropdownMenu
 import com.ivzb.craftlog.ui.components.DateTextField
 import com.ivzb.craftlog.util.InvestmentCategory
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
-import com.ivzb.craftlog.util.getInvestmentCategoryEntities
 import java.math.BigDecimal
 import java.util.Date
 
@@ -78,8 +77,10 @@ fun AddInvestmentScreen(
     var name by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableStateOf("") }
     var cost by rememberSaveable { mutableStateOf("") }
-    var categoryId by rememberSaveable { mutableStateOf(InvestmentCategory.entries.first().id) }
+    var category by rememberSaveable { mutableStateOf(InvestmentCategory.entries.first()) }
     var date by rememberSaveable { mutableStateOf(Date()) }
+
+    val categoryState = mutableStateOf(category)
 
     val context = LocalContext.current
 
@@ -132,7 +133,7 @@ fun AddInvestmentScreen(
                         name = name,
                         amount = amount.toBigDecimalOrNull(),
                         cost = cost.toBigDecimalOrNull(),
-                        categoryId = categoryId,
+                        categoryId = category.id,
                         date = date,
                         onInvalidate = {
                             val invalidatedValue = context.getString(it)
@@ -227,6 +228,8 @@ fun AddInvestmentScreen(
                         style = MaterialTheme.typography.bodyLarge
                     )
 
+                    // todo: suggest investment
+
                     TextField(
                         value = cost,
                         onValueChange = { cost = it },
@@ -242,7 +245,7 @@ fun AddInvestmentScreen(
 
             Spacer(modifier = Modifier.padding(4.dp))
 
-            CategoryDropdownMenu(getInvestmentCategoryEntities(context)) { categoryId = it.id }
+            CategoryDropdownMenu(categoryState, InvestmentCategory.entries) { category = it }
 
             Spacer(modifier = Modifier.padding(4.dp))
 

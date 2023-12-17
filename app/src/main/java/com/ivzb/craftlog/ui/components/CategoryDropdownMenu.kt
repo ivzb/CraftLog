@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,10 +21,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.util.ItemEntity
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryDropdownMenu(options: List<ItemEntity>, onCategorySelected: (ItemEntity) -> Unit) {
+fun <T : ItemEntity> CategoryDropdownMenu(
+    optionState: MutableState<T>,
+    options: List<T>,
+    onCategorySelected: ((T) -> Unit))
+{
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -33,7 +39,6 @@ fun CategoryDropdownMenu(options: List<ItemEntity>, onCategorySelected: (ItemEnt
         )
 
         var expanded by remember { mutableStateOf(false) }
-        var selectedOptionText by remember { mutableStateOf(options[0].title) }
 
         ExposedDropdownMenuBox(
             expanded = expanded,
@@ -42,7 +47,7 @@ fun CategoryDropdownMenu(options: List<ItemEntity>, onCategorySelected: (ItemEnt
             TextField(
                 modifier = Modifier.fillMaxWidth().menuAnchor(),
                 readOnly = true,
-                value = selectedOptionText,
+                value = optionState.value.title,
                 onValueChange = {},
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 colors = ExposedDropdownMenuDefaults.textFieldColors(),
@@ -56,8 +61,8 @@ fun CategoryDropdownMenu(options: List<ItemEntity>, onCategorySelected: (ItemEnt
                     DropdownMenuItem(
                         text = { Text(selectionOption.title) },
                         onClick = {
-                            selectedOptionText = selectionOption.title
-                            onCategorySelected(selectionOption)
+                            optionState.value = selectionOption
+                            onCategorySelected.invoke(selectionOption)
                             expanded = false
                         }
                     )

@@ -1,6 +1,6 @@
 package com.ivzb.craftlog.feature.addexpense
 
-import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,7 +14,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -27,16 +30,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
@@ -48,7 +56,6 @@ import com.ivzb.craftlog.ui.components.CategoryDropdownMenu
 import com.ivzb.craftlog.ui.components.DateTextField
 import com.ivzb.craftlog.util.ExpenseCategory
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
-import com.ivzb.craftlog.util.getExpenseCategoryEntities
 import java.math.BigDecimal
 import java.util.Date
 
@@ -68,8 +75,6 @@ fun AddExpenseRoute(
     AddExpenseScreen(onBackClicked, navigateToExpenses, viewModel, analyticsHelper)
 }
 
-// todo: suggest previous expenses in a tooltip
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddExpenseScreen(
@@ -80,10 +85,14 @@ fun AddExpenseScreen(
 ) {
     var name by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableStateOf("") }
-    var category by rememberSaveable { mutableStateOf(ExpenseCategory.entries.first().id) }
+    var category by rememberSaveable { mutableStateOf(ExpenseCategory.entries.first()) }
     var date by rememberSaveable { mutableStateOf(Date()) }
 
+    var suggestedExpenses by rememberSaveable { mutableStateOf(listOf<Expense>()) }
+    val categoryState = mutableStateOf(category)
+
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(Unit) {
         viewModel
@@ -98,8 +107,7 @@ fun AddExpenseScreen(
         viewModel
             .suggestedExpenses
             .collect {
-                // todo: use autocomplete text field to suggest it
-                Log.d("debug_log", "suggested expenses: size=${it.size}, $it")
+                suggestedExpenses = it
             }
     }
 
@@ -142,7 +150,7 @@ fun AddExpenseScreen(
                     validateExpense(
                         name = name,
                         amount = amount.toBigDecimalOrNull(),
-                        category = category,
+                        categoryId = category.id,
                         date = date,
                         onInvalidate = {
                             val invalidatedValue = context.getString(it)
@@ -189,20 +197,53 @@ fun AddExpenseScreen(
                 style = MaterialTheme.typography.bodyLarge
             )
 
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = name,
-                onValueChange = {
-                    name = it
-                    viewModel.suggestExpense(it)
-                },
-                maxLines = 1,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
-                    keyboardType = KeyboardType.Text
-                ),
-                placeholder = { Text(text = stringResource(R.string.expense_placeholder)) },
-            )
+            var expanded by remember { mutableStateOf(false) }
+
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = {
+                    expanded = !expanded
+                }
+            ) {
+                TextField(
+                    modifier = Modifier.fillMaxWidth().menuAnchor(),
+                    value = name,
+                    onValueChange = {
+                        name = it
+                        viewModel.suggestExpense(it)
+                        expanded = true
+                    },
+                    maxLines = 1,
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Next,
+                        keyboardType = KeyboardType.Text
+                    ),
+                    placeholder = { Text(text = stringResource(R.string.expense_placeholder)) },
+                )
+
+                if (suggestedExpenses.isNotEmpty()) {
+                    DropdownMenu(
+                        modifier = Modifier
+                            .background(Color.White)
+                            .exposedDropdownSize(true),
+                        properties = PopupProperties(focusable = false),
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                    ) {
+                        suggestedExpenses.forEach { expense ->
+                            DropdownMenuItem(
+                                text = { Text(text = "${expense.name} (${expense.category.name})") },
+                                onClick = {
+                                    name = expense.name
+                                    category = expense.category
+                                    expanded = false
+                                    focusManager.moveFocus(FocusDirection.Next)
+                                }
+                            )
+                        }
+                    }
+                }
+            }
 
             Spacer(modifier = Modifier.padding(4.dp))
 
@@ -235,7 +276,7 @@ fun AddExpenseScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
 
-                    CategoryDropdownMenu(getExpenseCategoryEntities(context)) { category = it.id }
+                    CategoryDropdownMenu(categoryState, ExpenseCategory.entries) { category = it }
                 }
             }
 
@@ -249,7 +290,7 @@ fun AddExpenseScreen(
 private fun validateExpense(
     name: String,
     amount: BigDecimal?,
-    category: String,
+    categoryId: String,
     date: Date,
     onInvalidate: (Int) -> Unit,
     onValidate: (Expense) -> Unit,
@@ -265,7 +306,7 @@ private fun validateExpense(
         return
     }
 
-    if (category.isEmpty()) {
+    if (categoryId.isEmpty()) {
         onInvalidate(R.string.category)
         return
     }
@@ -278,7 +319,7 @@ private fun validateExpense(
     val expense = viewModel.createExpense(
         name,
         amount,
-        category,
+        categoryId,
         date
     )
 

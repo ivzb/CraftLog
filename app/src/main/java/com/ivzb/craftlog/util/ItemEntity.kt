@@ -1,3 +1,6 @@
 package com.ivzb.craftlog.util
 
-data class ItemEntity(val id: String, val title: String)
+interface ItemEntity {
+    val id: String
+    val title: String
+}
