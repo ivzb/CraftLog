@@ -42,7 +42,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
-import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.feature.addinvestment.viewmodel.AddInvestmentState
 import com.ivzb.craftlog.feature.addinvestment.viewmodel.AddInvestmentViewModel

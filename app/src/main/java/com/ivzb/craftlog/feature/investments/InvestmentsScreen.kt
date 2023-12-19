@@ -27,6 +27,9 @@ import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.feature.investments.viewmodel.InvestmentsState
 import com.ivzb.craftlog.feature.investments.viewmodel.InvestmentsViewModel
 
+// todo: add search
+// todo: show relative time
+
 @Composable
 fun InvestmentsRoute(
     navigateToInvestmentDetail: (Investment) -> Unit,

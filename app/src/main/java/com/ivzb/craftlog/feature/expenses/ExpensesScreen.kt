@@ -14,19 +14,23 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Expense
-import com.ivzb.craftlog.feature.home.ExpenseCard
-import com.ivzb.craftlog.feature.home.ExpenseListItem
 import com.ivzb.craftlog.feature.expenses.viewmodel.ExpensesState
 import com.ivzb.craftlog.feature.expenses.viewmodel.ExpensesViewModel
+import com.ivzb.craftlog.feature.home.ExpenseCard
+import com.ivzb.craftlog.feature.home.ExpenseListItem
+import com.ivzb.craftlog.ui.components.ExpandableSearchView
 
 @Composable
 fun ExpensesRoute(
@@ -41,20 +45,32 @@ fun ExpensesRoute(
 // todo: add notes
 // todo: add todo list
 // todo: add future reminders
+// todo: show relative time
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpensesScreen(state: ExpensesState, navigateToExpenseDetail: (Expense) -> Unit) {
+    var search by remember {
+        mutableStateOf("")
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 modifier = Modifier
                     .padding(top = 16.dp),
                 title = {
-                    Text(
-                        text = stringResource(id = R.string.expenses),
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.displaySmall,
+                    ExpandableSearchView(
+                        searchText = search,
+                        placeholderText = stringResource(id = R.string.expense_placeholder),
+                        titleText = stringResource(id = R.string.expenses),
+                        onSearchDisplayChanged = {
+                             search = it
+                            // todo: attach to data layer
+                        },
+                        onSearchDisplayClosed = {
+                            // todo
+                        },
                     )
                 }
             )
@@ -85,7 +101,10 @@ fun ExpenseList(state: ExpensesState, navigateToExpenseDetail: (Expense) -> Unit
 }
 
 @Composable
-fun ExpenseLazyColumn(sortedExpenseList: List<ExpenseListItem>, navigateToExpenseDetail: (Expense) -> Unit) {
+fun ExpenseLazyColumn(
+    sortedExpenseList: List<ExpenseListItem>,
+    navigateToExpenseDetail: (Expense) -> Unit
+) {
     LazyColumn(
         modifier = Modifier,
         contentPadding = PaddingValues(vertical = 8.dp)
@@ -105,6 +124,7 @@ fun ExpenseLazyColumn(sortedExpenseList: List<ExpenseListItem>, navigateToExpens
                             style = MaterialTheme.typography.titleMedium,
                         )
                     }
+
                     is ExpenseListItem.ExpenseItem -> {
                         ExpenseCard(
                             expense = it.expense,

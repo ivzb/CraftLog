@@ -67,6 +67,7 @@ dependencies {
     val okhttp_version = "4.10.0"
     val core_version = "1.12.0"
     val material3_version = "1.2.0-beta01"
+    val material_icons_version = "1.5.4"
     val lifecycle_version = "2.7.0-rc02"
     val activity_version = "1.8.2"
     val firebase_version = "32.5.0"
@@ -74,6 +75,7 @@ dependencies {
     implementation("androidx.core:core-ktx:$core_version")
     implementation("androidx.compose.ui:ui:$compose_ui_version")
     implementation("androidx.compose.material3:material3:$material3_version")
+    implementation("androidx.compose.material:material-icons-core:$material_icons_version")
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("androidx.compose.foundation:foundation:$compose_version")
 
