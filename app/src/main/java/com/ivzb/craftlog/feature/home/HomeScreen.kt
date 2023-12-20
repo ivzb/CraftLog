@@ -417,14 +417,14 @@ fun DateHeader(
     }
 }
 
-sealed class ExpenseListItem {
+sealed class ExpenseListItem(val id: Long) {
 
     data class OverviewItem(
         val expensesToday: List<Expense>,
         val isExpenseListEmpty: Boolean
-    ) : ExpenseListItem()
+    ) : ExpenseListItem(-2)
 
-    data class ExpenseItem(val expense: Expense) : ExpenseListItem()
+    data class ExpenseItem(val expense: Expense) : ExpenseListItem(expense.id ?: 0)
 
-    data class HeaderItem(val headerText: String) : ExpenseListItem()
+    data class HeaderItem(val headerText: String) : ExpenseListItem(-1)
 }

@@ -2,7 +2,6 @@ package com.ivzb.craftlog.ui.components
 
 import android.view.ViewTreeObserver
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -53,8 +52,7 @@ fun ExpandableSearchView(
     searchText: String,
     placeholderText: String,
     titleText: String,
-    onSearchDisplayChanged: (String) -> Unit,
-    onSearchDisplayClosed: () -> Unit,
+    onSearch: (String) -> Unit,
     modifier: Modifier = Modifier,
     expandedInitially: Boolean = false,
     tint: Color = MaterialTheme.colorScheme.primary,
@@ -68,8 +66,7 @@ fun ExpandableSearchView(
             true -> ExpandedSearchView(
                 searchText = searchText,
                 placeholderText = placeholderText,
-                onSearchDisplayChanged = onSearchDisplayChanged,
-                onSearchDisplayClosed = onSearchDisplayClosed,
+                onSearch = onSearch,
                 onExpandedChanged = onExpandedChanged,
                 modifier = modifier,
                 tint = tint,
@@ -125,8 +122,7 @@ fun CollapsedSearchView(
 fun ExpandedSearchView(
     searchText: String,
     placeholderText: String,
-    onSearchDisplayChanged: (String) -> Unit,
-    onSearchDisplayClosed: () -> Unit,
+    onSearch: (String) -> Unit,
     onExpandedChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     tint: Color = MaterialTheme.colorScheme.primary,
@@ -171,7 +167,6 @@ fun ExpandedSearchView(
         FloatingActionButton(
             onClick = {
                 onExpandedChanged(false)
-                onSearchDisplayClosed()
             },
             elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
         ) {
@@ -187,7 +182,7 @@ fun ExpandedSearchView(
             value = search,
             onValueChange = {
                 search = it
-                onSearchDisplayChanged(it.text)
+                onSearch(it.text)
             },
             trailingIcon = {
                 SearchIcon(iconTint = tint)
@@ -220,8 +215,7 @@ fun CollapsedSearchViewPreview() {
                 searchText = "",
                 placeholderText = "",
                 titleText = "",
-                onSearchDisplayChanged = {},
-                onSearchDisplayClosed = {},
+                onSearch = {},
             )
         }
     }
@@ -238,8 +232,7 @@ fun ExpandedSearchViewPreview() {
                 searchText = "",
                 placeholderText = "",
                 titleText = "",
-                onSearchDisplayChanged = {},
-                onSearchDisplayClosed = {},
+                onSearch = {},
                 expandedInitially = true,
             )
         }

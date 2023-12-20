@@ -24,11 +24,19 @@ class ExpensesViewModel @Inject constructor(
         loadExpenses()
     }
 
-    fun loadExpenses() {
+    fun loadExpenses(filter: String = "") {
         viewModelScope.launch {
             getExpensesUseCase.getExpenses().onEach { expensesList ->
+                val filteredExpensesList = if (filter.isNotEmpty()) {
+                    expensesList.filter {
+                        it.name.contains(filter, ignoreCase = true) || it.category.name.contains(filter, ignoreCase = true)
+                    }
+                } else {
+                    expensesList
+                }
+
                 state = state.copy(
-                    expenses = expensesList
+                    expenses = filteredExpensesList
                 )
             }.launchIn(viewModelScope)
         }

@@ -1,5 +1,6 @@
 package com.ivzb.craftlog.feature.expenses
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,12 +9,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,20 +40,24 @@ fun ExpensesRoute(
     navigateToExpenseDetail: (Expense) -> Unit,
     viewModel: ExpensesViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state
-    ExpensesScreen(state, navigateToExpenseDetail)
+
+    ExpensesScreen(viewModel, navigateToExpenseDetail)
 }
 
-// todo: add search
 // todo: add notes
 // todo: add todo list
 // todo: add future reminders
 // todo: show relative time
 
+// todo: hide budget, expenses and investments and group them to a finance screen
+// todo: all of these screens would still be accessible via "more" button
+
+// todo: add more fields to mortgage expense (principal, interest and insurance)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpensesScreen(state: ExpensesState, navigateToExpenseDetail: (Expense) -> Unit) {
-    var search by remember {
+fun ExpensesScreen(viewModel: ExpensesViewModel, navigateToExpenseDetail: (Expense) -> Unit) {
+    var searchQuery by remember {
         mutableStateOf("")
     }
 
@@ -61,15 +68,14 @@ fun ExpensesScreen(state: ExpensesState, navigateToExpenseDetail: (Expense) -> U
                     .padding(top = 16.dp),
                 title = {
                     ExpandableSearchView(
-                        searchText = search,
+                        searchText = searchQuery,
                         placeholderText = stringResource(id = R.string.expense_placeholder),
                         titleText = stringResource(id = R.string.expenses),
-                        onSearchDisplayChanged = {
-                             search = it
-                            // todo: attach to data layer
-                        },
-                        onSearchDisplayClosed = {
-                            // todo
+                        onSearch = {
+                            if (searchQuery != it) {
+                                searchQuery = it
+                                viewModel.loadExpenses(searchQuery)
+                            }
                         },
                     )
                 }
@@ -81,13 +87,13 @@ fun ExpensesScreen(state: ExpensesState, navigateToExpenseDetail: (Expense) -> U
             modifier = Modifier.padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            ExpenseList(state, navigateToExpenseDetail)
+            ExpenseList(viewModel.state, searchQuery, navigateToExpenseDetail)
         }
     }
 }
 
 @Composable
-fun ExpenseList(state: ExpensesState, navigateToExpenseDetail: (Expense) -> Unit) {
+fun ExpenseList(state: ExpensesState, searchQuery: String, navigateToExpenseDetail: (Expense) -> Unit) {
     val filteredExpenseList = state.expenses
     val sortedExpenseList = filteredExpenseList
         .sortedByDescending { it.date }
@@ -96,27 +102,40 @@ fun ExpenseList(state: ExpensesState, navigateToExpenseDetail: (Expense) -> Unit
     if (sortedExpenseList.isEmpty()) {
         EmptyView()
     } else {
-        ExpenseLazyColumn(sortedExpenseList, navigateToExpenseDetail)
+        ExpenseLazyColumn(sortedExpenseList, searchQuery, navigateToExpenseDetail)
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExpenseLazyColumn(
-    sortedExpenseList: List<ExpenseListItem>,
+    items: List<ExpenseListItem>,
+    searchQuery: String,
     navigateToExpenseDetail: (Expense) -> Unit
 ) {
+    val lazyListState = rememberLazyListState()
+
+    LaunchedEffect(items.firstOrNull()) {
+        if (items.isNotEmpty() && searchQuery.isEmpty()) {
+            lazyListState.animateScrollToItem(0)
+        }
+    }
+
     LazyColumn(
         modifier = Modifier,
+        lazyListState,
         contentPadding = PaddingValues(vertical = 8.dp)
     ) {
         items(
-            items = sortedExpenseList,
+            items = items,
+            key = { it.id },
             itemContent = {
                 when (it) {
                     is ExpenseListItem.OverviewItem -> { }
                     is ExpenseListItem.HeaderItem -> {
                         Text(
                             modifier = Modifier
+                                .animateItemPlacement()
                                 .padding(4.dp, 12.dp, 8.dp, 0.dp)
                                 .fillMaxWidth(),
                             text = it.headerText.uppercase(),
@@ -127,6 +146,7 @@ fun ExpenseLazyColumn(
 
                     is ExpenseListItem.ExpenseItem -> {
                         ExpenseCard(
+                            modifier = Modifier.animateItemPlacement(),
                             expense = it.expense,
                             navigateToExpenseDetail = { expense ->
                                 navigateToExpenseDetail(expense)

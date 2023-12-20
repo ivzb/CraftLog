@@ -26,12 +26,13 @@ import java.util.Date
 
 @Composable
 fun ExpenseCard(
+    modifier: Modifier = Modifier,
     expense: Expense,
     navigateToExpenseDetail: (Expense) -> Unit
 ) {
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable {
@@ -77,7 +78,7 @@ fun ExpenseCard(
 @Composable
 private fun ExpenseCardPreview() {
     ExpenseCard(
-        Expense(
+        expense = Expense(
             id = 123L,
             name = "dinner",
             amount = 12.5.toBigDecimal(),
