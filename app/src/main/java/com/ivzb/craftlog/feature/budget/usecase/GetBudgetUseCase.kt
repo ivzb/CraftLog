@@ -6,6 +6,7 @@ import com.ivzb.craftlog.domain.repository.ExpenseRepository
 import com.ivzb.craftlog.domain.repository.InvestmentRepository
 import com.ivzb.craftlog.util.zip
 import kotlinx.coroutines.flow.Flow
+import java.util.Calendar
 import javax.inject.Inject
 
 class GetBudgetUseCase @Inject constructor(
@@ -14,7 +15,11 @@ class GetBudgetUseCase @Inject constructor(
     private val investmentRepository: InvestmentRepository
 ) {
 
-    suspend fun getBudgetOverview(year: Int, month: Int): Flow<BudgetOverview> {
+    suspend fun getBudgetOverview(): Flow<BudgetOverview> {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+
         val budget = budgetRepository.getBudgetForDate(year, month)
         val expenses = expenseRepository.getExpensesForRange(year, month)
         val investments = investmentRepository.getInvestmentsForRange(year, month)

@@ -19,6 +19,7 @@ import com.ivzb.craftlog.feature.expensedetail.expenseDetailGraph
 import com.ivzb.craftlog.feature.expenses.EXPENSE
 import com.ivzb.craftlog.feature.expenses.ExpensesDestination
 import com.ivzb.craftlog.feature.expenses.expensesGraph
+import com.ivzb.craftlog.feature.finance.financeGraph
 import com.ivzb.craftlog.feature.home.HomeDestination
 import com.ivzb.craftlog.feature.home.homeGraph
 import com.ivzb.craftlog.feature.investmentdetail.InvestmentDetailDestination
@@ -53,6 +54,12 @@ fun CraftLogNavHost(
                 }
                 navController.navigate(ExpenseDetailDestination.route)
             }
+        )
+
+        financeGraph(
+            navController = navController,
+            bottomBarVisibility = bottomBarVisibility,
+            fabBehaviour = fabBehaviour,
         )
 
         expensesGraph(

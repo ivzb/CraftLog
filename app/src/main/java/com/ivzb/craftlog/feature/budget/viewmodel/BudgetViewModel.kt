@@ -22,16 +22,8 @@ class BudgetViewModel @Inject constructor(
         private set
 
     fun loadBudget() {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-
-        loadBudget(year, month)
-    }
-
-    private fun loadBudget(year: Int, month: Int) {
         viewModelScope.launch {
-            val budgetOverview = getBudgetUseCase.getBudgetOverview(year, month).onEach { budgetOverview ->
+            getBudgetUseCase.getBudgetOverview().onEach { budgetOverview ->
                 state = state.copy(
                     budgetOverview = budgetOverview
                 )
