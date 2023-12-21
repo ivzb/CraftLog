@@ -47,7 +47,6 @@ fun ExpensesRoute(
 // todo: add notes
 // todo: add todo list
 // todo: add future reminders
-// todo: show relative time
 
 // todo: hide budget, expenses and investments and group them to a finance screen
 // todo: all of these screens would still be accessible via "more" button

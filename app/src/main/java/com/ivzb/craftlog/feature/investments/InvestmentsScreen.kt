@@ -24,18 +24,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
-import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.feature.investments.viewmodel.InvestmentsState
 import com.ivzb.craftlog.feature.investments.viewmodel.InvestmentsViewModel
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
-
-// todo: show relative time
 
 @Composable
 fun InvestmentsRoute(

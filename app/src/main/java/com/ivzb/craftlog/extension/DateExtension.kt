@@ -1,5 +1,6 @@
 package com.ivzb.craftlog.extenstion
 
+import android.text.format.DateUtils
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -9,6 +10,12 @@ fun Date.toFormattedDateString(): String {
     val sdf = SimpleDateFormat("EEEE, LLLL dd", Locale.getDefault())
     return sdf.format(this)
 }
+
+fun Date.toRelativeDateString(): String = DateUtils.getRelativeTimeSpanString(
+    this.time,
+    System.currentTimeMillis(),
+    DateUtils.DAY_IN_MILLIS
+).toString()
 
 fun Date.toFormattedMonthDateString(): String {
     val sdf = SimpleDateFormat("MMMM dd", Locale.getDefault())

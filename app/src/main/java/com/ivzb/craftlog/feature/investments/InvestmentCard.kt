@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.extenstion.toFormattedDateString
+import com.ivzb.craftlog.extenstion.toRelativeDateString
 import com.ivzb.craftlog.util.InvestmentCategory
 import java.util.Date
 
@@ -59,7 +60,7 @@ fun InvestmentCard(
                 Text(
                     modifier = Modifier.padding(bottom = 16.dp),
                     style = MaterialTheme.typography.titleSmall,
-                    text = investment.date.toFormattedDateString().uppercase(),
+                    text = investment.date.toRelativeDateString(),
                     color = MaterialTheme.colorScheme.primary
                 )
 
