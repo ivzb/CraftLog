@@ -24,11 +24,19 @@ class InvestmentsViewModel @Inject constructor(
         loadInvestments()
     }
 
-    fun loadInvestments() {
+    fun loadInvestments(filter: String = "") {
         viewModelScope.launch {
             getInvestmentsUseCase.getInvestments().onEach { investmentsList ->
+                val filteredInvestmentsList = if (filter.isNotEmpty()) {
+                    investmentsList.filter {
+                        it.name.contains(filter, ignoreCase = true) || it.category.name.contains(filter, ignoreCase = true)
+                    }
+                } else {
+                    investmentsList
+                }
+
                 state = state.copy(
-                    investments = investmentsList
+                    investments = filteredInvestmentsList
                 )
             }.launchIn(viewModelScope)
         }

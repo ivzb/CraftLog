@@ -27,12 +27,13 @@ import java.util.Date
 
 @Composable
 fun InvestmentCard(
+    modifier: Modifier = Modifier,
     investment: Investment,
     navigateToInvestmentDetail: (Investment) -> Unit
 ) {
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable {
@@ -78,6 +79,7 @@ fun InvestmentCard(
 @Composable
 private fun InvestmentCardPreview() {
     InvestmentCard(
+        Modifier,
         Investment(
             id = 123L,
             name = "dinner",
