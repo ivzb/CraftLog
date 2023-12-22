@@ -50,6 +50,17 @@ fun BudgetCard(
         )
     ) {
 
+        // todo: fix the padding
+
+        Text(
+            modifier = Modifier.padding(16.dp),
+            style = MaterialTheme.typography.titleMedium,
+            text = "${budgetOverview.budget.month.toFormattedMonth()}, ${budgetOverview.budget.year}",
+            color = MaterialTheme.colorScheme.primary
+        )
+
+        Spacer(modifier = Modifier.padding(8.dp))
+
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -57,18 +68,10 @@ fun BudgetCard(
 
             Column(
                 modifier = Modifier
-                    .weight(2f)
+                    .weight(3f)
                     .padding(8.dp, 0.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-
-                Text(
-                    style = MaterialTheme.typography.titleMedium,
-                    text = "${budgetOverview.budget.month.toFormattedMonth()}, ${budgetOverview.budget.year}",
-                    color = MaterialTheme.colorScheme.primary
-                )
-
-                Spacer(modifier = Modifier.padding(8.dp))
 
                 Text(
                     text = stringResource(id = R.string.income),
@@ -94,35 +97,14 @@ fun BudgetCard(
                     style = MaterialTheme.typography.titleLarge
                 )
 
-                Spacer(modifier = Modifier.padding(8.dp))
-
-                Text(
-                    text = stringResource(id = R.string.bank_start),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-
-                Text(
-                    text = budgetOverview.budget.bankStart?.toPlainString() ?: "-",
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleLarge
-                )
-
             }
 
             Column(
                 modifier = Modifier
-                    .weight(2f)
+                    .weight(3f)
                     .padding(8.dp, 0.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-
-                Text(
-                    style = MaterialTheme.typography.titleMedium,
-                    text = "",
-                    color = MaterialTheme.colorScheme.primary,
-                )
-
-                Spacer(modifier = Modifier.padding(8.dp))
 
                 Text(
                     text = stringResource(id = R.string.balance),
@@ -144,6 +126,26 @@ fun BudgetCard(
 
                 Text(
                     text = budgetOverview.spent.toPlainString(),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge
+                )
+
+            }
+
+            Column(
+                modifier = Modifier
+                    .weight(3f)
+                    .padding(8.dp, 0.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+
+                Text(
+                    text = stringResource(id = R.string.bank_start),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                Text(
+                    text = budgetOverview.budget.bankStart?.toPlainString() ?: "-",
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
