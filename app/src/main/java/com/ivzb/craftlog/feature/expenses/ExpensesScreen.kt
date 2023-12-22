@@ -86,17 +86,26 @@ fun ExpensesScreen(viewModel: ExpensesViewModel, navigateToExpenseDetail: (Expen
             modifier = Modifier.padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            ExpenseList(viewModel.state, searchQuery, navigateToExpenseDetail)
+            ExpenseList(
+                expenses = viewModel.state.expenses,
+                searchQuery = searchQuery,
+                navigateToExpenseDetail = navigateToExpenseDetail
+            )
         }
     }
 }
 
 @Composable
-fun ExpenseList(state: ExpensesState, searchQuery: String, navigateToExpenseDetail: (Expense) -> Unit) {
-    val filteredExpenseList = state.expenses
-    val sortedExpenseList = filteredExpenseList
+fun ExpenseList(
+    expenses: List<Expense>,
+    searchQuery: String = "",
+    limit: Int = -1,
+    navigateToExpenseDetail: (Expense) -> Unit
+) {
+    val sortedExpenseList = expenses
         .sortedByDescending { it.date }
         .map { ExpenseListItem.ExpenseItem(it) }
+        .take(if (limit == -1) expenses.size else limit)
 
     if (sortedExpenseList.isEmpty()) {
         EmptyView()

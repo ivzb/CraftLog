@@ -57,9 +57,32 @@ fun CraftLogNavHost(
         )
 
         financeGraph(
-            navController = navController,
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
+            navigateToBudgetDetail = {
+                val bundle = Bundle()
+                bundle.putParcelable(BUDGET, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(BUDGET, bundle)
+                }
+                navController.navigate(BudgetDetailDestination.route)
+            },
+            navigateToExpenseDetail = {
+                val bundle = Bundle()
+                bundle.putParcelable(EXPENSE, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(EXPENSE, bundle)
+                }
+                navController.navigate(ExpenseDetailDestination.route)
+            },
+            navigateToInvestmentDetail = {
+                val bundle = Bundle()
+                bundle.putParcelable(INVESTMENT, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(INVESTMENT, bundle)
+                }
+                navController.navigate(InvestmentDetailDestination.route)
+            }
         )
 
         expensesGraph(

@@ -6,6 +6,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
+import com.ivzb.craftlog.domain.model.Budget
+import com.ivzb.craftlog.domain.model.Expense
+import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
 
 object FinanceDestination : CraftLogNavigationDestination {
@@ -17,9 +20,11 @@ object FinanceDestination : CraftLogNavigationDestination {
 }
 
 fun NavGraphBuilder.financeGraph(
-    navController: NavController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
+    navigateToBudgetDetail: (Budget) -> Unit,
+    navigateToExpenseDetail: (Expense) -> Unit,
+    navigateToInvestmentDetail: (Investment) -> Unit,
 ) {
     composable(route = FinanceDestination.route) {
         LaunchedEffect(Unit) {
@@ -27,6 +32,6 @@ fun NavGraphBuilder.financeGraph(
             fabBehaviour.value = null
         }
 
-        FinanceRoute(navController)
+        FinanceRoute(navigateToBudgetDetail, navigateToExpenseDetail, navigateToInvestmentDetail)
     }
 }

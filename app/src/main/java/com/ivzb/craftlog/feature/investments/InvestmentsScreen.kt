@@ -78,21 +78,26 @@ fun InvestmentsScreen(
             modifier = Modifier.padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            InvestmentList(viewModel.state, searchQuery, navigateToInvestmentDetail)
+            InvestmentList(
+                investments = viewModel.state.investments,
+                searchQuery = searchQuery,
+                navigateToInvestmentDetail = navigateToInvestmentDetail
+            )
         }
     }
 }
 
 @Composable
 fun InvestmentList(
-    state: InvestmentsState,
-    searchQuery: String,
+    investments: List<Investment>,
+    searchQuery: String = "",
+    limit: Int = -1,
     navigateToInvestmentDetail: (Investment) -> Unit
 ) {
-    val filteredInvestmentList = state.investments
-    val sortedInvestmentList = filteredInvestmentList
+    val sortedInvestmentList = investments
         .sortedByDescending { it.date }
         .map { InvestmentListItem.InvestmentItem(it) }
+        .take(if (limit == -1) investments.size else limit)
 
     if (sortedInvestmentList.isEmpty()) {
         EmptyView()

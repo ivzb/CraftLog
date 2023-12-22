@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Budget
+import com.ivzb.craftlog.domain.model.BudgetOverview
 import com.ivzb.craftlog.feature.budget.viewmodel.BudgetOverviewState
 import com.ivzb.craftlog.feature.budget.viewmodel.BudgetViewModel
 
@@ -61,7 +62,7 @@ fun BudgetScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             BudgetList(
-                state,
+                state.budgetOverview,
                 navigateToBudgetDetail
             )
         }
@@ -70,10 +71,10 @@ fun BudgetScreen(
 
 @Composable
 fun BudgetList(
-    state: BudgetOverviewState,
+    budgetOverview: BudgetOverview?,
     navigateToBudgetDetail: (Budget) -> Unit
 ) {
-    state.budgetOverview?.let {
+    budgetOverview?.let {
         BudgetCard(
             budgetOverview = it
         ) { budget ->
