@@ -38,8 +38,8 @@ class FinanceViewModel @Inject constructor(
             zip(budget, expenses, investments) { budget, expenses, investments ->
                 FinanceState(
                     budget,
-                    expenses,
-                    investments,
+                    expenses.sortedByDescending { it.date }.take(3),
+                    investments.sortedByDescending { it.date }.take(3),
                     loading = false
                 )
             }.onEach {

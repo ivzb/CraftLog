@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Expense
-import com.ivzb.craftlog.feature.expenses.viewmodel.ExpensesState
 import com.ivzb.craftlog.feature.expenses.viewmodel.ExpensesViewModel
 import com.ivzb.craftlog.feature.home.ExpenseCard
 import com.ivzb.craftlog.feature.home.ExpenseListItem
@@ -48,8 +47,7 @@ fun ExpensesRoute(
 // todo: add todo list
 // todo: add future reminders
 
-// todo: hide budget, expenses and investments and group them to a finance screen
-// todo: all of these screens would still be accessible via "more" button
+// todo: add more button to budget, expanses and investments
 
 // todo: add more fields to mortgage expense (principal, interest and insurance)
 
@@ -99,13 +97,11 @@ fun ExpensesScreen(viewModel: ExpensesViewModel, navigateToExpenseDetail: (Expen
 fun ExpenseList(
     expenses: List<Expense>,
     searchQuery: String = "",
-    limit: Int = -1,
     navigateToExpenseDetail: (Expense) -> Unit
 ) {
     val sortedExpenseList = expenses
         .sortedByDescending { it.date }
         .map { ExpenseListItem.ExpenseItem(it) }
-        .take(if (limit == -1) expenses.size else limit)
 
     if (sortedExpenseList.isEmpty()) {
         EmptyView()

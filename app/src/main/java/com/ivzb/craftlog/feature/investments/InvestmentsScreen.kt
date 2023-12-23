@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Investment
-import com.ivzb.craftlog.feature.investments.viewmodel.InvestmentsState
 import com.ivzb.craftlog.feature.investments.viewmodel.InvestmentsViewModel
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
 
@@ -91,13 +90,11 @@ fun InvestmentsScreen(
 fun InvestmentList(
     investments: List<Investment>,
     searchQuery: String = "",
-    limit: Int = -1,
     navigateToInvestmentDetail: (Investment) -> Unit
 ) {
     val sortedInvestmentList = investments
         .sortedByDescending { it.date }
         .map { InvestmentListItem.InvestmentItem(it) }
-        .take(if (limit == -1) investments.size else limit)
 
     if (sortedInvestmentList.isEmpty()) {
         EmptyView()

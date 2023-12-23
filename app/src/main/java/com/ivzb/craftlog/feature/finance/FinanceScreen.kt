@@ -1,10 +1,9 @@
 package com.ivzb.craftlog.feature.finance
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -20,11 +19,11 @@ import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Budget
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Investment
-import com.ivzb.craftlog.feature.budget.BudgetList
-import com.ivzb.craftlog.feature.expenses.ExpenseList
+import com.ivzb.craftlog.feature.budget.BudgetCard
 import com.ivzb.craftlog.feature.finance.viewmodel.FinanceState
 import com.ivzb.craftlog.feature.finance.viewmodel.FinanceViewModel
-import com.ivzb.craftlog.feature.investments.InvestmentList
+import com.ivzb.craftlog.feature.home.ExpenseCard
+import com.ivzb.craftlog.feature.investments.InvestmentCard
 
 @Composable
 fun FinanceRoute(
@@ -67,54 +66,73 @@ fun FinanceScreen(
         bottomBar = { },
     ) { innerPadding ->
 
-        // todo: fix inner scrolling (possibly by combining all items into a single LazyColumn)
-
-        Column(
+        LazyColumn(
             modifier = Modifier.padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(
-                modifier = Modifier.padding(top = 16.dp),
-                style = MaterialTheme.typography.titleLarge,
-                text = stringResource(id = R.string.budget),
-                color = MaterialTheme.colorScheme.primary
+            state.budgetOverview?.let { budgetOverview ->
+                item {
+                    Text(
+                        modifier = Modifier.padding(top = 16.dp),
+                        style = MaterialTheme.typography.titleLarge,
+                        text = stringResource(id = R.string.budget),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+
+                    // todo: more button
+                }
+
+                item {
+                    BudgetCard(budgetOverview) { budget ->
+                        navigateToBudgetDetail(budget)
+                    }
+                }
+            }
+
+            item {
+                Text(
+                    modifier = Modifier.padding(top = 16.dp),
+                    style = MaterialTheme.typography.titleLarge,
+                    text = stringResource(id = R.string.expenses),
+                    color = MaterialTheme.colorScheme.primary
+                )
+
+                // todo: more button
+            }
+
+            items(
+                items = state.expenses,
+                itemContent = {
+                    ExpenseCard(
+                        expense = it,
+                        navigateToExpenseDetail = { expense ->
+                            navigateToExpenseDetail(expense)
+                        }
+                    )
+                }
             )
 
-            // todo: more button
+            item {
+                Text(
+                    modifier = Modifier.padding(top = 16.dp),
+                    style = MaterialTheme.typography.titleLarge,
+                    text = stringResource(id = R.string.investments),
+                    color = MaterialTheme.colorScheme.primary
+                )
 
-            BudgetList(
-                state.budgetOverview,
-                navigateToBudgetDetail
-            )
+                // todo: more button
+            }
 
-            Text(
-                modifier = Modifier.padding(top = 16.dp),
-                style = MaterialTheme.typography.titleLarge,
-                text = stringResource(id = R.string.expenses),
-                color = MaterialTheme.colorScheme.primary
-            )
-
-            // todo: more button
-
-            ExpenseList(
-                expenses = state.expenses,
-                limit = 3,
-                navigateToExpenseDetail = navigateToExpenseDetail
-            )
-
-            Text(
-                modifier = Modifier.padding(top = 16.dp),
-                style = MaterialTheme.typography.titleLarge,
-                text = stringResource(id = R.string.investments),
-                color = MaterialTheme.colorScheme.primary
-            )
-
-            // todo: more button
-
-            InvestmentList(
-                investments = state.investments,
-                limit = 3,
-                navigateToInvestmentDetail = navigateToInvestmentDetail
+            items(
+                items = state.investments,
+                itemContent = {
+                    InvestmentCard(
+                        investment = it,
+                        navigateToInvestmentDetail = { investment ->
+                            navigateToInvestmentDetail(investment)
+                        }
+                    )
+                }
             )
         }
     }

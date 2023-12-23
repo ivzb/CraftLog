@@ -40,7 +40,7 @@ fun BudgetCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(8.dp)
             .clickable {
                 navigateToBudgetDetail(budgetOverview.budget)
             },
@@ -50,8 +50,6 @@ fun BudgetCard(
         )
     ) {
 
-        // todo: fix the padding
-
         Text(
             modifier = Modifier.padding(16.dp),
             style = MaterialTheme.typography.titleMedium,
@@ -59,10 +57,8 @@ fun BudgetCard(
             color = MaterialTheme.colorScheme.primary
         )
 
-        Spacer(modifier = Modifier.padding(8.dp))
-
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(end = 16.dp, bottom = 16.dp, start = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
