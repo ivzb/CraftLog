@@ -44,6 +44,7 @@ import com.ivzb.craftlog.extenstion.toFormattedDateShortString
 import com.ivzb.craftlog.extenstion.toFormattedDateString
 import com.ivzb.craftlog.extenstion.toFormattedMonthDateString
 import com.ivzb.craftlog.feature.addexpense.navigation.AddExpenseDestination
+import com.ivzb.craftlog.feature.expenses.ExpenseCard
 import com.ivzb.craftlog.feature.home.data.CalendarDataSource
 import com.ivzb.craftlog.feature.home.model.CalendarModel
 import com.ivzb.craftlog.feature.home.viewmodel.HomeState
@@ -410,16 +411,4 @@ fun DateHeader(
             )
         }
     }
-}
-
-sealed class ExpenseListItem(val id: Long) {
-
-    data class OverviewItem(
-        val expensesToday: List<Expense>,
-        val isExpenseListEmpty: Boolean
-    ) : ExpenseListItem(-2)
-
-    data class ExpenseItem(val expense: Expense) : ExpenseListItem(expense.id ?: 0)
-
-    data class HeaderItem(val headerText: String) : ExpenseListItem(-1)
 }

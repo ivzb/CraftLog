@@ -1,8 +1,11 @@
 package com.ivzb.craftlog.data
 
 import androidx.room.TypeConverter
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
 import java.math.BigDecimal
 import java.util.Date
+
 
 class Converters {
 
@@ -29,4 +32,10 @@ class Converters {
     fun bigDecimalToString(input: BigDecimal?): String {
         return input?.toPlainString() ?: ""
     }
+
+    @TypeConverter
+    fun listToJson(value: List<String>) = Gson().toJson(value)
+
+    @TypeConverter
+    fun jsonToList(value: String) = Gson().fromJson(value, Array<String>::class.java).toList()
 }

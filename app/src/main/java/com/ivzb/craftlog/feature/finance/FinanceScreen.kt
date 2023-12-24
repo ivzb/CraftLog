@@ -22,7 +22,7 @@ import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.feature.budget.BudgetCard
 import com.ivzb.craftlog.feature.finance.viewmodel.FinanceState
 import com.ivzb.craftlog.feature.finance.viewmodel.FinanceViewModel
-import com.ivzb.craftlog.feature.home.ExpenseCard
+import com.ivzb.craftlog.feature.expenses.ExpenseCard
 import com.ivzb.craftlog.feature.investments.InvestmentCard
 import com.ivzb.craftlog.ui.components.CategoryTitleBar
 

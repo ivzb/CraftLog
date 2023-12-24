@@ -1,4 +1,4 @@
-package com.ivzb.craftlog.feature.expenses
+package com.ivzb.craftlog.feature.notes
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -29,27 +29,22 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Expense
-import com.ivzb.craftlog.feature.expenses.viewmodel.ExpensesViewModel
+import com.ivzb.craftlog.domain.model.Note
+import com.ivzb.craftlog.feature.notes.viewmodel.NotesViewModel
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
 
 @Composable
-fun ExpensesRoute(
-    navigateToExpenseDetail: (Expense) -> Unit,
-    viewModel: ExpensesViewModel = hiltViewModel()
+fun NotesRoute(
+    navigateToNoteDetail: (Note) -> Unit,
+    viewModel: NotesViewModel = hiltViewModel()
 ) {
 
-    ExpensesScreen(viewModel, navigateToExpenseDetail)
+    NotesScreen(viewModel, navigateToNoteDetail)
 }
-
-// todo: add notes
-// todo: add todo list
-// todo: add future reminders
-
-// todo: add more fields to mortgage expense (principal, interest and insurance)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpensesScreen(viewModel: ExpensesViewModel, navigateToExpenseDetail: (Expense) -> Unit) {
+fun NotesScreen(viewModel: NotesViewModel, navigateToNoteDetail: (Note) -> Unit) {
     var searchQuery by remember {
         mutableStateOf("")
     }
@@ -62,12 +57,12 @@ fun ExpensesScreen(viewModel: ExpensesViewModel, navigateToExpenseDetail: (Expen
                 title = {
                     ExpandableSearchView(
                         searchText = searchQuery,
-                        placeholderText = stringResource(id = R.string.expense_placeholder),
-                        titleText = stringResource(id = R.string.expenses),
+                        placeholderText = stringResource(id = R.string.note_placeholder),
+                        titleText = stringResource(id = R.string.notes),
                         onSearch = {
                             if (searchQuery != it) {
                                 searchQuery = it
-                                viewModel.loadExpenses(searchQuery)
+                                viewModel.loadNotes(searchQuery)
                             }
                         },
                     )
@@ -80,38 +75,38 @@ fun ExpensesScreen(viewModel: ExpensesViewModel, navigateToExpenseDetail: (Expen
             modifier = Modifier.padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            ExpenseList(
-                expenses = viewModel.state.expenses,
+            NoteList(
+                notes = viewModel.state.notes,
                 searchQuery = searchQuery,
-                navigateToExpenseDetail = navigateToExpenseDetail
+                navigateToNoteDetail = navigateToNoteDetail
             )
         }
     }
 }
 
 @Composable
-fun ExpenseList(
-    expenses: List<Expense>,
+fun NoteList(
+    notes: List<Note>,
     searchQuery: String = "",
-    navigateToExpenseDetail: (Expense) -> Unit
+    navigateToNoteDetail: (Note) -> Unit
 ) {
-    val sortedExpenseList = expenses
+    val sortedNoteList = notes
         .sortedByDescending { it.date }
-        .map { ExpenseListItem.ExpenseItem(it) }
+        .map { NoteListItem.NoteItem(it) }
 
-    if (sortedExpenseList.isEmpty()) {
+    if (sortedNoteList.isEmpty()) {
         EmptyView()
     } else {
-        ExpenseLazyColumn(sortedExpenseList, searchQuery, navigateToExpenseDetail)
+        NoteLazyColumn(sortedNoteList, searchQuery, navigateToNoteDetail)
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ExpenseLazyColumn(
-    items: List<ExpenseListItem>,
+fun NoteLazyColumn(
+    items: List<NoteListItem>,
     searchQuery: String,
-    navigateToExpenseDetail: (Expense) -> Unit
+    navigateToNoteDetail: (Note) -> Unit
 ) {
     val lazyListState = rememberLazyListState()
 
@@ -131,8 +126,8 @@ fun ExpenseLazyColumn(
             key = { it.id },
             itemContent = {
                 when (it) {
-                    is ExpenseListItem.OverviewItem -> { }
-                    is ExpenseListItem.HeaderItem -> {
+                    is NoteListItem.OverviewItem -> { }
+                    is NoteListItem.HeaderItem -> {
                         Text(
                             modifier = Modifier
                                 .animateItemPlacement()
@@ -144,12 +139,12 @@ fun ExpenseLazyColumn(
                         )
                     }
 
-                    is ExpenseListItem.ExpenseItem -> {
-                        ExpenseCard(
+                    is NoteListItem.NoteItem -> {
+                        NoteCard(
                             modifier = Modifier.animateItemPlacement(),
-                            expense = it.expense,
-                            navigateToExpenseDetail = { expense ->
-                                navigateToExpenseDetail(expense)
+                            note = it.note,
+                            navigateToNoteDetail = { note ->
+                                navigateToNoteDetail(note)
                             }
                         )
                     }
@@ -171,20 +166,20 @@ fun EmptyView() {
         Text(
             modifier = Modifier.padding(16.dp),
             style = MaterialTheme.typography.headlineMedium,
-            text = stringResource(id = R.string.no_expenses_yet),
+            text = stringResource(id = R.string.no_notes_yet),
             color = MaterialTheme.colorScheme.tertiary
         )
     }
 }
 
-sealed class ExpenseListItem(val id: Long) {
+sealed class NoteListItem(val id: Long) {
 
     data class OverviewItem(
-        val expensesToday: List<Expense>,
-        val isExpenseListEmpty: Boolean
-    ) : ExpenseListItem(-2)
+        val notesToday: List<Note>,
+        val isNoteListEmpty: Boolean
+    ) : NoteListItem(-2)
 
-    data class ExpenseItem(val expense: Expense) : ExpenseListItem(expense.id ?: 0)
+    data class NoteItem(val note: Note) : NoteListItem(note.id ?: 0)
 
-    data class HeaderItem(val headerText: String) : ExpenseListItem(-1)
+    data class HeaderItem(val headerText: String) : NoteListItem(-1)
 }

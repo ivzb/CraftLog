@@ -68,4 +68,8 @@
     <string name="more">More</string>
     <string name="expense">Expense</string>
     <string name="investment">Investment</string>
+    <string name="add_note">Add Note</string>
+    <string name="notes">Notes</string>
+    <string name="no_notes_yet">No notes yet</string>
+    <string name="note_placeholder">e.g., Thoughts, Notes, Ideas, Tasks</string>
 </resources>

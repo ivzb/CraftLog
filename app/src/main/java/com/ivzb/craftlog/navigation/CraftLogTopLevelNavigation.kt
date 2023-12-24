@@ -8,6 +8,7 @@ import com.ivzb.craftlog.feature.expenses.ExpensesDestination
 import com.ivzb.craftlog.feature.finance.FinanceDestination
 import com.ivzb.craftlog.feature.home.HomeDestination
 import com.ivzb.craftlog.feature.investments.InvestmentsDestination
+import com.ivzb.craftlog.feature.notes.NotesDestination
 
 class CraftLogTopLevelNavigation (private val navController: NavHostController) {
 
@@ -48,6 +49,13 @@ val TOP_LEVEL_DESTINATIONS = listOf(
         selectedIconId = R.drawable.ic_expenses_filled,
         unselectedIconId = R.drawable.ic_expenses_outlined,
         iconTextId = R.string.finance
+    ),
+
+    TopLevelDestination(
+        route = NotesDestination.route,
+        selectedIconId = R.drawable.ic_notes,
+        unselectedIconId = R.drawable.ic_notes,
+        iconTextId = R.string.notes
     ),
 
 )

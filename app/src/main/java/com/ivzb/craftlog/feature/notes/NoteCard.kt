@@ -1,4 +1,4 @@
-package com.ivzb.craftlog.feature.home
+package com.ivzb.craftlog.feature.notes
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -19,16 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ivzb.craftlog.domain.model.Expense
+import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.extenstion.toRelativeDateString
 import java.util.Date
 
-
 @Composable
-fun ExpenseCard(
+fun NoteCard(
     modifier: Modifier = Modifier,
-    expense: Expense,
-    navigateToExpenseDetail: (Expense) -> Unit
+    note: Note,
+    navigateToNoteDetail: (Note) -> Unit
 ) {
 
     Card(
@@ -36,7 +35,7 @@ fun ExpenseCard(
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable {
-                navigateToExpenseDetail(expense)
+                navigateToNoteDetail(note)
             },
         shape = RoundedCornerShape(30.dp),
         colors = CardDefaults.cardColors(
@@ -58,12 +57,13 @@ fun ExpenseCard(
                 Text(
                     modifier = Modifier.padding(bottom = 16.dp),
                     style = MaterialTheme.typography.titleSmall,
-                    text = expense.date.toRelativeDateString(),
+                    text = note.date.toRelativeDateString(),
                     color = MaterialTheme.colorScheme.primary
                 )
 
                 Text(
-                    text = "${expense.name} - ${expense.amount}",
+                    // todo: show only first line?
+                    text = note.content,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -76,13 +76,13 @@ fun ExpenseCard(
 
 @Preview
 @Composable
-private fun ExpenseCardPreview() {
-    ExpenseCard(
-        expense = Expense(
+private fun NoteCardPreview() {
+    NoteCard(
+        Modifier,
+        Note(
             id = 123L,
-            name = "dinner",
-            amount = 12.5.toBigDecimal(),
-            categoryId = "food",
+            content = "dinner",
+            tags = listOf(),
             date = Date(),
         )
     ) { }
