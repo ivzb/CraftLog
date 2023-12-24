@@ -11,6 +11,7 @@ import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.feature.addexpense.navigation.addExpenseGraph
 import com.ivzb.craftlog.feature.addinvestment.navigation.addInvestmentGraph
 import com.ivzb.craftlog.feature.budget.BUDGET
+import com.ivzb.craftlog.feature.budget.BudgetDestination
 import com.ivzb.craftlog.feature.budget.budgetGraph
 import com.ivzb.craftlog.feature.budgetdetail.BudgetDetailDestination
 import com.ivzb.craftlog.feature.budgetdetail.budgetDetailGraph
@@ -59,6 +60,9 @@ fun CraftLogNavHost(
         financeGraph(
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
+            navigateToBudget = {
+               navController.navigate(BudgetDestination.route)
+            },
             navigateToBudgetDetail = {
                 val bundle = Bundle()
                 bundle.putParcelable(BUDGET, it)
@@ -67,6 +71,9 @@ fun CraftLogNavHost(
                 }
                 navController.navigate(BudgetDetailDestination.route)
             },
+            navigateToExpenses = {
+                navController.navigate(ExpensesDestination.route)
+            },
             navigateToExpenseDetail = {
                 val bundle = Bundle()
                 bundle.putParcelable(EXPENSE, it)
@@ -74,6 +81,9 @@ fun CraftLogNavHost(
                     this?.set(EXPENSE, bundle)
                 }
                 navController.navigate(ExpenseDetailDestination.route)
+            },
+            navigateToInvestments = {
+                navController.navigate(InvestmentsDestination.route)
             },
             navigateToInvestmentDetail = {
                 val bundle = Bundle()

@@ -81,7 +81,14 @@ fun InvestmentDetailScreen(
                         )
                     }
                 },
-                title = { }
+                title = {
+                    Text(
+                        modifier = Modifier.padding(8.dp),
+                        text = stringResource(id = R.string.investment),
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.displaySmall,
+                    )
+                }
             )
         },
         bottomBar = {

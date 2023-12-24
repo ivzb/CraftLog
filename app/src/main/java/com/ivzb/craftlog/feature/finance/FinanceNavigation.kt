@@ -22,8 +22,11 @@ object FinanceDestination : CraftLogNavigationDestination {
 fun NavGraphBuilder.financeGraph(
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
+    navigateToBudget: () -> Unit,
     navigateToBudgetDetail: (Budget) -> Unit,
+    navigateToExpenses: () -> Unit,
     navigateToExpenseDetail: (Expense) -> Unit,
+    navigateToInvestments: () -> Unit,
     navigateToInvestmentDetail: (Investment) -> Unit,
 ) {
     composable(route = FinanceDestination.route) {
@@ -32,6 +35,13 @@ fun NavGraphBuilder.financeGraph(
             fabBehaviour.value = null
         }
 
-        FinanceRoute(navigateToBudgetDetail, navigateToExpenseDetail, navigateToInvestmentDetail)
+        FinanceRoute(
+            navigateToBudget,
+            navigateToBudgetDetail,
+            navigateToExpenses,
+            navigateToExpenseDetail,
+            navigateToInvestments,
+            navigateToInvestmentDetail
+        )
     }
 }

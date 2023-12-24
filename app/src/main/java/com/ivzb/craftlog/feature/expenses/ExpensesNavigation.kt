@@ -29,7 +29,7 @@ fun NavGraphBuilder.expensesGraph(
 ) {
     composable(route = ExpensesDestination.route) {
         LaunchedEffect(null) {
-            bottomBarVisibility.value = true
+            bottomBarVisibility.value = false
             fabBehaviour.value = FabBehaviour(
                 visibility = true,
                 textId = R.string.add_expense,

@@ -28,16 +28,22 @@ import com.ivzb.craftlog.ui.components.CategoryTitleBar
 
 @Composable
 fun FinanceRoute(
+    navigateToBudget: () -> Unit,
     navigateToBudgetDetail: (Budget) -> Unit,
+    navigateToExpenses: () -> Unit,
     navigateToExpenseDetail: (Expense) -> Unit,
+    navigateToInvestments: () -> Unit,
     navigateToInvestmentDetail: (Investment) -> Unit,
     viewModel: FinanceViewModel = hiltViewModel(),
 ) {
 
     FinanceScreen(
         viewModel.state,
+        navigateToBudget,
         navigateToBudgetDetail,
+        navigateToExpenses,
         navigateToExpenseDetail,
+        navigateToInvestments,
         navigateToInvestmentDetail
     )
 }
@@ -46,8 +52,11 @@ fun FinanceRoute(
 @Composable
 fun FinanceScreen(
     state: FinanceState,
+    navigateToBudget: () -> Unit,
     navigateToBudgetDetail: (Budget) -> Unit,
+    navigateToExpenses: () -> Unit,
     navigateToExpenseDetail: (Expense) -> Unit,
+    navigateToInvestments: () -> Unit,
     navigateToInvestmentDetail: (Investment) -> Unit,
 ) {
     Scaffold(
@@ -73,7 +82,9 @@ fun FinanceScreen(
         ) {
             state.budgetOverview?.let { budgetOverview ->
                 item {
-                    CategoryTitleBar(title = stringResource(id = R.string.budget))
+                    CategoryTitleBar(title = stringResource(id = R.string.budget)) {
+                        navigateToBudget()
+                    }
                 }
 
                 item {
@@ -84,7 +95,9 @@ fun FinanceScreen(
             }
 
             item {
-                CategoryTitleBar(title = stringResource(id = R.string.expenses))
+                CategoryTitleBar(title = stringResource(id = R.string.expenses)) {
+                    navigateToExpenses()
+                }
             }
 
             items(
@@ -100,7 +113,9 @@ fun FinanceScreen(
             )
 
             item {
-                CategoryTitleBar(title = stringResource(id = R.string.investments))
+                CategoryTitleBar(title = stringResource(id = R.string.investments)) {
+                    navigateToInvestments()
+                }
             }
 
             items(

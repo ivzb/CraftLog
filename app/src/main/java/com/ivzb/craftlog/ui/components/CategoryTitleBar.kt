@@ -1,5 +1,6 @@
 package com.ivzb.craftlog.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.ivzb.craftlog.R
 
 @Composable
-fun CategoryTitleBar(title: String) {
+fun CategoryTitleBar(title: String, onMoreClick: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -29,7 +30,11 @@ fun CategoryTitleBar(title: String) {
         )
 
         Text(
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .clickable {
+                    onMoreClick()
+                },
             style = MaterialTheme.typography.labelLarge,
             text = stringResource(id = R.string.more),
             color = MaterialTheme.colorScheme.primary

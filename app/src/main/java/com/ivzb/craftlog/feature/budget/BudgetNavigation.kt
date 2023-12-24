@@ -25,7 +25,7 @@ fun NavGraphBuilder.budgetGraph(
 ) {
     composable(route = BudgetDestination.route) {
         LaunchedEffect(null) {
-            bottomBarVisibility.value = true
+            bottomBarVisibility.value = false
             fabBehaviour.value = null
         }
 

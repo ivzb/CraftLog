@@ -127,7 +127,7 @@ fun AddExpenseScreen(
                 },
                 title = {
                     Text(
-                        modifier = Modifier.padding(16.dp),
+                        modifier = Modifier.padding(8.dp),
                         text = stringResource(id = R.string.add_expense),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.displaySmall

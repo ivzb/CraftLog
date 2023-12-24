@@ -66,4 +66,6 @@
     <string name="other">Other</string>
     <string name="finance">Finance</string>
     <string name="more">More</string>
+    <string name="expense">Expense</string>
+    <string name="investment">Investment</string>
 </resources>

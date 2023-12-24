@@ -128,7 +128,7 @@ fun AddInvestmentScreen(
                 },
                 title = {
                     Text(
-                        modifier = Modifier.padding(16.dp),
+                        modifier = Modifier.padding(8.dp),
                         text = stringResource(id = R.string.add_investment),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.displaySmall
