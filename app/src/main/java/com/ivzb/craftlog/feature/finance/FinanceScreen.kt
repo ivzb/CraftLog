@@ -24,6 +24,7 @@ import com.ivzb.craftlog.feature.finance.viewmodel.FinanceState
 import com.ivzb.craftlog.feature.finance.viewmodel.FinanceViewModel
 import com.ivzb.craftlog.feature.home.ExpenseCard
 import com.ivzb.craftlog.feature.investments.InvestmentCard
+import com.ivzb.craftlog.ui.components.CategoryTitleBar
 
 @Composable
 fun FinanceRoute(
@@ -72,14 +73,7 @@ fun FinanceScreen(
         ) {
             state.budgetOverview?.let { budgetOverview ->
                 item {
-                    Text(
-                        modifier = Modifier.padding(top = 16.dp),
-                        style = MaterialTheme.typography.titleLarge,
-                        text = stringResource(id = R.string.budget),
-                        color = MaterialTheme.colorScheme.primary
-                    )
-
-                    // todo: more button
+                    CategoryTitleBar(title = stringResource(id = R.string.budget))
                 }
 
                 item {
@@ -90,14 +84,7 @@ fun FinanceScreen(
             }
 
             item {
-                Text(
-                    modifier = Modifier.padding(top = 16.dp),
-                    style = MaterialTheme.typography.titleLarge,
-                    text = stringResource(id = R.string.expenses),
-                    color = MaterialTheme.colorScheme.primary
-                )
-
-                // todo: more button
+                CategoryTitleBar(title = stringResource(id = R.string.expenses))
             }
 
             items(
@@ -113,14 +100,7 @@ fun FinanceScreen(
             )
 
             item {
-                Text(
-                    modifier = Modifier.padding(top = 16.dp),
-                    style = MaterialTheme.typography.titleLarge,
-                    text = stringResource(id = R.string.investments),
-                    color = MaterialTheme.colorScheme.primary
-                )
-
-                // todo: more button
+                CategoryTitleBar(title = stringResource(id = R.string.investments))
             }
 
             items(
