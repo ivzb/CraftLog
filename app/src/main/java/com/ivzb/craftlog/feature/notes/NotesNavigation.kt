@@ -12,6 +12,7 @@ import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.feature.addexpense.navigation.AddExpenseDestination
+import com.ivzb.craftlog.feature.addnote.navigation.AddNoteDestination
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
 
 const val NOTE = "note"
@@ -37,7 +38,6 @@ fun NavGraphBuilder.notesGraph(
                 textId = R.string.add_note,
                 icon = Icons.Default.Add,
                 analyticsEvent = AnalyticsEvents.ADD_NOTE_CLICKED_FAB,
-                // todo
                 destinationRoute = AddNoteDestination.route,
             )
         }

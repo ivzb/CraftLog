@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.feature.addexpense.navigation.addExpenseGraph
 import com.ivzb.craftlog.feature.addinvestment.navigation.addInvestmentGraph
+import com.ivzb.craftlog.feature.addnote.navigation.addNoteGraph
 import com.ivzb.craftlog.feature.budget.BUDGET
 import com.ivzb.craftlog.feature.budget.BudgetDestination
 import com.ivzb.craftlog.feature.budget.budgetGraph
@@ -29,6 +30,7 @@ import com.ivzb.craftlog.feature.investments.INVESTMENT
 import com.ivzb.craftlog.feature.investments.InvestmentsDestination
 import com.ivzb.craftlog.feature.investments.investmentsGraph
 import com.ivzb.craftlog.feature.notes.NOTE
+import com.ivzb.craftlog.feature.notes.NotesDestination
 import com.ivzb.craftlog.feature.notes.notesGraph
 import com.ivzb.craftlog.util.navigateSingleTop
 
@@ -118,7 +120,6 @@ fun CraftLogNavHost(
         )
 
         addExpenseGraph(
-            navController = navController,
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
             onBackClicked = { navController.navigateUp() },
@@ -168,7 +169,6 @@ fun CraftLogNavHost(
         )
 
         addInvestmentGraph(
-            navController = navController,
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
             onBackClicked = { navController.navigateUp() },
@@ -188,6 +188,15 @@ fun CraftLogNavHost(
                 }
                 // todo
 //                navController.navigate(NoteDetailDestination.route)
+            }
+        )
+
+        addNoteGraph(
+            bottomBarVisibility = bottomBarVisibility,
+            fabBehaviour = fabBehaviour,
+            onBackClicked = { navController.navigateUp() },
+            navigateToNotes = {
+                navController.navigateSingleTop(NotesDestination.route)
             }
         )
     }

@@ -3,7 +3,7 @@ package com.ivzb.craftlog.feature.addinvestment.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivzb.craftlog.domain.model.Investment
-import com.ivzb.craftlog.feature.addexpense.usecase.AddInvestmentUseCase
+import com.ivzb.craftlog.feature.addinvestment.usecase.AddInvestmentUseCase
 import com.ivzb.craftlog.feature.addinvestment.usecase.FindInvestmentsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

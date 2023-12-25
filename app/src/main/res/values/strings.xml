@@ -71,5 +71,8 @@
     <string name="add_note">Add Note</string>
     <string name="notes">Notes</string>
     <string name="no_notes_yet">No notes yet</string>
-    <string name="note_placeholder">e.g., Thoughts, Notes, Ideas, Tasks</string>
+    <string name="note_placeholder">e.g., Thoughts, Ideas, Tasks</string>
+    <string name="content">Content</string>
+    <string name="tags">Tags</string>
+    <string name="tags_placeholder">e.g., Work, Personal, ProjectX</string>
 </resources>

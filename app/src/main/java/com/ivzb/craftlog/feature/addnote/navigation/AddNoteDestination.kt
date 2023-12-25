@@ -1,33 +1,33 @@
-package com.ivzb.craftlog.feature.addexpense.navigation
+package com.ivzb.craftlog.feature.addnote.navigation
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
-import com.ivzb.craftlog.feature.addexpense.AddExpenseRoute
+import com.ivzb.craftlog.feature.addnote.AddNoteRoute
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
 
-object AddExpenseDestination : CraftLogNavigationDestination {
+object AddNoteDestination : CraftLogNavigationDestination {
 
-    override val route = "add_expense_route"
+    override val route = "add_note_route"
 
-    override val destination = "add_expense_destination"
+    override val destination = "add_note_destination"
 
 }
 
-fun NavGraphBuilder.addExpenseGraph(
+fun NavGraphBuilder.addNoteGraph(
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
     onBackClicked: () -> Unit,
-    navigateToExpenses: () -> Unit,
+    navigateToNotes: () -> Unit,
 ) {
-    composable(route = AddExpenseDestination.route) {
+    composable(route = AddNoteDestination.route) {
         LaunchedEffect(null) {
             bottomBarVisibility.value = false
             fabBehaviour.value = null
         }
 
-        AddExpenseRoute(onBackClicked, navigateToExpenses)
+        AddNoteRoute(onBackClicked, navigateToNotes)
     }
 }

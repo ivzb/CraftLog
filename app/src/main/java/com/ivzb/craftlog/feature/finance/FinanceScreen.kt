@@ -100,6 +100,8 @@ fun FinanceScreen(
                 }
             }
 
+            // todo: add empty state
+
             items(
                 items = state.expenses,
                 itemContent = {
@@ -117,6 +119,8 @@ fun FinanceScreen(
                     navigateToInvestments()
                 }
             }
+
+            // todo: add empty state
 
             items(
                 items = state.investments,
