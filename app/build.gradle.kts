@@ -71,6 +71,7 @@ dependencies {
     val lifecycle_version = "2.7.0-rc02"
     val activity_version = "1.8.2"
     val firebase_version = "32.5.0"
+    val jsoup_version = "1.17.1"
 
     implementation("androidx.core:core-ktx:$core_version")
     implementation("androidx.compose.ui:ui:$compose_ui_version")
@@ -109,6 +110,9 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:$firebase_version"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-crashlytics")
+
+    // Utils
+    implementation("org.jsoup:jsoup:$jsoup_version")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

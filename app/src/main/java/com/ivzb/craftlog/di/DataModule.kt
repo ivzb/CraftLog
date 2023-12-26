@@ -1,6 +1,7 @@
 package com.ivzb.craftlog.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.ivzb.craftlog.data.CraftLogDatabase
 import com.ivzb.craftlog.data.repository.BudgetRepositoryImpl
@@ -11,6 +12,7 @@ import com.ivzb.craftlog.data.repository.NoteRepositoryImpl
 import com.ivzb.craftlog.domain.repository.BudgetRepository
 import com.ivzb.craftlog.domain.repository.InvestmentRepository
 import com.ivzb.craftlog.domain.repository.NoteRepository
+import com.ivzb.craftlog.util.NetworkUtils
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +23,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object CraftLogDataModule {
+object DataModule {
 
     @Provides
     @Singleton
@@ -47,41 +49,21 @@ object CraftLogDataModule {
 
     @Provides
     @Singleton
-    fun provideExpensesRepository(
-        db: CraftLogDatabase
-    ): ExpenseRepository {
-        return ExpenseRepositoryImpl(
-            dao = db.expenseDao
-        )
-    }
+    fun provideExpensesRepository(db: CraftLogDatabase): ExpenseRepository = ExpenseRepositoryImpl(dao = db.expenseDao)
 
     @Provides
     @Singleton
-    fun provideInvestmentsRepository(
-        db: CraftLogDatabase
-    ): InvestmentRepository {
-        return InvestmentRepositoryImpl(
-            dao = db.investmentDao
-        )
-    }
+    fun provideInvestmentsRepository(db: CraftLogDatabase): InvestmentRepository = InvestmentRepositoryImpl(dao = db.investmentDao)
 
     @Provides
     @Singleton
-    fun provideBudgetRepository(
-        db: CraftLogDatabase
-    ): BudgetRepository {
-        return BudgetRepositoryImpl(
-            dao = db.budgetDao
-        )
-    }
+    fun provideBudgetRepository(db: CraftLogDatabase): BudgetRepository = BudgetRepositoryImpl(dao = db.budgetDao)
 
     @Provides
     @Singleton
-    fun provideNoteRepository(
-        db: CraftLogDatabase
-    ): NoteRepository {
-        return NoteRepositoryImpl(
-            dao = db.noteDao
-        )
-    }
+    fun provideNoteRepository(db: CraftLogDatabase): NoteRepository = NoteRepositoryImpl(dao = db.noteDao)
+
+    @Provides
+    @Singleton
+    fun provideNetworkUtils(context: Context): NetworkUtils = NetworkUtils(context)
 }

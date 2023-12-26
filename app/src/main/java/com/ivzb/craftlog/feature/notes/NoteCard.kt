@@ -48,6 +48,8 @@ fun NoteCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
+            // todo: try to show image and title if the note has a link
+
             Column(
                 modifier = Modifier
                     .weight(2f)
