@@ -10,9 +10,7 @@ data class Note(
     val content: String,
     val tags: List<String>,
     val date: Date,
-    val url: String? = null,
-    val site: String? = null,
-    val imageUrl: String? = null,
+    val link: Link?,
 ) : Parcelable {
 
     override fun toString() = "$content (${tags.joinToString(", ")})"

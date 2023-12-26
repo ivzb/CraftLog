@@ -84,6 +84,7 @@ private fun NoteCardPreview() {
             content = "dinner",
             tags = listOf(),
             date = Date(),
+            link = null
         )
     ) { }
 }

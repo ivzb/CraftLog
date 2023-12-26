@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a681b9f14da4f0d772b3f721ed67c1ae",
+    "identityHash": "3c0a8258c7954e351f698a2971d01009",
     "entities": [
       {
         "tableName": "ExpenseEntity",
@@ -150,7 +150,7 @@
       },
       {
         "tableName": "NoteEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `content` TEXT NOT NULL, `tags` TEXT NOT NULL, `date` INTEGER NOT NULL, `url` TEXT, `site` TEXT, `imageUrl` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `content` TEXT NOT NULL, `tags` TEXT NOT NULL, `date` INTEGER NOT NULL, `url` TEXT, `site` TEXT, `title` TEXT, `imageUrl` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -177,19 +177,25 @@
             "notNull": true
           },
           {
-            "fieldPath": "url",
+            "fieldPath": "link.url",
             "columnName": "url",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "site",
+            "fieldPath": "link.site",
             "columnName": "site",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "imageUrl",
+            "fieldPath": "link.title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "link.imageUrl",
             "columnName": "imageUrl",
             "affinity": "TEXT",
             "notNull": false
@@ -208,7 +214,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a681b9f14da4f0d772b3f721ed67c1ae')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3c0a8258c7954e351f698a2971d01009')"
     ]
   }
 }

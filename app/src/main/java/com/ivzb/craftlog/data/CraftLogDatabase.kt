@@ -10,6 +10,7 @@ import com.ivzb.craftlog.data.dao.NoteDao
 import com.ivzb.craftlog.data.entity.BudgetEntity
 import com.ivzb.craftlog.data.entity.ExpenseEntity
 import com.ivzb.craftlog.data.entity.InvestmentEntity
+import com.ivzb.craftlog.data.entity.LinkEntity
 import com.ivzb.craftlog.data.entity.NoteEntity
 
 @Database(

@@ -24,12 +24,13 @@ class AddNoteViewModel @Inject constructor(
         tags: List<String>,
         date: Date
     ): Note {
-        // todo: try to fetch url
         return Note(
             id = 0,
             content = content,
             tags = tags,
             date = date,
+            // todo: try to fetch url and create link
+            link = null,
         )
     }
 

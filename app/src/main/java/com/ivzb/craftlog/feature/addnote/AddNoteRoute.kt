@@ -168,7 +168,7 @@ fun AddNoteScreen(
             )
 
             TextField(
-                modifier = Modifier.fillMaxWidth().height(150.dp),
+                modifier = Modifier.fillMaxWidth().height(100.dp),
                 value = content,
                 onValueChange = { content = it },
                 maxLines = 5,

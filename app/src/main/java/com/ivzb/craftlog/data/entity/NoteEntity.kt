@@ -1,7 +1,10 @@
 package com.ivzb.craftlog.data.entity
 
+import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 import java.util.Date
 
 @Entity
@@ -10,7 +13,5 @@ data class NoteEntity(
     val content: String,
     val tags: List<String>,
     val date: Date,
-    val url: String?,
-    val site: String?,
-    val imageUrl: String?,
+    @Embedded val link: LinkEntity?,
 )
