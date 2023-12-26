@@ -8,13 +8,14 @@ enum class InvestmentCategory(override val id: String, val titleResId: Int): Ite
     Stocks("stocks", R.string.stocks),
     Cryptocurrency("cryptocurrency", R.string.cryptocurrency),
     Commodity("commodity", R.string.commodity),
+    EmergencyFund("emergency_fund", R.string.emergency_fund),
+    Fund("fund", R.string.fund),
     Cash("cash", R.string.cash),
     Property("property", R.string.property),
     ETF("etf", R.string.etf),
     Bond("bond", R.string.bond),
     Security("security", R.string.security),
     Option("option", R.string.option),
-    EmergencyFund("emergency_fund", R.string.emergency_fund),
     None("none", R.string.none);
 
     override val title: String
