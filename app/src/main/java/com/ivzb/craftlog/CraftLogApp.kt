@@ -79,7 +79,7 @@ fun CraftLogApp() {
             val currentDestination = navBackStackEntry?.destination
 
             val bottomBarVisibility = rememberSaveable { (mutableStateOf(true)) }
-            val fabBehaviour = rememberSaveable { (mutableStateOf<FabBehaviour?>(null)) }
+            val fabBehaviour = mutableStateOf<FabBehaviour?>(null)
 
             val context = LocalContext.current
             val analyticsHelper = AnalyticsHelper.getInstance(context)

@@ -38,7 +38,7 @@ fun ExpenseCard(
             .clickable {
                 navigateToExpenseDetail(expense)
             },
-        shape = RoundedCornerShape(30.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
         )
