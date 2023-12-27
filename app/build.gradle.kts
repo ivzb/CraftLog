@@ -72,6 +72,8 @@ dependencies {
     val activity_version = "1.8.2"
     val firebase_version = "32.5.0"
     val jsoup_version = "1.17.1"
+    val coil_version = "2.5.0"
+    val constraint_layout_version = "1.0.1"
 
     implementation("androidx.core:core-ktx:$core_version")
     implementation("androidx.compose.ui:ui:$compose_ui_version")
@@ -83,6 +85,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:$compose_ui_version")
 
     implementation("androidx.activity:activity-compose:$activity_version")
+    implementation("androidx.constraintlayout:constraintlayout-compose:$constraint_layout_version")
 
     // Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
@@ -111,8 +114,11 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-crashlytics")
 
-    // Utils
+    // HTML parser
     implementation("org.jsoup:jsoup:$jsoup_version")
+
+    // Image loading library
+    implementation("io.coil-kt:coil-compose:$coil_version")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -120,6 +126,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_ui_version")
     debugImplementation("androidx.compose.ui:ui-tooling:$compose_ui_version")
     debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_ui_version")
+
 }
 
 // Allow references to generated code

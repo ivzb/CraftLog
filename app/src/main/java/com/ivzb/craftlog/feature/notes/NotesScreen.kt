@@ -140,6 +140,8 @@ fun NoteLazyColumn(
                     }
 
                     is NoteListItem.NoteItem -> {
+                        // todo: show notes grouped by dates
+
                         NoteCard(
                             modifier = Modifier.animateItemPlacement(),
                             note = it.note,
