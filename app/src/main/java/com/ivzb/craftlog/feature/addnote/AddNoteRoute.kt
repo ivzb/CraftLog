@@ -61,6 +61,8 @@ fun AddNoteRoute(
     AddNoteScreen(onBackClicked, navigateToNotes, viewModel, analyticsHelper)
 }
 
+// todo: paste from clipboard button
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddNoteScreen(

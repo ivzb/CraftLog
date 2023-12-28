@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,10 +27,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
-import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Note
+import com.ivzb.craftlog.extenstion.toRelativeDateString
+import com.ivzb.craftlog.feature.notes.NoteListItem.HeaderItem
+import com.ivzb.craftlog.feature.notes.NoteListItem.NoteItem
+import com.ivzb.craftlog.feature.notes.NoteListItem.OverviewItem
 import com.ivzb.craftlog.feature.notes.viewmodel.NotesViewModel
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
+import java.util.Date
 
 @Composable
 fun NotesRoute(
@@ -92,7 +95,9 @@ fun NoteList(
 ) {
     val sortedNoteList = notes
         .sortedByDescending { it.date }
-        .map { NoteListItem.NoteItem(it) }
+        .map { NoteItem(it) }
+        .groupBy { it.note.date.trim() }
+        .flatMap { (time, notes) -> listOf(HeaderItem(time)) + notes }
 
     if (sortedNoteList.isEmpty()) {
         EmptyView()
@@ -126,22 +131,20 @@ fun NoteLazyColumn(
             key = { it.id },
             itemContent = {
                 when (it) {
-                    is NoteListItem.OverviewItem -> { }
-                    is NoteListItem.HeaderItem -> {
+                    is OverviewItem -> { }
+                    is HeaderItem -> {
                         Text(
                             modifier = Modifier
                                 .animateItemPlacement()
-                                .padding(4.dp, 12.dp, 8.dp, 0.dp)
-                                .fillMaxWidth(),
-                            text = it.headerText.uppercase(),
+                                .padding(4.dp, 12.dp, 8.dp, 0.dp),
+                            text = Date(it.time).toRelativeDateString(),
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleMedium,
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
 
-                    is NoteListItem.NoteItem -> {
-                        // todo: show notes grouped by dates
-
+                    is NoteItem -> {
                         NoteCard(
                             modifier = Modifier.animateItemPlacement(),
                             note = it.note,
@@ -183,5 +186,7 @@ sealed class NoteListItem(val id: Long) {
 
     data class NoteItem(val note: Note) : NoteListItem(note.id ?: 0)
 
-    data class HeaderItem(val headerText: String) : NoteListItem(-1)
+    data class HeaderItem(val time: Long) : NoteListItem(time)
 }
+
+private fun Date.trim(): Long = this.time - (this.time % 86_400_000)

@@ -41,8 +41,9 @@ fun ExpensesRoute(
     ExpensesScreen(viewModel, navigateToExpenseDetail)
 }
 
-// todo: add notes
-// todo: add todo list
+// todo: add grouping by date in expenses and investments screens
+
+// todo: add todo list as notes feature
 // todo: add future reminders
 
 // todo: add more fields to mortgage expense (principal, interest and insurance)
