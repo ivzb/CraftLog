@@ -20,9 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ivzb.craftlog.domain.model.Expense
-import com.ivzb.craftlog.extenstion.toRelativeDateString
 import java.util.Date
-
 
 @Composable
 fun ExpenseCard(
@@ -55,12 +53,6 @@ fun ExpenseCard(
                     .padding(8.dp, 0.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text(
-                    modifier = Modifier.padding(bottom = 16.dp),
-                    style = MaterialTheme.typography.titleSmall,
-                    text = expense.date.toRelativeDateString(),
-                    color = MaterialTheme.colorScheme.primary
-                )
 
                 Text(
                     text = "${expense.name} - ${expense.amount}",

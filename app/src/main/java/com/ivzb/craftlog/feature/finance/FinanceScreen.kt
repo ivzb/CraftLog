@@ -20,9 +20,11 @@ import com.ivzb.craftlog.domain.model.Budget
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.feature.budget.BudgetCard
-import com.ivzb.craftlog.feature.expenses.ExpenseCard
+import com.ivzb.craftlog.feature.expenses.ExpenseEmptyView
+import com.ivzb.craftlog.feature.expenses.ExpenseListItem
 import com.ivzb.craftlog.feature.finance.viewmodel.FinanceState
 import com.ivzb.craftlog.feature.finance.viewmodel.FinanceViewModel
+import com.ivzb.craftlog.feature.investments.InvestmentEmptyView
 import com.ivzb.craftlog.feature.investments.InvestmentListItem
 import com.ivzb.craftlog.ui.components.CategoryTitleBar
 import com.ivzb.craftlog.util.trim
@@ -101,19 +103,22 @@ fun FinanceScreen(
                 }
             }
 
-            // todo: add empty state
+            val expenses = state.expenses
+                .sortedByDescending { it.date }
+                .map { ExpenseListItem.ExpenseItem(it) }
+                .groupBy { it.expense.date.trim() }
+                .flatMap { (time, expenses) -> listOf(ExpenseListItem.HeaderItem(time)) + expenses }
 
-            // todo: grouped expenses by date
+            if (expenses.isEmpty()) {
+                item {
+                    ExpenseEmptyView()
+                }
+            }
 
             items(
-                items = state.expenses,
+                items = expenses,
                 itemContent = {
-                    ExpenseCard(
-                        expense = it,
-                        navigateToExpenseDetail = { expense ->
-                            navigateToExpenseDetail(expense)
-                        }
-                    )
+                    ExpenseListItem(it, navigateToExpenseDetail = navigateToExpenseDetail)
                 }
             )
 
@@ -123,13 +128,17 @@ fun FinanceScreen(
                 }
             }
 
-            // todo: add empty state
-
             val investments = state.investments
                 .sortedByDescending { it.date }
                 .map { InvestmentListItem.InvestmentItem(it) }
                 .groupBy { it.investment.date.trim() }
                 .flatMap { (time, notes) -> listOf(InvestmentListItem.HeaderItem(time)) + notes }
+
+            if (investments.isEmpty()) {
+                item {
+                    InvestmentEmptyView()
+                }
+            }
 
             items(
                 items = investments,

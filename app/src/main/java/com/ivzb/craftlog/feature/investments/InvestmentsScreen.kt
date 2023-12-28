@@ -30,10 +30,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.extenstion.toRelativeDateString
+import com.ivzb.craftlog.feature.expenses.ExpenseListItem
 import com.ivzb.craftlog.feature.investments.InvestmentListItem.HeaderItem
 import com.ivzb.craftlog.feature.investments.InvestmentListItem.InvestmentItem
 import com.ivzb.craftlog.feature.investments.InvestmentListItem.OverviewItem
 import com.ivzb.craftlog.feature.investments.viewmodel.InvestmentsViewModel
+import com.ivzb.craftlog.ui.components.DateTitleBar
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
 import com.ivzb.craftlog.util.trim
 import java.util.Date
@@ -102,10 +104,10 @@ fun InvestmentList(
         .sortedByDescending { it.date }
         .map { InvestmentItem(it) }
         .groupBy { it.investment.date.trim() }
-        .flatMap { (time, notes) -> listOf(HeaderItem(time)) + notes }
+        .flatMap { (time, investments) -> listOf(HeaderItem(time)) + investments }
 
     if (sortedInvestmentList.isEmpty()) {
-        EmptyView()
+        InvestmentEmptyView()
     } else {
         InvestmentLazyColumn(sortedInvestmentList, searchQuery, navigateToInvestmentDetail)
     }
@@ -147,17 +149,7 @@ fun LazyItemScope.InvestmentListItem(it: InvestmentListItem, navigateToInvestmen
     when (it) {
         is OverviewItem -> {}
 
-        is HeaderItem -> {
-            Text(
-                modifier = Modifier
-                    .animateItemPlacement()
-                    .padding(3.dp, 12.dp, 8.dp, 0.dp),
-                text = Date(it.time).toRelativeDateString(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
+        is HeaderItem -> DateTitleBar(it.time)
 
         is InvestmentItem -> {
             InvestmentCard(
@@ -172,7 +164,7 @@ fun LazyItemScope.InvestmentListItem(it: InvestmentListItem, navigateToInvestmen
 }
 
 @Composable
-fun EmptyView() {
+fun InvestmentEmptyView() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -194,7 +186,7 @@ sealed class InvestmentListItem(val id: Long) {
     data class OverviewItem(
         val investments: List<Investment>,
         val isInvestmentListEmpty: Boolean
-    ) : InvestmentListItem(-2)
+    ) : InvestmentListItem(-1)
 
     data class InvestmentItem(val investment: Investment) : InvestmentListItem(investment.id ?: 0)
 

@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,13 +24,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Expense
+import com.ivzb.craftlog.feature.expenses.ExpenseListItem.ExpenseItem
+import com.ivzb.craftlog.feature.expenses.ExpenseListItem.HeaderItem
+import com.ivzb.craftlog.feature.expenses.ExpenseListItem.OverviewItem
 import com.ivzb.craftlog.feature.expenses.viewmodel.ExpensesViewModel
+import com.ivzb.craftlog.ui.components.DateTitleBar
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
+import com.ivzb.craftlog.util.trim
 
 @Composable
 fun ExpensesRoute(
@@ -40,8 +44,6 @@ fun ExpensesRoute(
 
     ExpensesScreen(viewModel, navigateToExpenseDetail)
 }
-
-// todo: add grouping by date in expenses and investments screens
 
 // todo: add todo list as notes feature
 // todo: add future reminders
@@ -100,10 +102,12 @@ fun ExpenseList(
 ) {
     val sortedExpenseList = expenses
         .sortedByDescending { it.date }
-        .map { ExpenseListItem.ExpenseItem(it) }
+        .map { ExpenseItem(it) }
+        .groupBy { it.expense.date.trim() }
+        .flatMap { (time, expenses) -> listOf(HeaderItem(time)) + expenses }
 
     if (sortedExpenseList.isEmpty()) {
-        EmptyView()
+        ExpenseEmptyView()
     } else {
         ExpenseLazyColumn(sortedExpenseList, searchQuery, navigateToExpenseDetail)
     }
@@ -133,37 +137,34 @@ fun ExpenseLazyColumn(
             items = items,
             key = { it.id },
             itemContent = {
-                when (it) {
-                    is ExpenseListItem.OverviewItem -> { }
-                    is ExpenseListItem.HeaderItem -> {
-                        Text(
-                            modifier = Modifier
-                                .animateItemPlacement()
-                                .padding(4.dp, 12.dp, 8.dp, 0.dp)
-                                .fillMaxWidth(),
-                            text = it.headerText.uppercase(),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleMedium,
-                        )
-                    }
-
-                    is ExpenseListItem.ExpenseItem -> {
-                        ExpenseCard(
-                            modifier = Modifier.animateItemPlacement(),
-                            expense = it.expense,
-                            navigateToExpenseDetail = { expense ->
-                                navigateToExpenseDetail(expense)
-                            }
-                        )
-                    }
-                }
+                ExpenseListItem(it, navigateToExpenseDetail)
             }
         )
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun EmptyView() {
+fun LazyItemScope.ExpenseListItem(it: ExpenseListItem, navigateToExpenseDetail: (Expense) -> Unit) {
+    when (it) {
+        is OverviewItem -> {}
+
+        is HeaderItem -> DateTitleBar(it.time)
+
+        is ExpenseItem -> {
+            ExpenseCard(
+                modifier = Modifier.animateItemPlacement(),
+                expense = it.expense,
+                navigateToExpenseDetail = { expense ->
+                    navigateToExpenseDetail(expense)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun ExpenseEmptyView() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -185,9 +186,9 @@ sealed class ExpenseListItem(val id: Long) {
     data class OverviewItem(
         val expensesToday: List<Expense>,
         val isExpenseListEmpty: Boolean
-    ) : ExpenseListItem(-2)
+    ) : ExpenseListItem(-1)
 
     data class ExpenseItem(val expense: Expense) : ExpenseListItem(expense.id ?: 0)
 
-    data class HeaderItem(val headerText: String) : ExpenseListItem(-1)
+    data class HeaderItem(val time: Long) : ExpenseListItem(time)
 }

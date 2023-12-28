@@ -33,6 +33,7 @@ import com.ivzb.craftlog.feature.notes.NoteListItem.HeaderItem
 import com.ivzb.craftlog.feature.notes.NoteListItem.NoteItem
 import com.ivzb.craftlog.feature.notes.NoteListItem.OverviewItem
 import com.ivzb.craftlog.feature.notes.viewmodel.NotesViewModel
+import com.ivzb.craftlog.ui.components.DateTitleBar
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
 import com.ivzb.craftlog.util.trim
 import java.util.Date
@@ -133,17 +134,8 @@ fun NoteLazyColumn(
             itemContent = {
                 when (it) {
                     is OverviewItem -> { }
-                    is HeaderItem -> {
-                        Text(
-                            modifier = Modifier
-                                .animateItemPlacement()
-                                .padding(4.dp, 12.dp, 8.dp, 0.dp),
-                            text = Date(it.time).toRelativeDateString(),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
+
+                    is HeaderItem -> DateTitleBar(it.time)
 
                     is NoteItem -> {
                         NoteCard(
@@ -183,7 +175,7 @@ sealed class NoteListItem(val id: Long) {
     data class OverviewItem(
         val notesToday: List<Note>,
         val isNoteListEmpty: Boolean
-    ) : NoteListItem(-2)
+    ) : NoteListItem(-1)
 
     data class NoteItem(val note: Note) : NoteListItem(note.id ?: 0)
 
