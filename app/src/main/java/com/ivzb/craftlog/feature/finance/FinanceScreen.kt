@@ -20,11 +20,12 @@ import com.ivzb.craftlog.domain.model.Budget
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.feature.budget.BudgetCard
+import com.ivzb.craftlog.feature.expenses.ExpenseCard
 import com.ivzb.craftlog.feature.finance.viewmodel.FinanceState
 import com.ivzb.craftlog.feature.finance.viewmodel.FinanceViewModel
-import com.ivzb.craftlog.feature.expenses.ExpenseCard
-import com.ivzb.craftlog.feature.investments.InvestmentCard
+import com.ivzb.craftlog.feature.investments.InvestmentListItem
 import com.ivzb.craftlog.ui.components.CategoryTitleBar
+import com.ivzb.craftlog.util.trim
 
 @Composable
 fun FinanceRoute(
@@ -102,6 +103,8 @@ fun FinanceScreen(
 
             // todo: add empty state
 
+            // todo: grouped expenses by date
+
             items(
                 items = state.expenses,
                 itemContent = {
@@ -122,15 +125,16 @@ fun FinanceScreen(
 
             // todo: add empty state
 
+            val investments = state.investments
+                .sortedByDescending { it.date }
+                .map { InvestmentListItem.InvestmentItem(it) }
+                .groupBy { it.investment.date.trim() }
+                .flatMap { (time, notes) -> listOf(InvestmentListItem.HeaderItem(time)) + notes }
+
             items(
-                items = state.investments,
+                items = investments,
                 itemContent = {
-                    InvestmentCard(
-                        investment = it,
-                        navigateToInvestmentDetail = { investment ->
-                            navigateToInvestmentDetail(investment)
-                        }
-                    )
+                    InvestmentListItem(it, navigateToInvestmentDetail)
                 }
             )
         }

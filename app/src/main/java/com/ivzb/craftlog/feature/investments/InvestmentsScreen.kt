@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,8 +29,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Investment
+import com.ivzb.craftlog.extenstion.toRelativeDateString
+import com.ivzb.craftlog.feature.investments.InvestmentListItem.HeaderItem
+import com.ivzb.craftlog.feature.investments.InvestmentListItem.InvestmentItem
+import com.ivzb.craftlog.feature.investments.InvestmentListItem.OverviewItem
 import com.ivzb.craftlog.feature.investments.viewmodel.InvestmentsViewModel
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
+import com.ivzb.craftlog.util.trim
+import java.util.Date
 
 @Composable
 fun InvestmentsRoute(
@@ -94,7 +100,9 @@ fun InvestmentList(
 ) {
     val sortedInvestmentList = investments
         .sortedByDescending { it.date }
-        .map { InvestmentListItem.InvestmentItem(it) }
+        .map { InvestmentItem(it) }
+        .groupBy { it.investment.date.trim() }
+        .flatMap { (time, notes) -> listOf(HeaderItem(time)) + notes }
 
     if (sortedInvestmentList.isEmpty()) {
         EmptyView()
@@ -127,32 +135,39 @@ fun InvestmentLazyColumn(
             items = items,
             key = { it.id },
             itemContent = {
-                when (it) {
-                    is InvestmentListItem.OverviewItem -> {}
-                    is InvestmentListItem.HeaderItem -> {
-                        Text(
-                            modifier = Modifier
-                                .animateItemPlacement()
-                                .padding(4.dp, 12.dp, 8.dp, 0.dp)
-                                .fillMaxWidth(),
-                            text = it.headerText.uppercase(),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleMedium,
-                        )
-                    }
-
-                    is InvestmentListItem.InvestmentItem -> {
-                        InvestmentCard(
-                            modifier = Modifier.animateItemPlacement(),
-                            investment = it.investment,
-                            navigateToInvestmentDetail = { investment ->
-                                navigateToInvestmentDetail(investment)
-                            }
-                        )
-                    }
-                }
+                InvestmentListItem(it, navigateToInvestmentDetail)
             }
         )
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun LazyItemScope.InvestmentListItem(it: InvestmentListItem, navigateToInvestmentDetail: (Investment) -> Unit) {
+    when (it) {
+        is OverviewItem -> {}
+
+        is HeaderItem -> {
+            Text(
+                modifier = Modifier
+                    .animateItemPlacement()
+                    .padding(3.dp, 12.dp, 8.dp, 0.dp),
+                text = Date(it.time).toRelativeDateString(),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+
+        is InvestmentItem -> {
+            InvestmentCard(
+                modifier = Modifier.animateItemPlacement(),
+                investment = it.investment,
+                navigateToInvestmentDetail = { investment ->
+                    navigateToInvestmentDetail(investment)
+                }
+            )
+        }
     }
 }
 
@@ -183,5 +198,5 @@ sealed class InvestmentListItem(val id: Long) {
 
     data class InvestmentItem(val investment: Investment) : InvestmentListItem(investment.id ?: 0)
 
-    data class HeaderItem(val headerText: String) : InvestmentListItem(-1)
+    data class HeaderItem(val time: Long) : InvestmentListItem(time)
 }

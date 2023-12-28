@@ -48,6 +48,8 @@ fun ExpensesRoute(
 
 // todo: add more fields to mortgage expense (principal, interest and insurance)
 
+// todo: check why expenses don't appear when added after going back to finance tab
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpensesScreen(viewModel: ExpensesViewModel, navigateToExpenseDetail: (Expense) -> Unit) {

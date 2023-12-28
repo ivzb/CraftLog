@@ -34,6 +34,7 @@ import com.ivzb.craftlog.feature.notes.NoteListItem.NoteItem
 import com.ivzb.craftlog.feature.notes.NoteListItem.OverviewItem
 import com.ivzb.craftlog.feature.notes.viewmodel.NotesViewModel
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
+import com.ivzb.craftlog.util.trim
 import java.util.Date
 
 @Composable
@@ -188,5 +189,3 @@ sealed class NoteListItem(val id: Long) {
 
     data class HeaderItem(val time: Long) : NoteListItem(time)
 }
-
-private fun Date.trim(): Long = this.time - (this.time % 86_400_000)

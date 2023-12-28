@@ -32,6 +32,8 @@ fun Date.toFormattedString(): String {
     return simpleDateFormat.format(this)
 }
 
+fun Date.trim(): Long = this.time - (this.time % 86_400_000)
+
 private fun getCalendarFor(year: Int, month: Int): Calendar {
     val calendar = GregorianCalendar.getInstance()
     calendar.set(year, month, 0)
