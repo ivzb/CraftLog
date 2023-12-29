@@ -1,5 +1,7 @@
 package com.ivzb.craftlog.feature.addnote
 
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +18,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,8 +31,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -43,6 +48,8 @@ import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.feature.addnote.viewmodel.AddNoteState
 import com.ivzb.craftlog.feature.addnote.viewmodel.AddNoteViewModel
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
+import com.ivzb.craftlog.util.getItem
+import com.ivzb.craftlog.util.isClipboardEnabled
 import java.util.Date
 
 @Preview(showBackground = true)
@@ -75,6 +82,7 @@ fun AddNoteScreen(
     var tags by rememberSaveable { mutableStateOf("") }
 
     val context = LocalContext.current
+    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
     LaunchedEffect(Unit) {
         viewModel
@@ -175,9 +183,23 @@ fun AddNoteScreen(
                 onValueChange = { content = it },
                 maxLines = 5,
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
+                    imeAction = ImeAction.Done,
                     keyboardType = KeyboardType.Text
                 ),
+                trailingIcon = {
+                    if (isClipboardEnabled(clipboard)) {
+                        IconButton(
+                            onClick = {
+                                content = clipboard.getItem()
+                            }
+                        ) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(R.drawable.ic_paste),
+                                contentDescription = "Paste"
+                            )
+                        }
+                    }
+                },
                 placeholder = { Text(text = stringResource(R.string.note_placeholder)) },
             )
 

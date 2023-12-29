@@ -24,7 +24,7 @@ class FetchLinkUseCase @Inject constructor(
 
         return try {
             fetch(url)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             null
         }
     }
