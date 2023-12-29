@@ -44,4 +44,7 @@ object AnalyticsEvents {
     const val ADD_NOTE_ON_SAVE_CLICKED = "add_note_on_save_clicked"
     const val NOTE_SAVED = "note_saved"
 
+    const val NOTE_DETAIL_ON_BACK_CLICKED = "note_detail_on_back_clicked"
+    const val NOTE_DETAIL_DONE_CLICKED = "note_detail_done_clicked"
+
 }

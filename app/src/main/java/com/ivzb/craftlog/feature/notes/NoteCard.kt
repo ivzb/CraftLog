@@ -51,6 +51,8 @@ fun NoteCard(
     }
 }
 
+// todo: show dialog with copy, share and delete buttons on long tap
+
 @Composable
 private fun NoteTextCard(
     modifier: Modifier = Modifier,

@@ -52,6 +52,11 @@ fun ExpensesRoute(
 
 // todo: check why expenses don't appear when added after going back to finance tab
 
+// todo: show icon for each category
+// todo: show expenses as negative value
+// todo: add total amount of today just next the date header group (like in revolut)
+// todo: add plus icon just next to expenses and investments title in finance tab
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpensesScreen(viewModel: ExpensesViewModel, navigateToExpenseDetail: (Expense) -> Unit) {

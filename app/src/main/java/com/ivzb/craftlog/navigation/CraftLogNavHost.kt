@@ -29,6 +29,8 @@ import com.ivzb.craftlog.feature.investmentdetail.investmentDetailGraph
 import com.ivzb.craftlog.feature.investments.INVESTMENT
 import com.ivzb.craftlog.feature.investments.InvestmentsDestination
 import com.ivzb.craftlog.feature.investments.investmentsGraph
+import com.ivzb.craftlog.feature.notedetail.NoteDetailDestination
+import com.ivzb.craftlog.feature.notedetail.noteDetailGraph
 import com.ivzb.craftlog.feature.notes.NOTE
 import com.ivzb.craftlog.feature.notes.NotesDestination
 import com.ivzb.craftlog.feature.notes.notesGraph
@@ -186,9 +188,15 @@ fun CraftLogNavHost(
                 navController.currentBackStackEntry?.savedStateHandle.apply {
                     this?.set(NOTE, bundle)
                 }
-                // todo
-//                navController.navigate(NoteDetailDestination.route)
+                navController.navigate(NoteDetailDestination.route)
             }
+        )
+
+        noteDetailGraph(
+            navController = navController,
+            bottomBarVisibility = bottomBarVisibility,
+            fabBehaviour = fabBehaviour,
+            onBackClicked = { navController.navigateUp() }
         )
 
         addNoteGraph(
