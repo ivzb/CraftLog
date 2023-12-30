@@ -1,6 +1,8 @@
 package com.ivzb.craftlog.feature.notes
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -18,6 +20,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,38 +40,69 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import com.ivzb.craftlog.domain.model.Note
+import com.ivzb.craftlog.ui.components.NoteActionDialog
 import com.ivzb.craftlog.util.appendLink
 import com.ivzb.craftlog.util.onLinkClick
 import java.util.Date
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteCard(
     modifier: Modifier = Modifier,
     note: Note,
     navigateToNoteDetail: (Note) -> Unit
 ) {
+    var showDialog by remember { mutableStateOf(false) }
+    val showActionDialog = {
+        showDialog = true
+    }
+
     if (note.link != null) {
-        NoteLinkCard(modifier, note, navigateToNoteDetail)
+        NoteLinkCard(modifier, note, navigateToNoteDetail, showActionDialog)
     } else {
-        NoteTextCard(modifier, note, navigateToNoteDetail)
+        NoteTextCard(modifier, note, navigateToNoteDetail, showActionDialog)
+    }
+
+    if (showDialog) {
+        NoteActionDialog(
+            title = note.link?.url ?: note.content,
+            onDismissRequest = { showDialog = false },
+            onCopy = {
+                // todo
+                showDialog = false
+            },
+            onShare = {
+                // todo
+                showDialog = false
+            },
+            onDelete = {
+                // todo
+                showDialog = false
+            },
+        )
     }
 }
 
-// todo: show dialog with copy, share and delete buttons on long tap
-
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun NoteTextCard(
     modifier: Modifier = Modifier,
     note: Note,
-    navigateToNoteDetail: (Note) -> Unit
+    navigateToNoteDetail: (Note) -> Unit,
+    showActionDialog: () -> Unit
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable {
-                navigateToNoteDetail(note)
-            },
+            .combinedClickable(
+                onClick = {
+                    navigateToNoteDetail(note)
+                },
+                onLongClick = {
+                    showActionDialog()
+                },
+            ),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -97,11 +134,13 @@ private fun NoteTextCard(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun NoteLinkCard(
     modifier: Modifier = Modifier,
     note: Note,
-    navigateToNoteDetail: (Note) -> Unit
+    navigateToNoteDetail: (Note) -> Unit,
+    showActionDialog: () -> Unit
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -109,9 +148,14 @@ private fun NoteLinkCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable {
-                navigateToNoteDetail(note)
-            },
+            .combinedClickable(
+                onClick = {
+                    navigateToNoteDetail(note)
+                },
+                onLongClick = {
+                    showActionDialog()
+                },
+            ),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -119,7 +163,8 @@ private fun NoteLinkCard(
     ) {
 
         ConstraintLayout(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .defaultMinSize(minHeight = 130.dp)
         ) {
 
@@ -128,14 +173,16 @@ private fun NoteLinkCard(
             val guideline = createGuidelineFromStart(0.3f)
 
             AsyncImage(
-                modifier = Modifier.constrainAs(image) {
-                    width = Dimension.fillToConstraints
-                    height = Dimension.fillToConstraints
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(guideline)
-                }.fillMaxSize(),
+                modifier = Modifier
+                    .constrainAs(image) {
+                        width = Dimension.fillToConstraints
+                        height = Dimension.fillToConstraints
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(guideline)
+                    }
+                    .fillMaxSize(),
                 model = note.link?.imageUrl,
                 contentDescription = "Note image preview",
                 contentScale = ContentScale.Crop,
@@ -158,7 +205,12 @@ private fun NoteLinkCard(
             )
 
             val annotatedLink = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = Color(0xff64B5F6), fontWeight = FontWeight.Bold)) {
+                withStyle(
+                    style = SpanStyle(
+                        color = Color(0xff64B5F6),
+                        fontWeight = FontWeight.Bold
+                    )
+                ) {
                     val link = note.link?.url ?: ""
                     appendLink(link, link)
                 }

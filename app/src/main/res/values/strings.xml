@@ -77,4 +77,7 @@
     <string name="tags">Tags</string>
     <string name="tags_placeholder">e.g., Work, Personal, ProjectX</string>
     <string name="note">Note</string>
+    <string name="copy">Copy</string>
+    <string name="share">Share</string>
+    <string name="delete">Delete</string>
 </resources>
