@@ -91,26 +91,7 @@ fun InvestmentDetailScreen(
                 }
             )
         },
-        bottomBar = {
-            Column {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp)
-                        .height(56.dp),
-                    onClick = {
-                        analyticsHelper.logEvent(AnalyticsEvents.INVESTMENT_DETAIL_DONE_CLICKED)
-                        onBackClicked()
-                    },
-                    shape = MaterialTheme.shapes.extraLarge
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.done),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-            }
-        }
+        bottomBar = { }
     ) { innerPadding ->
         Column(
             modifier = Modifier

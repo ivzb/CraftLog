@@ -81,29 +81,17 @@ fun ExpenseDetailScreen(
                         )
                     }
                 },
-                title = { }
-            )
-        },
-        bottomBar = {
-            Column {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp)
-                        .height(56.dp),
-                    onClick = {
-                        analyticsHelper.logEvent(AnalyticsEvents.EXPENSE_DETAIL_DONE_CLICKED)
-                        onBackClicked()
-                    },
-                    shape = MaterialTheme.shapes.extraLarge
-                ) {
+                title = {
                     Text(
-                        text = stringResource(id = R.string.done),
-                        style = MaterialTheme.typography.bodyLarge
+                        modifier = Modifier.padding(8.dp),
+                        text = stringResource(id = R.string.expense),
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.displaySmall,
                     )
                 }
-            }
-        }
+            )
+        },
+        bottomBar = { }
     ) { innerPadding ->
         Column(
             modifier = Modifier
