@@ -32,9 +32,10 @@ import com.ivzb.craftlog.feature.expenses.ExpenseListItem.ExpenseItem
 import com.ivzb.craftlog.feature.expenses.ExpenseListItem.HeaderItem
 import com.ivzb.craftlog.feature.expenses.ExpenseListItem.OverviewItem
 import com.ivzb.craftlog.feature.expenses.viewmodel.ExpensesViewModel
-import com.ivzb.craftlog.ui.components.DateTitleBar
+import com.ivzb.craftlog.ui.components.ListHeader
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
 import com.ivzb.craftlog.util.trim
+import java.math.BigDecimal
 
 @Composable
 fun ExpensesRoute(
@@ -54,7 +55,6 @@ fun ExpensesRoute(
 
 // todo: show icon for each category
 // todo: show expenses as negative value
-// todo: add total amount of today just next the date header group (like in revolut)
 // todo: add plus icon just next to expenses and investments title in finance tab
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -109,7 +109,7 @@ fun ExpenseList(
         .sortedByDescending { it.date }
         .map { ExpenseItem(it) }
         .groupBy { it.expense.date.trim() }
-        .flatMap { (time, expenses) -> listOf(HeaderItem(time)) + expenses }
+        .flatMap { (time, expenses) -> listOf(HeaderItem(time, expenses.sumOf { it.expense.amount })) + expenses }
 
     if (sortedExpenseList.isEmpty()) {
         ExpenseEmptyView()
@@ -154,7 +154,7 @@ fun LazyItemScope.ExpenseListItem(it: ExpenseListItem, navigateToExpenseDetail: 
     when (it) {
         is OverviewItem -> {}
 
-        is HeaderItem -> DateTitleBar(it.time)
+        is HeaderItem -> ListHeader(it.time, -it.total)
 
         is ExpenseItem -> {
             ExpenseCard(
@@ -195,5 +195,5 @@ sealed class ExpenseListItem(val id: Long) {
 
     data class ExpenseItem(val expense: Expense) : ExpenseListItem(expense.id ?: 0)
 
-    data class HeaderItem(val time: Long) : ExpenseListItem(time)
+    data class HeaderItem(val time: Long, val total: BigDecimal) : ExpenseListItem(time)
 }

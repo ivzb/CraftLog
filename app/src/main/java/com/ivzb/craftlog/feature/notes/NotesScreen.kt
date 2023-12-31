@@ -31,7 +31,7 @@ import com.ivzb.craftlog.feature.notes.NoteListItem.HeaderItem
 import com.ivzb.craftlog.feature.notes.NoteListItem.NoteItem
 import com.ivzb.craftlog.feature.notes.NoteListItem.OverviewItem
 import com.ivzb.craftlog.feature.notes.viewmodel.NotesViewModel
-import com.ivzb.craftlog.ui.components.DateTitleBar
+import com.ivzb.craftlog.ui.components.ListHeader
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
 import com.ivzb.craftlog.util.trim
 
@@ -137,7 +137,7 @@ fun NoteLazyColumn(
                 when (it) {
                     is OverviewItem -> { }
 
-                    is HeaderItem -> DateTitleBar(it.time)
+                    is HeaderItem -> ListHeader(it.time)
 
                     is NoteItem -> {
                         NoteCard(

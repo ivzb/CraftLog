@@ -24,21 +24,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Investment
-import com.ivzb.craftlog.extenstion.toRelativeDateString
-import com.ivzb.craftlog.feature.expenses.ExpenseListItem
 import com.ivzb.craftlog.feature.investments.InvestmentListItem.HeaderItem
 import com.ivzb.craftlog.feature.investments.InvestmentListItem.InvestmentItem
 import com.ivzb.craftlog.feature.investments.InvestmentListItem.OverviewItem
 import com.ivzb.craftlog.feature.investments.viewmodel.InvestmentsViewModel
-import com.ivzb.craftlog.ui.components.DateTitleBar
+import com.ivzb.craftlog.ui.components.ListHeader
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
 import com.ivzb.craftlog.util.trim
-import java.util.Date
+import java.math.BigDecimal
 
 @Composable
 fun InvestmentsRoute(
@@ -104,7 +101,7 @@ fun InvestmentList(
         .sortedByDescending { it.date }
         .map { InvestmentItem(it) }
         .groupBy { it.investment.date.trim() }
-        .flatMap { (time, investments) -> listOf(HeaderItem(time)) + investments }
+        .flatMap { (time, investments) -> listOf(HeaderItem(time, investments.sumOf { it.investment.cost })) + investments }
 
     if (sortedInvestmentList.isEmpty()) {
         InvestmentEmptyView()
@@ -149,7 +146,7 @@ fun LazyItemScope.InvestmentListItem(it: InvestmentListItem, navigateToInvestmen
     when (it) {
         is OverviewItem -> {}
 
-        is HeaderItem -> DateTitleBar(it.time)
+        is HeaderItem -> ListHeader(it.time, it.total)
 
         is InvestmentItem -> {
             InvestmentCard(
@@ -190,5 +187,5 @@ sealed class InvestmentListItem(val id: Long) {
 
     data class InvestmentItem(val investment: Investment) : InvestmentListItem(investment.id ?: 0)
 
-    data class HeaderItem(val time: Long) : InvestmentListItem(time)
+    data class HeaderItem(val time: Long, val total: BigDecimal) : InvestmentListItem(time)
 }

@@ -107,7 +107,7 @@ fun FinanceScreen(
                 .sortedByDescending { it.date }
                 .map { ExpenseListItem.ExpenseItem(it) }
                 .groupBy { it.expense.date.trim() }
-                .flatMap { (time, expenses) -> listOf(ExpenseListItem.HeaderItem(time)) + expenses }
+                .flatMap { (time, expenses) -> listOf(ExpenseListItem.HeaderItem(time, expenses.sumOf { it.expense.amount })) + expenses }
 
             if (expenses.isEmpty()) {
                 item {
@@ -132,7 +132,7 @@ fun FinanceScreen(
                 .sortedByDescending { it.date }
                 .map { InvestmentListItem.InvestmentItem(it) }
                 .groupBy { it.investment.date.trim() }
-                .flatMap { (time, notes) -> listOf(InvestmentListItem.HeaderItem(time)) + notes }
+                .flatMap { (time, investments) -> listOf(InvestmentListItem.HeaderItem(time, investments.sumOf { it.investment.cost })) + investments }
 
             if (investments.isEmpty()) {
                 item {
