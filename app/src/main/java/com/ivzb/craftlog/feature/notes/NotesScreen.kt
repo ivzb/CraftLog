@@ -23,12 +23,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Note
-import com.ivzb.craftlog.extenstion.toRelativeDateString
 import com.ivzb.craftlog.feature.notes.NoteListItem.HeaderItem
 import com.ivzb.craftlog.feature.notes.NoteListItem.NoteItem
 import com.ivzb.craftlog.feature.notes.NoteListItem.OverviewItem
@@ -36,7 +34,6 @@ import com.ivzb.craftlog.feature.notes.viewmodel.NotesViewModel
 import com.ivzb.craftlog.ui.components.DateTitleBar
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
 import com.ivzb.craftlog.util.trim
-import java.util.Date
 
 @Composable
 fun NotesRoute(
@@ -83,7 +80,10 @@ fun NotesScreen(viewModel: NotesViewModel, navigateToNoteDetail: (Note) -> Unit)
             NoteList(
                 notes = viewModel.state.notes,
                 searchQuery = searchQuery,
-                navigateToNoteDetail = navigateToNoteDetail
+                navigateToNoteDetail = navigateToNoteDetail,
+                onDelete = { note ->
+                    viewModel.deleteNote(note)
+                }
             )
         }
     }
@@ -93,7 +93,8 @@ fun NotesScreen(viewModel: NotesViewModel, navigateToNoteDetail: (Note) -> Unit)
 fun NoteList(
     notes: List<Note>,
     searchQuery: String = "",
-    navigateToNoteDetail: (Note) -> Unit
+    navigateToNoteDetail: (Note) -> Unit,
+    onDelete: (Note) -> Unit
 ) {
     val sortedNoteList = notes
         .sortedByDescending { it.date }
@@ -104,7 +105,7 @@ fun NoteList(
     if (sortedNoteList.isEmpty()) {
         EmptyView()
     } else {
-        NoteLazyColumn(sortedNoteList, searchQuery, navigateToNoteDetail)
+        NoteLazyColumn(sortedNoteList, searchQuery, navigateToNoteDetail, onDelete)
     }
 }
 
@@ -113,7 +114,8 @@ fun NoteList(
 fun NoteLazyColumn(
     items: List<NoteListItem>,
     searchQuery: String,
-    navigateToNoteDetail: (Note) -> Unit
+    navigateToNoteDetail: (Note) -> Unit,
+    onDelete: (Note) -> Unit
 ) {
     val lazyListState = rememberLazyListState()
 
@@ -141,9 +143,8 @@ fun NoteLazyColumn(
                         NoteCard(
                             modifier = Modifier.animateItemPlacement(),
                             note = it.note,
-                            navigateToNoteDetail = { note ->
-                                navigateToNoteDetail(note)
-                            }
+                            navigateToNoteDetail,
+                            onDelete
                         )
                     }
                 }

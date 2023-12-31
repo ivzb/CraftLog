@@ -80,4 +80,5 @@
     <string name="copy">Copy</string>
     <string name="share">Share</string>
     <string name="delete">Delete</string>
+    <string name="note_copied">Note copied</string>
 </resources>

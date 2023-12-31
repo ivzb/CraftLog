@@ -1,11 +1,13 @@
 package com.ivzb.craftlog.feature.notes
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -38,20 +41,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.core.app.ShareCompat
 import coil.compose.AsyncImage
+import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.ui.components.NoteActionDialog
 import com.ivzb.craftlog.util.appendLink
 import com.ivzb.craftlog.util.onLinkClick
 import java.util.Date
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteCard(
     modifier: Modifier = Modifier,
     note: Note,
-    navigateToNoteDetail: (Note) -> Unit
+    navigateToNoteDetail: (Note) -> Unit,
+    onDelete: (Note) -> Unit
 ) {
+    val context = LocalContext.current
+
     var showDialog by remember { mutableStateOf(false) }
     val showActionDialog = {
         showDialog = true
@@ -68,15 +75,15 @@ fun NoteCard(
             title = note.link?.url ?: note.content,
             onDismissRequest = { showDialog = false },
             onCopy = {
-                // todo
+                copy(context, note.link?.url ?: note.content)
                 showDialog = false
             },
             onShare = {
-                // todo
+                share(context, note.link?.url ?: note.content)
                 showDialog = false
             },
             onDelete = {
-                // todo
+                onDelete(note)
                 showDialog = false
             },
         )
@@ -264,6 +271,24 @@ private fun NoteCardPreview() {
             tags = listOf(),
             date = Date(),
             link = null
-        )
-    ) { }
+        ),
+        { },
+        { }
+    )
+}
+
+private fun copy(context: Context, content: String) {
+    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clip: ClipData = ClipData.newPlainText(content, content)
+    clipboard.setPrimaryClip(clip)
+
+    Toast.makeText(context, context.getString(R.string.note_copied), Toast.LENGTH_LONG).show()
+}
+
+private fun share(context: Context, url: String) {
+    ShareCompat.IntentBuilder(context)
+        .setType("text/plain")
+        .setText(url)
+        .setChooserTitle(R.string.share)
+        .startChooser()
 }

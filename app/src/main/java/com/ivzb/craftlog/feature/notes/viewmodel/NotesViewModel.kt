@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ivzb.craftlog.domain.model.Note
+import com.ivzb.craftlog.feature.notes.usecase.DeleteNoteUseCase
 import com.ivzb.craftlog.feature.notes.usecase.GetNotesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -14,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(
-    private val getNotesUseCase: GetNotesUseCase
+    private val getNotesUseCase: GetNotesUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase,
 ) : ViewModel() {
 
     var state by mutableStateOf(NotesState())
@@ -39,6 +42,12 @@ class NotesViewModel @Inject constructor(
                     notes = filteredNotesList
                 )
             }.launchIn(viewModelScope)
+        }
+    }
+
+    fun deleteNote(note: Note) {
+        viewModelScope.launch {
+            deleteNoteUseCase.deleteNote(note.copy())
         }
     }
 }
