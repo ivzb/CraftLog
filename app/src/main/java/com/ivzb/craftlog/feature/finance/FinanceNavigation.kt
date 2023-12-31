@@ -25,8 +25,10 @@ fun NavGraphBuilder.financeGraph(
     navigateToBudgetDetail: (Budget) -> Unit,
     navigateToExpenses: () -> Unit,
     navigateToExpenseDetail: (Expense) -> Unit,
+    navigateToAddExpense: () -> Unit,
     navigateToInvestments: () -> Unit,
     navigateToInvestmentDetail: (Investment) -> Unit,
+    navigateToAddInvestment: () -> Unit
 ) {
     composable(route = FinanceDestination.route) {
         LaunchedEffect(Unit) {
@@ -39,8 +41,10 @@ fun NavGraphBuilder.financeGraph(
             navigateToBudgetDetail,
             navigateToExpenses,
             navigateToExpenseDetail,
+            navigateToAddExpense,
             navigateToInvestments,
-            navigateToInvestmentDetail
+            navigateToInvestmentDetail,
+            navigateToAddInvestment
         )
     }
 }

@@ -35,8 +35,10 @@ fun FinanceRoute(
     navigateToBudgetDetail: (Budget) -> Unit,
     navigateToExpenses: () -> Unit,
     navigateToExpenseDetail: (Expense) -> Unit,
+    navigateToAddExpense: () -> Unit,
     navigateToInvestments: () -> Unit,
     navigateToInvestmentDetail: (Investment) -> Unit,
+    navigateToAddInvestment: () -> Unit,
     viewModel: FinanceViewModel = hiltViewModel(),
 ) {
 
@@ -46,8 +48,10 @@ fun FinanceRoute(
         navigateToBudgetDetail,
         navigateToExpenses,
         navigateToExpenseDetail,
+        navigateToAddExpense,
         navigateToInvestments,
-        navigateToInvestmentDetail
+        navigateToInvestmentDetail,
+        navigateToAddInvestment
     )
 }
 
@@ -59,8 +63,10 @@ fun FinanceScreen(
     navigateToBudgetDetail: (Budget) -> Unit,
     navigateToExpenses: () -> Unit,
     navigateToExpenseDetail: (Expense) -> Unit,
+    navigateToAddExpense: () -> Unit,
     navigateToInvestments: () -> Unit,
     navigateToInvestmentDetail: (Investment) -> Unit,
+    navigateToAddInvestment: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -85,9 +91,13 @@ fun FinanceScreen(
         ) {
             state.budgetOverview?.let { budgetOverview ->
                 item {
-                    CategoryTitleBar(title = stringResource(id = R.string.budget)) {
-                        navigateToBudget()
-                    }
+                    CategoryTitleBar(
+                        title = stringResource(id = R.string.budget),
+                        showAddButton = false,
+                        onMoreClick = {
+                            navigateToBudget()
+                        }
+                    )
                 }
 
                 item {
@@ -98,16 +108,28 @@ fun FinanceScreen(
             }
 
             item {
-                CategoryTitleBar(title = stringResource(id = R.string.expenses)) {
-                    navigateToExpenses()
-                }
+                CategoryTitleBar(
+                    title = stringResource(id = R.string.expenses),
+                    onAddClick = {
+                        navigateToAddExpense()
+                    },
+                    onMoreClick = {
+                        navigateToExpenses()
+                    }
+                )
             }
 
             val expenses = state.expenses
                 .sortedByDescending { it.date }
                 .map { ExpenseListItem.ExpenseItem(it) }
                 .groupBy { it.expense.date.trim() }
-                .flatMap { (time, expenses) -> listOf(ExpenseListItem.HeaderItem(time, expenses.sumOf { it.expense.amount })) + expenses }
+                .flatMap { (time, expenses) ->
+                    listOf(
+                        ExpenseListItem.HeaderItem(
+                            time,
+                            expenses.sumOf { it.expense.amount })
+                    ) + expenses
+                }
 
             if (expenses.isEmpty()) {
                 item {
@@ -123,16 +145,27 @@ fun FinanceScreen(
             )
 
             item {
-                CategoryTitleBar(title = stringResource(id = R.string.investments)) {
-                    navigateToInvestments()
-                }
+                CategoryTitleBar(
+                    title = stringResource(id = R.string.investments),
+                    onAddClick = {
+                        navigateToAddInvestment()
+                    },
+                    onMoreClick = {
+                        navigateToInvestments()
+                    })
             }
 
             val investments = state.investments
                 .sortedByDescending { it.date }
                 .map { InvestmentListItem.InvestmentItem(it) }
                 .groupBy { it.investment.date.trim() }
-                .flatMap { (time, investments) -> listOf(InvestmentListItem.HeaderItem(time, investments.sumOf { it.investment.cost })) + investments }
+                .flatMap { (time, investments) ->
+                    listOf(
+                        InvestmentListItem.HeaderItem(
+                            time,
+                            investments.sumOf { it.investment.cost })
+                    ) + investments
+                }
 
             if (investments.isEmpty()) {
                 item {

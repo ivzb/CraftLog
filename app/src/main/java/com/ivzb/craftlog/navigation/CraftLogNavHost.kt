@@ -8,7 +8,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.ivzb.craftlog.FabBehaviour
+import com.ivzb.craftlog.feature.addexpense.navigation.AddExpenseDestination
 import com.ivzb.craftlog.feature.addexpense.navigation.addExpenseGraph
+import com.ivzb.craftlog.feature.addinvestment.navigation.AddInvestmentDestination
 import com.ivzb.craftlog.feature.addinvestment.navigation.addInvestmentGraph
 import com.ivzb.craftlog.feature.addnote.navigation.addNoteGraph
 import com.ivzb.craftlog.feature.budget.BUDGET
@@ -88,6 +90,9 @@ fun CraftLogNavHost(
                 }
                 navController.navigate(ExpenseDetailDestination.route)
             },
+            navigateToAddExpense = {
+                navController.navigate(AddExpenseDestination.route)
+            },
             navigateToInvestments = {
                 navController.navigate(InvestmentsDestination.route)
             },
@@ -98,6 +103,9 @@ fun CraftLogNavHost(
                     this?.set(INVESTMENT, bundle)
                 }
                 navController.navigate(InvestmentDetailDestination.route)
+            },
+            navigateToAddInvestment = {
+                navController.navigate(AddInvestmentDestination.route)
             }
         )
 

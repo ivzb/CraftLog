@@ -55,7 +55,6 @@ fun ExpensesRoute(
 
 // todo: show icon for each category
 // todo: show expenses as negative value
-// todo: add plus icon just next to expenses and investments title in finance tab
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
