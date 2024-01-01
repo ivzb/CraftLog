@@ -119,7 +119,8 @@ fun CraftLogNavHost(
                     this?.set(EXPENSE, bundle)
                 }
                 navController.navigate(ExpenseDetailDestination.route)
-            }
+            },
+            onBackClicked = { navController.navigateUp() }
         )
 
         expenseDetailGraph(
@@ -148,7 +149,8 @@ fun CraftLogNavHost(
                     this?.set(BUDGET, bundle)
                 }
                 navController.navigate(BudgetDetailDestination.route)
-            }
+            },
+            onBackClicked = { navController.navigateUp() }
         )
 
         budgetDetailGraph(
@@ -168,7 +170,8 @@ fun CraftLogNavHost(
                     this?.set(INVESTMENT, bundle)
                 }
                 navController.navigate(InvestmentDetailDestination.route)
-            }
+            },
+            onBackClicked = { navController.navigateUp() }
         )
 
         investmentDetailGraph(

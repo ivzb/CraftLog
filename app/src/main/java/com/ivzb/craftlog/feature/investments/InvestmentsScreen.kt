@@ -4,12 +4,16 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -40,17 +44,19 @@ import java.math.BigDecimal
 @Composable
 fun InvestmentsRoute(
     navigateToInvestmentDetail: (Investment) -> Unit,
+    onBackClicked: () -> Unit,
     viewModel: InvestmentsViewModel = hiltViewModel()
 ) {
 
-    InvestmentsScreen(viewModel, navigateToInvestmentDetail)
+    InvestmentsScreen(viewModel, navigateToInvestmentDetail, onBackClicked)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InvestmentsScreen(
     viewModel: InvestmentsViewModel,
-    navigateToInvestmentDetail: (Investment) -> Unit
+    navigateToInvestmentDetail: (Investment) -> Unit,
+    onBackClicked: () -> Unit
 ) {
     var searchQuery by remember {
         mutableStateOf("")
@@ -72,6 +78,7 @@ fun InvestmentsScreen(
                                 viewModel.loadInvestments(searchQuery)
                             }
                         },
+                        onBackClicked = onBackClicked
                     )
                 }
             )
@@ -85,6 +92,10 @@ fun InvestmentsScreen(
             InvestmentList(
                 investments = viewModel.state.investments,
                 searchQuery = searchQuery,
+                onClearSearch = {
+                    searchQuery = ""
+                    viewModel.loadInvestments(searchQuery)
+                },
                 navigateToInvestmentDetail = navigateToInvestmentDetail
             )
         }
@@ -94,7 +105,8 @@ fun InvestmentsScreen(
 @Composable
 fun InvestmentList(
     investments: List<Investment>,
-    searchQuery: String = "",
+    searchQuery: String,
+    onClearSearch: () -> Unit,
     navigateToInvestmentDetail: (Investment) -> Unit
 ) {
     val sortedInvestmentList = investments
@@ -104,7 +116,7 @@ fun InvestmentList(
         .flatMap { (time, investments) -> listOf(HeaderItem(time, investments.sumOf { it.investment.cost })) + investments }
 
     if (sortedInvestmentList.isEmpty()) {
-        InvestmentEmptyView()
+        InvestmentEmptyView(searchQuery, onClearSearch)
     } else {
         InvestmentLazyColumn(sortedInvestmentList, searchQuery, navigateToInvestmentDetail)
     }
@@ -161,7 +173,7 @@ fun LazyItemScope.InvestmentListItem(it: InvestmentListItem, navigateToInvestmen
 }
 
 @Composable
-fun InvestmentEmptyView() {
+fun InvestmentEmptyView(searchQuery: String = "", onClearSearch: (() -> Unit)? = null) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -169,12 +181,42 @@ fun InvestmentEmptyView() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        if (searchQuery.isEmpty()) {
+            Text(
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.headlineMedium,
+                text = stringResource(id = R.string.no_investments_yet),
+                color = MaterialTheme.colorScheme.tertiary
+            )
+
+            return
+        }
+
+
         Text(
             modifier = Modifier.padding(16.dp),
             style = MaterialTheme.typography.headlineMedium,
-            text = stringResource(id = R.string.no_investments_yet),
+            text = stringResource(id = R.string.no_results_found_for, searchQuery),
             color = MaterialTheme.colorScheme.tertiary
         )
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Button(
+            modifier = Modifier
+                .padding(vertical = 16.dp)
+                .height(56.dp),
+            onClick = {
+                onClearSearch?.invoke()
+            },
+            shape = MaterialTheme.shapes.extraLarge
+        ) {
+            Text(
+                text = stringResource(id = R.string.clear_search),
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
     }
 }
 

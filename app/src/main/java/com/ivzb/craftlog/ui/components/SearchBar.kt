@@ -53,6 +53,7 @@ fun ExpandableSearchView(
     placeholderText: String,
     titleText: String,
     onSearch: (String) -> Unit,
+    onBackClicked: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     expandedInitially: Boolean = false,
     tint: Color = MaterialTheme.colorScheme.primary,
@@ -75,6 +76,7 @@ fun ExpandableSearchView(
             false -> CollapsedSearchView(
                 titleText = titleText,
                 onExpandedChanged = onExpandedChanged,
+                onBackClicked = onBackClicked,
                 modifier = modifier,
                 tint = tint,
             )
@@ -95,6 +97,7 @@ fun SearchIcon(iconTint: Color) {
 fun CollapsedSearchView(
     titleText: String,
     onExpandedChanged: (Boolean) -> Unit,
+    onBackClicked: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     tint: Color = MaterialTheme.colorScheme.primary,
 ) {
@@ -106,11 +109,34 @@ fun CollapsedSearchView(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = titleText,
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.displaySmall,
-        )
+
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            if (onBackClicked != null) {
+                FloatingActionButton(
+                    onClick = {
+                        onBackClicked()
+                    },
+                    elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = stringResource(R.string.back)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+            }
+
+            Text(
+                text = titleText,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.displaySmall,
+            )
+        }
 
         IconButton(onClick = { onExpandedChanged(true) }) {
             SearchIcon(iconTint = tint)
@@ -215,6 +241,7 @@ fun CollapsedSearchViewPreview() {
                 searchText = "",
                 placeholderText = "",
                 titleText = "",
+                onBackClicked = {},
                 onSearch = {},
             )
         }
@@ -233,6 +260,7 @@ fun ExpandedSearchViewPreview() {
                 placeholderText = "",
                 titleText = "",
                 onSearch = {},
+                onBackClicked = {},
                 expandedInitially = true,
             )
         }

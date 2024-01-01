@@ -25,7 +25,8 @@ object ExpensesDestination : CraftLogNavigationDestination {
 fun NavGraphBuilder.expensesGraph(
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    navigateToExpenseDetail: (Expense) -> Unit
+    navigateToExpenseDetail: (Expense) -> Unit,
+    onBackClicked: () -> Unit
 ) {
     composable(route = ExpensesDestination.route) {
         LaunchedEffect(null) {
@@ -39,6 +40,6 @@ fun NavGraphBuilder.expensesGraph(
             )
         }
 
-        ExpensesRoute(navigateToExpenseDetail)
+        ExpensesRoute(navigateToExpenseDetail, onBackClicked)
     }
 }

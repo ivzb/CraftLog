@@ -3,7 +3,12 @@ package com.ivzb.craftlog.feature.budget
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,6 +29,7 @@ import com.ivzb.craftlog.feature.budget.viewmodel.BudgetViewModel
 @Composable
 fun BudgetRoute(
     navigateToBudgetDetail: (Budget) -> Unit,
+    onBackClicked: () -> Unit,
     viewModel: BudgetViewModel = hiltViewModel()
 ) {
 
@@ -32,22 +38,37 @@ fun BudgetRoute(
     }
 
     val state = viewModel.state
-    BudgetScreen(state, navigateToBudgetDetail)
+    BudgetScreen(state, navigateToBudgetDetail, onBackClicked)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BudgetScreen(
     state: BudgetOverviewState,
-    navigateToBudgetDetail: (Budget) -> Unit
+    navigateToBudgetDetail: (Budget) -> Unit,
+    onBackClicked: () -> Unit
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
                 modifier = Modifier
                     .padding(top = 16.dp),
+                navigationIcon = {
+                    FloatingActionButton(
+                        onClick = {
+                            onBackClicked()
+                        },
+                        elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = stringResource(id = R.string.back)
+                        )
+                    }
+                },
                 title = {
                     Text(
+                        modifier = Modifier.padding(8.dp),
                         text = stringResource(id = R.string.budget),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.displaySmall,

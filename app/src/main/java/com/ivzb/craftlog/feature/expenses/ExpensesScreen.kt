@@ -4,12 +4,17 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -32,18 +37,19 @@ import com.ivzb.craftlog.feature.expenses.ExpenseListItem.ExpenseItem
 import com.ivzb.craftlog.feature.expenses.ExpenseListItem.HeaderItem
 import com.ivzb.craftlog.feature.expenses.ExpenseListItem.OverviewItem
 import com.ivzb.craftlog.feature.expenses.viewmodel.ExpensesViewModel
-import com.ivzb.craftlog.ui.components.ListHeader
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
+import com.ivzb.craftlog.ui.components.ListHeader
 import com.ivzb.craftlog.util.trim
 import java.math.BigDecimal
 
 @Composable
 fun ExpensesRoute(
     navigateToExpenseDetail: (Expense) -> Unit,
+    onBackClicked: () -> Unit,
     viewModel: ExpensesViewModel = hiltViewModel()
 ) {
 
-    ExpensesScreen(viewModel, navigateToExpenseDetail)
+    ExpensesScreen(viewModel, navigateToExpenseDetail, onBackClicked)
 }
 
 // todo: add todo list as notes feature
@@ -54,9 +60,15 @@ fun ExpensesRoute(
 // todo: show icon for each category
 // todo: show expenses as negative value
 
+// todo: cars - create, parts bought and mileage mounted, fuel consumption, reminders - technical review, insurance, vignette, etc
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpensesScreen(viewModel: ExpensesViewModel, navigateToExpenseDetail: (Expense) -> Unit) {
+fun ExpensesScreen(
+    viewModel: ExpensesViewModel,
+    navigateToExpenseDetail: (Expense) -> Unit,
+    onBackClicked: () -> Unit
+) {
     var searchQuery by remember {
         mutableStateOf("")
     }
@@ -77,6 +89,7 @@ fun ExpensesScreen(viewModel: ExpensesViewModel, navigateToExpenseDetail: (Expen
                                 viewModel.loadExpenses(searchQuery)
                             }
                         },
+                        onBackClicked = onBackClicked
                     )
                 }
             )
@@ -90,6 +103,10 @@ fun ExpensesScreen(viewModel: ExpensesViewModel, navigateToExpenseDetail: (Expen
             ExpenseList(
                 expenses = viewModel.state.expenses,
                 searchQuery = searchQuery,
+                onClearSearch = {
+                    searchQuery = ""
+                    viewModel.loadExpenses(searchQuery)
+                },
                 navigateToExpenseDetail = navigateToExpenseDetail
             )
         }
@@ -99,7 +116,8 @@ fun ExpensesScreen(viewModel: ExpensesViewModel, navigateToExpenseDetail: (Expen
 @Composable
 fun ExpenseList(
     expenses: List<Expense>,
-    searchQuery: String = "",
+    searchQuery: String,
+    onClearSearch: () -> Unit,
     navigateToExpenseDetail: (Expense) -> Unit
 ) {
     val sortedExpenseList = expenses
@@ -109,7 +127,7 @@ fun ExpenseList(
         .flatMap { (time, expenses) -> listOf(HeaderItem(time, expenses.sumOf { it.expense.amount })) + expenses }
 
     if (sortedExpenseList.isEmpty()) {
-        ExpenseEmptyView()
+        ExpenseEmptyView(searchQuery, onClearSearch)
     } else {
         ExpenseLazyColumn(sortedExpenseList, searchQuery, navigateToExpenseDetail)
     }
@@ -166,7 +184,7 @@ fun LazyItemScope.ExpenseListItem(it: ExpenseListItem, navigateToExpenseDetail: 
 }
 
 @Composable
-fun ExpenseEmptyView() {
+fun ExpenseEmptyView(searchQuery: String = "", onClearSearch: (() -> Unit)? = null) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -174,12 +192,41 @@ fun ExpenseEmptyView() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        if (searchQuery.isEmpty()) {
+            Text(
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.headlineMedium,
+                text = stringResource(id = R.string.no_expenses_yet),
+                color = MaterialTheme.colorScheme.tertiary
+            )
+
+            return
+        }
+
         Text(
             modifier = Modifier.padding(16.dp),
             style = MaterialTheme.typography.headlineMedium,
-            text = stringResource(id = R.string.no_expenses_yet),
+            text = stringResource(id = R.string.no_results_found_for, searchQuery),
             color = MaterialTheme.colorScheme.tertiary
         )
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Button(
+            modifier = Modifier
+                .padding(vertical = 16.dp)
+                .height(56.dp),
+            onClick = {
+                onClearSearch?.invoke()
+            },
+            shape = MaterialTheme.shapes.extraLarge
+        ) {
+            Text(
+                text = stringResource(id = R.string.clear_search),
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
     }
 }
 

@@ -10,6 +10,7 @@
     <string name="value_is_empty">Please enter a valid %s</string>
     <string name="success">Success</string>
     <string name="save">Save</string>
+    <string name="clear_search">Clear search</string>
     <string name="add">Add</string>
     <string name="home">Home</string>
     <string name="expenses">Expenses</string>
@@ -84,4 +85,5 @@
     <string name="principal">Principal</string>
     <string name="interest">Interest</string>
     <string name="insurance">Insurance</string>
+    <string name="no_results_found_for">No results found for %s</string>
 </resources>
