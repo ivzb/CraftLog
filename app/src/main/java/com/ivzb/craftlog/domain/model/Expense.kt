@@ -13,7 +13,8 @@ data class Expense(
     val name: String,
     val amount: BigDecimal,
     val categoryId: String,
-    val date: Date
+    val date: Date,
+    val additionalData: Map<String, String>
 ) : Parcelable {
 
     @IgnoredOnParcel

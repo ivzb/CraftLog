@@ -5,14 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -38,8 +37,11 @@ import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.extenstion.toFormattedDateString
+import com.ivzb.craftlog.feature.addexpense.INSURANCE
+import com.ivzb.craftlog.feature.addexpense.INTEREST
+import com.ivzb.craftlog.feature.addexpense.PRINCIPAL
 import com.ivzb.craftlog.feature.expensedetail.viewmodel.ExpenseDetailViewModel
-import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
+import com.ivzb.craftlog.util.ExpenseCategory
 
 @Composable
 fun ExpenseDetailRoute(
@@ -143,6 +145,49 @@ fun ExpenseDetailScreen(
                 color = MaterialTheme.colorScheme.primary
             )
 
+            if (expense.category == ExpenseCategory.Mortgage) {
+                MortgageFields(expense)
+            }
+
+        }
+    }
+}
+
+@Composable
+private fun MortgageFields(expense: Expense) {
+    Spacer(modifier = Modifier.padding(4.dp))
+
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "${stringResource(id = R.string.principal)}: ${expense.additionalData[PRINCIPAL]}",
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "${stringResource(id = R.string.interest)}: ${expense.additionalData[INTEREST]}",
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "${stringResource(id = R.string.insurance)}: ${expense.additionalData[INSURANCE]}",
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
     }
 }

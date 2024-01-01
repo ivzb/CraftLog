@@ -10,6 +10,7 @@ fun ExpenseEntity.toExpense(): Expense {
         amount = amount,
         categoryId = categoryId,
         date = date,
+        additionalData = additionalData
     )
 }
 
@@ -20,5 +21,6 @@ fun Expense.toExpenseEntity(): ExpenseEntity {
         amount = amount,
         categoryId = categoryId,
         date = date,
+        additionalData = additionalData
     )
 }

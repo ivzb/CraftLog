@@ -38,4 +38,13 @@ class Converters {
 
     @TypeConverter
     fun jsonToList(value: String) = Gson().fromJson(value, Array<String>::class.java).toList()
+
+    @TypeConverter
+    fun mapToJson(value: Map<String, String>) = Gson().toJson(value)
+
+    @TypeConverter
+    fun jsonToMap(value: String): Map<String, String> {
+        val mapType = object : TypeToken<Map<String, String>>() {}.type
+        return Gson().fromJson(value, mapType)
+    }
 }

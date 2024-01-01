@@ -24,10 +24,14 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalContext
@@ -52,6 +56,10 @@ import com.ivzb.craftlog.util.ExpenseCategory
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
 import java.math.BigDecimal
 import java.util.Date
+
+const val PRINCIPAL = "principal"
+const val INTEREST = "interest"
+const val INSURANCE = "insurance"
 
 @Preview(showBackground = true)
 @Composable
@@ -81,6 +89,9 @@ fun AddExpenseScreen(
     var amount by rememberSaveable { mutableStateOf("") }
     var category by rememberSaveable { mutableStateOf(ExpenseCategory.entries.first()) }
     var date by rememberSaveable { mutableStateOf(Date()) }
+    val additionalData = remember { mutableStateMapOf<String, String>() }
+
+    val hasAdditionalFields = category in listOf(ExpenseCategory.Mortgage)
 
     var suggestedExpenses by rememberSaveable { mutableStateOf(listOf<Expense>()) }
     val nameState = mutableStateOf(name)
@@ -147,6 +158,7 @@ fun AddExpenseScreen(
                         amount = amount.toBigDecimalOrNull(),
                         categoryId = category.id,
                         date = date,
+                        additionalData = additionalData.toMap(),
                         onInvalidate = {
                             val invalidatedValue = context.getString(it)
 
@@ -226,7 +238,7 @@ fun AddExpenseScreen(
                         onValueChange = { amount = it },
                         maxLines = 1,
                         keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Done,
+                            imeAction = if (hasAdditionalFields) ImeAction.Next else ImeAction.Done,
                             keyboardType = KeyboardType.Number
                         ),
                         placeholder = { Text(text = stringResource(R.string.amount_placeholder)) },
@@ -245,6 +257,84 @@ fun AddExpenseScreen(
             Spacer(modifier = Modifier.padding(4.dp))
 
             DateTextField { date = it }
+
+            if (hasAdditionalFields) {
+                when {
+                    category == ExpenseCategory.Mortgage -> MortgageFields(additionalData)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun MortgageFields(additionalData: SnapshotStateMap<String, String>) {
+    Spacer(modifier = Modifier.padding(4.dp))
+
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.principal),
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            TextField(
+                value = additionalData[PRINCIPAL].orEmpty(),
+                onValueChange = { additionalData[PRINCIPAL] = it },
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Number
+                ),
+                placeholder = { Text(text = stringResource(R.string.amount_placeholder)) },
+            )
+        }
+
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.interest),
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            TextField(
+                value = additionalData[INTEREST].orEmpty(),
+                onValueChange = { additionalData[INTEREST] = it },
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Number
+                ),
+                placeholder = { Text(text = stringResource(R.string.amount_placeholder)) },
+            )
+        }
+
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.insurance),
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            TextField(
+                value = additionalData[INSURANCE].orEmpty(),
+                onValueChange = { additionalData[INSURANCE] = it },
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done,
+                    keyboardType = KeyboardType.Number
+                ),
+                placeholder = { Text(text = stringResource(R.string.amount_placeholder)) },
+            )
         }
     }
 }
@@ -254,6 +344,7 @@ private fun validateExpense(
     amount: BigDecimal?,
     categoryId: String,
     date: Date,
+    additionalData: Map<String, String>,
     onInvalidate: (Int) -> Unit,
     onValidate: (Expense) -> Unit,
     viewModel: AddExpenseViewModel
@@ -278,11 +369,29 @@ private fun validateExpense(
         return
     }
 
+    if (categoryId == ExpenseCategory.Mortgage.id) {
+        if (additionalData[PRINCIPAL].isNullOrEmpty()) {
+            onInvalidate(R.string.principal)
+            return
+        }
+
+        if (additionalData[INTEREST].isNullOrEmpty()) {
+            onInvalidate(R.string.interest)
+            return
+        }
+
+        if (additionalData[INSURANCE].isNullOrEmpty()) {
+            onInvalidate(R.string.insurance)
+            return
+        }
+    }
+
     val expense = viewModel.createExpense(
         name,
         amount,
         categoryId,
-        date
+        date,
+        additionalData
     )
 
     onValidate(expense)

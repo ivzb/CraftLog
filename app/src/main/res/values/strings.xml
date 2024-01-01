@@ -81,4 +81,7 @@
     <string name="share">Share</string>
     <string name="delete">Delete</string>
     <string name="note_copied">Note copied</string>
+    <string name="principal">Principal</string>
+    <string name="interest">Interest</string>
+    <string name="insurance">Insurance</string>
 </resources>

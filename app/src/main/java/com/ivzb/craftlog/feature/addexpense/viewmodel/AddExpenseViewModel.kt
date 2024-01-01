@@ -30,7 +30,8 @@ class AddExpenseViewModel @Inject constructor(
         name: String,
         amount: BigDecimal,
         categoryId: String,
-        date: Date
+        date: Date,
+        additionalData: Map<String, String>
     ): Expense {
         return Expense(
             id = 0,
@@ -38,6 +39,7 @@ class AddExpenseViewModel @Inject constructor(
             amount = amount,
             categoryId = categoryId,
             date = date,
+            additionalData = additionalData
         )
     }
 

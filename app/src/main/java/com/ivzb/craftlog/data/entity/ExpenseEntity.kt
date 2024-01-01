@@ -12,4 +12,5 @@ data class ExpenseEntity(
     val amount: BigDecimal,
     val categoryId: String,
     val date: Date,
+    val additionalData: Map<String, String>
 )

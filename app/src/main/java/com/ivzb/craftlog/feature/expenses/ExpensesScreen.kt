@@ -49,8 +49,6 @@ fun ExpensesRoute(
 // todo: add todo list as notes feature
 // todo: add future reminders
 
-// todo: add more fields to mortgage expense (principal, interest and insurance)
-
 // todo: check why expenses don't appear when added after going back to finance tab
 
 // todo: show icon for each category
