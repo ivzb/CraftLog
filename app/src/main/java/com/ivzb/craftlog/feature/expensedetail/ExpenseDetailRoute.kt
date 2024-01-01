@@ -127,7 +127,7 @@ fun ExpenseDetailScreen(
             }
 
             Text(
-                text = expense.amount.toPlainString(),
+                text = (-expense.amount).toPlainString(),
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.primary

@@ -1,10 +1,13 @@
 package com.ivzb.craftlog.feature.expenses
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
@@ -55,13 +58,26 @@ fun ExpenseCard(
             ) {
 
                 Text(
-                    text = "${expense.name} - ${expense.amount}",
+                    text = expense.name,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
             }
 
-            Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = null)
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Text(
+                    text = (-expense.amount).toPlainString(),
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = null)
+            }
         }
     }
 }

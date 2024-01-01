@@ -50,12 +50,23 @@ fun BudgetCard(
         )
     ) {
 
-        Text(
-            modifier = Modifier.padding(16.dp),
-            style = MaterialTheme.typography.titleMedium,
-            text = "${budgetOverview.budget.month.toFormattedMonth()}, ${budgetOverview.budget.year}",
-            color = MaterialTheme.colorScheme.primary
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp, end = 24.dp, bottom = 16.dp, start = 24.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+
+            Text(
+                style = MaterialTheme.typography.titleMedium,
+                text = "${budgetOverview.budget.month.toFormattedMonth()}, ${budgetOverview.budget.year}",
+                color = MaterialTheme.colorScheme.primary
+            )
+
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowRight,
+                contentDescription = null
+            )
+        }
 
         Row(
             modifier = Modifier.padding(end = 16.dp, bottom = 16.dp, start = 16.dp),
@@ -160,11 +171,6 @@ fun BudgetCard(
                 )
 
             }
-
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = null
-            )
         }
     }
 }
