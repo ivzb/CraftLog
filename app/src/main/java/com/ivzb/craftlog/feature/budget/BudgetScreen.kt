@@ -103,35 +103,3 @@ fun BudgetList(
         }
     }
 }
-
-//@Composable
-//fun BudgetLazyColumn(sortedBudgetList: List<BudgetListItem>) {
-//    LazyColumn(
-//        modifier = Modifier,
-//        contentPadding = PaddingValues(vertical = 8.dp)
-//    ) {
-//        items(
-//            items = sortedBudgetList,
-//            itemContent = {
-//                when (it) {
-//                    is BudgetListItem.OverviewItem -> { }
-//                    is BudgetListItem.HeaderItem -> {
-//                        Text(
-//                            modifier = Modifier
-//                                .padding(4.dp, 12.dp, 8.dp, 0.dp)
-//                                .fillMaxWidth(),
-//                            text = it.headerText.uppercase(),
-//                            textAlign = TextAlign.Center,
-//                            style = MaterialTheme.typography.titleMedium,
-//                        )
-//                    }
-//                    is BudgetListItem.BudgetItem -> {
-//                        BudgetCard(
-//                            expense = it.expense
-//                        )
-//                    }
-//                }
-//            }
-//        )
-//    }
-//}

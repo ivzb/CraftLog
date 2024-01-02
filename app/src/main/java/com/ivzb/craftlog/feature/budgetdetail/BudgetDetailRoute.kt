@@ -127,18 +127,13 @@ fun BudgetDetailScreen(
                             bankStart.toBigDecimalOrNull(),
                             bankEnd.toBigDecimalOrNull(),
                             onInvalidate = {
-                                val invalidatedValue = context.getString(it)
+                                val error = context.getString(it)
 
-                                showSnackbar(
-                                    context.getString(
-                                        R.string.value_is_empty,
-                                        invalidatedValue
-                                    )
-                                )
+                                showSnackbar(error)
 
                                 val event = String.format(
                                     AnalyticsEvents.BUDGET_DETAIL_VALUE_INVALIDATED,
-                                    invalidatedValue
+                                    error
                                 )
 
                                 analyticsHelper.logEvent(event)
@@ -242,18 +237,8 @@ private fun validateBudget(
     viewModel: BudgetDetailViewModel
 ) {
 
-    if (income == null) {
-        onInvalidate(R.string.income)
-        return
-    }
-
-    if (bankStart == null) {
-        onInvalidate(R.string.bank_start)
-        return
-    }
-
-    if (bankEnd == null) {
-        onInvalidate(R.string.bank_end)
+    if (income == null && bankStart == null && bankEnd == null) {
+        onInvalidate(R.string.please_enter_at_least_one_field)
         return
     }
 

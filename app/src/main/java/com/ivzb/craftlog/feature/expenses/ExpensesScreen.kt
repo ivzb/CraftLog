@@ -66,8 +66,6 @@ fun ExpensesRoute(
 
 // todo: add action menu to expenses and investments
 
-// todo: allow budget partial validation (enter only one field at a time)
-
 // todo: cars - create, parts bought and mileage mounted, fuel consumption, reminders - technical review, insurance, vignette, etc
 
 @OptIn(ExperimentalMaterial3Api::class)

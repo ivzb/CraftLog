@@ -23,9 +23,9 @@ class BudgetDetailViewModel @Inject constructor(
         id: Long?,
         year: Int,
         month: Int,
-        income: BigDecimal,
-        bankStart: BigDecimal,
-        bankEnd: BigDecimal,
+        income: BigDecimal?,
+        bankStart: BigDecimal?,
+        bankEnd: BigDecimal?,
     ): Budget {
         return Budget(
             id,
