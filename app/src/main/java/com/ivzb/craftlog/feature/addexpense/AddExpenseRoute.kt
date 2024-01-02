@@ -24,7 +24,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -64,24 +63,22 @@ const val INSURANCE = "insurance"
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AddExpenseRoute(onBackClicked = {}, navigateToExpenses = {})
+    AddExpenseRoute(onBackClicked = {})
 }
 
 @Composable
 fun AddExpenseRoute(
     onBackClicked: () -> Unit,
-    navigateToExpenses: () -> Unit,
     viewModel: AddExpenseViewModel = hiltViewModel()
 ) {
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    AddExpenseScreen(onBackClicked, navigateToExpenses, viewModel, analyticsHelper)
+    AddExpenseScreen(onBackClicked, viewModel, analyticsHelper)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddExpenseScreen(
     onBackClicked: () -> Unit,
-    navigateToExpenses: () -> Unit,
     viewModel: AddExpenseViewModel,
     analyticsHelper: AnalyticsHelper,
 ) {
@@ -104,7 +101,7 @@ fun AddExpenseScreen(
         viewModel
             .isExpenseSaved
             .collect {
-                navigateToExpenses()
+                onBackClicked()
                 analyticsHelper.logEvent(AnalyticsEvents.EXPENSE_SAVED)
             }
     }

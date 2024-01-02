@@ -56,24 +56,22 @@ import java.util.Date
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AddInvestmentRoute(onBackClicked = {}, navigateToInvestments = {})
+    AddInvestmentRoute(onBackClicked = {})
 }
 
 @Composable
 fun AddInvestmentRoute(
     onBackClicked: () -> Unit,
-    navigateToInvestments: () -> Unit,
     viewModel: AddInvestmentViewModel = hiltViewModel()
 ) {
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    AddInvestmentScreen(onBackClicked, navigateToInvestments, viewModel, analyticsHelper)
+    AddInvestmentScreen(onBackClicked, viewModel, analyticsHelper)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddInvestmentScreen(
     onBackClicked: () -> Unit,
-    navigateToInvestments: () -> Unit,
     viewModel: AddInvestmentViewModel,
     analyticsHelper: AnalyticsHelper,
 ) {
@@ -94,7 +92,7 @@ fun AddInvestmentScreen(
         viewModel
             .isInvestmentSaved
             .collect {
-                navigateToInvestments()
+                onBackClicked()
                 analyticsHelper.logEvent(AnalyticsEvents.INVESTMENT_SAVED)
             }
     }

@@ -134,9 +134,6 @@ fun CraftLogNavHost(
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
             onBackClicked = { navController.navigateUp() },
-            navigateToExpenses = {
-                navController.navigateSingleTop(ExpensesDestination.route)
-            }
         )
 
         budgetGraph(
@@ -185,9 +182,6 @@ fun CraftLogNavHost(
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
             onBackClicked = { navController.navigateUp() },
-            navigateToInvestments = {
-                navController.navigateSingleTop(InvestmentsDestination.route)
-            }
         )
 
         notesGraph(
