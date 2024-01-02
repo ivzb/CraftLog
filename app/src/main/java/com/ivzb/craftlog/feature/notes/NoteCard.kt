@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -136,7 +136,10 @@ private fun NoteTextCard(
                 )
             }
 
-            Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = null)
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null
+            )
         }
     }
 }
@@ -253,7 +256,7 @@ private fun NoteLinkCard(
                     bottom.linkTo(parent.bottom)
                     end.linkTo(parent.end)
                 },
-                imageVector = Icons.Default.KeyboardArrowRight,
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null
             )
         }

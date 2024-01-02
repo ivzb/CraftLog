@@ -1,5 +1,6 @@
 package com.ivzb.craftlog.feature.expensedetail
 
+import android.os.Build
 import android.os.Bundle
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -10,6 +11,7 @@ import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.feature.expenses.EXPENSE
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
+import com.ivzb.craftlog.util.getParcelable
 
 object ExpenseDetailDestination : CraftLogNavigationDestination {
 
@@ -35,7 +37,7 @@ fun NavGraphBuilder.expenseDetailGraph(
         val expenseBundle = navController.previousBackStackEntry?.savedStateHandle?.get<Bundle>(
             EXPENSE
         )
-        val expense = expenseBundle?.getParcelable<Expense>(EXPENSE)
+        val expense = getParcelable<Expense>(expenseBundle, EXPENSE)
         ExpenseDetailRoute(expense, navigateBack)
     }
 }

@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -45,10 +45,9 @@ import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
 fun InvestmentDetailRoute(
     investment: Investment?,
     navigateBack: () -> Unit,
-    viewModel: InvestmentDetailViewModel = hiltViewModel()
 ) {
     investment?.let {
-        InvestmentDetailScreen(investment, viewModel, navigateBack)
+        InvestmentDetailScreen(investment, navigateBack)
     }
 }
 
@@ -56,7 +55,6 @@ fun InvestmentDetailRoute(
 @Composable
 fun InvestmentDetailScreen(
     investment: Investment,
-    viewModel: InvestmentDetailViewModel,
     navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
@@ -76,7 +74,7 @@ fun InvestmentDetailScreen(
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(id = R.string.back)
                         )
                     }

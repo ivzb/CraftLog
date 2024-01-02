@@ -11,7 +11,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -52,10 +52,9 @@ import com.ivzb.craftlog.util.onLinkClick
 fun NoteDetailRoute(
     note: Note?,
     navigateBack: () -> Unit,
-    viewModel: NoteDetailViewModel = hiltViewModel()
 ) {
     note?.let {
-        NoteDetailScreen(note, viewModel, navigateBack)
+        NoteDetailScreen(note, navigateBack)
     }
 }
 
@@ -63,7 +62,6 @@ fun NoteDetailRoute(
 @Composable
 fun NoteDetailScreen(
     note: Note,
-    viewModel: NoteDetailViewModel,
     navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
@@ -83,7 +81,7 @@ fun NoteDetailScreen(
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(id = R.string.back)
                         )
                     }

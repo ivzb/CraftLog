@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -47,10 +47,9 @@ import com.ivzb.craftlog.util.ExpenseCategory
 fun ExpenseDetailRoute(
     expense: Expense?,
     navigateBack: () -> Unit,
-    viewModel: ExpenseDetailViewModel = hiltViewModel()
 ) {
     expense?.let {
-        ExpenseDetailScreen(expense, viewModel, navigateBack)
+        ExpenseDetailScreen(expense, navigateBack)
     }
 }
 
@@ -58,7 +57,6 @@ fun ExpenseDetailRoute(
 @Composable
 fun ExpenseDetailScreen(
     expense: Expense,
-    viewModel: ExpenseDetailViewModel,
     navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
@@ -78,7 +76,7 @@ fun ExpenseDetailScreen(
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(id = R.string.back)
                         )
                     }

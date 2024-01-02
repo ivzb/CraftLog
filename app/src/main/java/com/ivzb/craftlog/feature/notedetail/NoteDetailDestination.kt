@@ -10,6 +10,7 @@ import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.feature.notes.NOTE
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
+import com.ivzb.craftlog.util.getParcelable
 
 object NoteDetailDestination : CraftLogNavigationDestination {
 
@@ -35,7 +36,7 @@ fun NavGraphBuilder.noteDetailGraph(
         val noteBundle = navController.previousBackStackEntry?.savedStateHandle?.get<Bundle>(
             NOTE
         )
-        val note = noteBundle?.getParcelable<Note>(NOTE)
+        val note = getParcelable<Note>(noteBundle, NOTE)
         NoteDetailRoute(note, navigateBack)
     }
 }

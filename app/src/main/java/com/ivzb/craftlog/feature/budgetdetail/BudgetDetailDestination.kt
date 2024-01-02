@@ -10,6 +10,7 @@ import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.domain.model.Budget
 import com.ivzb.craftlog.feature.budget.BUDGET
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
+import com.ivzb.craftlog.util.getParcelable
 
 object BudgetDetailDestination : CraftLogNavigationDestination {
 
@@ -35,7 +36,7 @@ fun NavGraphBuilder.budgetDetailGraph(
         val budgetBundle = navController.previousBackStackEntry?.savedStateHandle?.get<Bundle>(
             BUDGET
         )
-        val budget = budgetBundle?.getParcelable<Budget>(BUDGET)
+        val budget = getParcelable<Budget>(budgetBundle, BUDGET)
         BudgetDetailRoute(budget, navigateBack)
     }
 }

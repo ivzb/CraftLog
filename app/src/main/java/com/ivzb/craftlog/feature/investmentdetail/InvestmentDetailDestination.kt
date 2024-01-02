@@ -1,5 +1,6 @@
 package com.ivzb.craftlog.feature.investmentdetail
 
+import android.os.Build
 import android.os.Bundle
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -10,6 +11,7 @@ import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.feature.investments.INVESTMENT
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
+import com.ivzb.craftlog.util.getParcelable
 
 object InvestmentDetailDestination : CraftLogNavigationDestination {
 
@@ -35,7 +37,7 @@ fun NavGraphBuilder.investmentDetailGraph(
         val investmentBundle = navController.previousBackStackEntry?.savedStateHandle?.get<Bundle>(
             INVESTMENT
         )
-        val investment = investmentBundle?.getParcelable<Investment>(INVESTMENT)
+        val investment = getParcelable<Investment>(investmentBundle, INVESTMENT)
         InvestmentDetailRoute(investment, navigateBack)
     }
 }

@@ -57,6 +57,6 @@ Remember to design the menu in a clear and visually appealing way, with easily r
 
 // todo: add action menu to expenses and investments
 
-// todo: fix build warnings
+// todo: apply ktlint https://github.com/JLLeitschuh/ktlint-gradle
 
 // todo: cars - create, parts bought and mileage mounted, fuel consumption, reminders - technical review, insurance, vignette, etc

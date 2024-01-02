@@ -14,8 +14,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -66,7 +66,7 @@ fun HomeRoute(
 
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
     val state = viewModel.state
-    HomeScreen(navController, analyticsHelper, state, viewModel, navigateToExpenseDetail)
+    HomeScreen(navController, analyticsHelper, state, navigateToExpenseDetail)
 }
 
 @Composable
@@ -74,7 +74,6 @@ fun HomeScreen(
     navController: NavController,
     analyticsHelper: AnalyticsHelper,
     state: HomeState,
-    viewModel: HomeViewModel,
     navigateToExpenseDetail: (Expense) -> Unit
 ) {
     Column(
@@ -84,7 +83,6 @@ fun HomeScreen(
             navController,
             analyticsHelper,
             state,
-            viewModel,
             navigateToExpenseDetail
         )
     }
@@ -95,7 +93,7 @@ fun HomeScreen(
 fun DailyOverviewCard(
     navController: NavController,
     analyticsHelper: AnalyticsHelper,
-    expensesToday: List<Expense>
+//    expensesToday: List<Expense>
 ) {
 
     Card(
@@ -201,7 +199,6 @@ fun LastExpenses(
     navController: NavController,
     analyticsHelper: AnalyticsHelper,
     state: HomeState,
-    viewModel: HomeViewModel,
     navigateToExpenseDetail: (Expense) -> Unit
 ) {
 
@@ -402,7 +399,7 @@ fun DateHeader(
             onPrevClickListener(data.startDate.date)
         }) {
             Icon(
-                imageVector = Icons.Filled.KeyboardArrowLeft,
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                 tint = MaterialTheme.colorScheme.tertiary,
                 contentDescription = "Back"
             )
@@ -411,7 +408,7 @@ fun DateHeader(
             onNextClickListener(data.endDate.date)
         }) {
             Icon(
-                imageVector = Icons.Filled.KeyboardArrowRight,
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 tint = MaterialTheme.colorScheme.tertiary,
                 contentDescription = "Next"
             )
