@@ -20,10 +20,6 @@ class InvestmentsViewModel @Inject constructor(
     var state by mutableStateOf(InvestmentsState())
         private set
 
-    init {
-        loadInvestments()
-    }
-
     fun loadInvestments(filter: String = "") {
         viewModelScope.launch {
             getInvestmentsUseCase.getInvestments().onEach { investmentsList ->

@@ -23,10 +23,6 @@ class NotesViewModel @Inject constructor(
     var state by mutableStateOf(NotesState())
         private set
 
-    init {
-        loadNotes()
-    }
-
     fun loadNotes(filter: String = "") {
         viewModelScope.launch {
             getNotesUseCase.getNotes().onEach { notesList ->

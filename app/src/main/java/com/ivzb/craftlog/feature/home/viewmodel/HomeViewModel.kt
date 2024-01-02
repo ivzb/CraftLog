@@ -20,10 +20,6 @@ class HomeViewModel @Inject constructor(
     var state by mutableStateOf(HomeState())
         private set
 
-    init {
-        loadExpenses()
-    }
-
     fun getUserName() {
         state = state.copy(userName = "Ivan")
         // TODO: Get user name from DB

@@ -48,13 +48,27 @@ fun ExpensesRoute(
     viewModel: ExpensesViewModel = hiltViewModel()
 ) {
 
+    LaunchedEffect(Unit) {
+        viewModel.loadExpenses()
+    }
+
     ExpensesScreen(viewModel, navigateToExpenseDetail, onBackClicked)
 }
 
 // todo: add todo list as notes feature
 // todo: add future reminders
 
-// todo: check why expenses and investments won't refresh after creating one and going back to the finance tab
+// todo: when pasting to notes, show confirmation dialog on paste when field is not empty (or concatinate to current value)
+
+// todo: allow user to see previous budgets with calendar view with months only
+
+// todo: additional data to investments
+
+// todo: add action menu to expenses and investments
+
+// todo: allow budget partial validation (enter only one field at a time)
+
+// todo: fix navigation after adding expense or investment via finance screen
 
 // todo: cars - create, parts bought and mileage mounted, fuel consumption, reminders - technical review, insurance, vignette, etc
 

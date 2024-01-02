@@ -24,6 +24,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,6 +59,11 @@ fun HomeRoute(
     navigateToExpenseDetail: (Expense) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+
+    LaunchedEffect(Unit) {
+        viewModel.loadExpenses()
+    }
+
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
     val state = viewModel.state
     HomeScreen(navController, analyticsHelper, state, viewModel, navigateToExpenseDetail)

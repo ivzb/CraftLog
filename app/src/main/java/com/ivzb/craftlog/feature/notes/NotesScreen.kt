@@ -41,6 +41,10 @@ fun NotesRoute(
     viewModel: NotesViewModel = hiltViewModel()
 ) {
 
+    LaunchedEffect(Unit) {
+        viewModel.loadNotes()
+    }
+
     NotesScreen(viewModel, navigateToNoteDetail)
 }
 

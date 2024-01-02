@@ -25,11 +25,7 @@ class FinanceViewModel @Inject constructor(
     var state by mutableStateOf(FinanceState())
         private set
 
-    init {
-        load()
-    }
-
-    private fun load() {
+    fun load() {
         viewModelScope.launch {
             val budget = getBudgetUseCase.getBudgetOverview()
             val expenses = getExpensesUseCase.getExpenses()

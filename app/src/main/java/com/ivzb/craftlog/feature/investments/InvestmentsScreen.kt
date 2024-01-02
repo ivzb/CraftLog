@@ -48,6 +48,10 @@ fun InvestmentsRoute(
     viewModel: InvestmentsViewModel = hiltViewModel()
 ) {
 
+    LaunchedEffect(Unit) {
+        viewModel.loadInvestments()
+    }
+
     InvestmentsScreen(viewModel, navigateToInvestmentDetail, onBackClicked)
 }
 

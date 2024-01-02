@@ -20,10 +20,6 @@ class ExpensesViewModel @Inject constructor(
     var state by mutableStateOf(ExpensesState())
         private set
 
-    init {
-        loadExpenses()
-    }
-
     fun loadExpenses(filter: String = "") {
         viewModelScope.launch {
             getExpensesUseCase.getExpenses().onEach { expensesList ->
