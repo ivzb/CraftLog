@@ -44,7 +44,7 @@ import java.math.BigDecimal
 @Composable
 fun ExpensesRoute(
     navigateToExpenseDetail: (Expense) -> Unit,
-    onBackClicked: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: ExpensesViewModel = hiltViewModel()
 ) {
 
@@ -52,7 +52,7 @@ fun ExpensesRoute(
         viewModel.loadExpenses()
     }
 
-    ExpensesScreen(viewModel, navigateToExpenseDetail, onBackClicked)
+    ExpensesScreen(viewModel, navigateToExpenseDetail, navigateBack)
 }
 
 // todo: add todo list as notes feature
@@ -75,7 +75,7 @@ fun ExpensesRoute(
 fun ExpensesScreen(
     viewModel: ExpensesViewModel,
     navigateToExpenseDetail: (Expense) -> Unit,
-    onBackClicked: () -> Unit
+    navigateBack: () -> Unit
 ) {
     var searchQuery by remember {
         mutableStateOf("")
@@ -97,7 +97,7 @@ fun ExpensesScreen(
                                 viewModel.loadExpenses(searchQuery)
                             }
                         },
-                        onBackClicked = onBackClicked
+                        navigateBack = navigateBack
                     )
                 }
             )

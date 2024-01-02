@@ -21,7 +21,7 @@ fun NavGraphBuilder.budgetGraph(
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
     navigateToBudgetDetail: (Budget) -> Unit,
-    onBackClicked: () -> Unit
+    navigateBack: () -> Unit
 ) {
     composable(route = BudgetDestination.route) {
         LaunchedEffect(null) {
@@ -29,6 +29,6 @@ fun NavGraphBuilder.budgetGraph(
             fabBehaviour.value = null
         }
 
-        BudgetRoute(navigateToBudgetDetail, onBackClicked)
+        BudgetRoute(navigateToBudgetDetail, navigateBack)
     }
 }

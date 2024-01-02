@@ -22,7 +22,7 @@ fun NavGraphBuilder.expenseDetailGraph(
     navController: NavController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    onBackClicked: () -> Unit
+    navigateBack: () -> Unit
 ) {
 
     composable(
@@ -36,6 +36,6 @@ fun NavGraphBuilder.expenseDetailGraph(
             EXPENSE
         )
         val expense = expenseBundle?.getParcelable<Expense>(EXPENSE)
-        ExpenseDetailRoute(expense, onBackClicked)
+        ExpenseDetailRoute(expense, navigateBack)
     }
 }

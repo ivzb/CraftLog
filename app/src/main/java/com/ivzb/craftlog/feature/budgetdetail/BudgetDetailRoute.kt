@@ -49,11 +49,11 @@ import java.math.BigDecimal
 @Composable
 fun BudgetDetailRoute(
     budget: Budget?,
-    onBackClicked: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: BudgetDetailViewModel = hiltViewModel()
 ) {
     budget?.let {
-        BudgetDetailScreen(budget, viewModel, onBackClicked)
+        BudgetDetailScreen(budget, viewModel, navigateBack)
     }
 }
 
@@ -62,7 +62,7 @@ fun BudgetDetailRoute(
 fun BudgetDetailScreen(
     budget: Budget,
     viewModel: BudgetDetailViewModel,
-    onBackClicked: () -> Unit
+    navigateBack: () -> Unit
 ) {
 
     var income by rememberSaveable { mutableStateOf(budget.income?.toPlainString() ?: "") }
@@ -76,7 +76,7 @@ fun BudgetDetailScreen(
         viewModel
             .isBudgetSaved
             .collect {
-                onBackClicked()
+                navigateBack()
                 showSnackbar(context.getString(R.string.your_budget_is_saved))
                 analyticsHelper.logEvent(AnalyticsEvents.BUDGET_DETAIL_SAVED)
             }
@@ -91,7 +91,7 @@ fun BudgetDetailScreen(
                     FloatingActionButton(
                         onClick = {
                             analyticsHelper.logEvent(AnalyticsEvents.BUDGET_DETAIL_ON_BACK_CLICKED)
-                            onBackClicked()
+                            navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {

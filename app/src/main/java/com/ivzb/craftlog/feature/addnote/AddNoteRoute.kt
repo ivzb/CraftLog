@@ -55,23 +55,23 @@ import java.util.Date
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AddNoteRoute(onBackClicked = {}, navigateToNotes = {})
+    AddNoteRoute(navigateBack = {}, navigateToNotes = {})
 }
 
 @Composable
 fun AddNoteRoute(
-    onBackClicked: () -> Unit,
+    navigateBack: () -> Unit,
     navigateToNotes: () -> Unit,
     viewModel: AddNoteViewModel = hiltViewModel()
 ) {
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    AddNoteScreen(onBackClicked, navigateToNotes, viewModel, analyticsHelper)
+    AddNoteScreen(navigateBack, navigateToNotes, viewModel, analyticsHelper)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddNoteScreen(
-    onBackClicked: () -> Unit,
+    navigateBack: () -> Unit,
     navigateToNotes: () -> Unit,
     viewModel: AddNoteViewModel,
     analyticsHelper: AnalyticsHelper,
@@ -100,7 +100,7 @@ fun AddNoteScreen(
                     FloatingActionButton(
                         onClick = {
                             analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_ON_BACK_CLICKED)
-                            onBackClicked()
+                            navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {

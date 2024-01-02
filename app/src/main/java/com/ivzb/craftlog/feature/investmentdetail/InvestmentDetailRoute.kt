@@ -44,11 +44,11 @@ import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
 @Composable
 fun InvestmentDetailRoute(
     investment: Investment?,
-    onBackClicked: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: InvestmentDetailViewModel = hiltViewModel()
 ) {
     investment?.let {
-        InvestmentDetailScreen(investment, viewModel, onBackClicked)
+        InvestmentDetailScreen(investment, viewModel, navigateBack)
     }
 }
 
@@ -57,7 +57,7 @@ fun InvestmentDetailRoute(
 fun InvestmentDetailScreen(
     investment: Investment,
     viewModel: InvestmentDetailViewModel,
-    onBackClicked: () -> Unit
+    navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
     val analyticsHelper = AnalyticsHelper.getInstance(context)
@@ -71,7 +71,7 @@ fun InvestmentDetailScreen(
                     FloatingActionButton(
                         onClick = {
                             analyticsHelper.logEvent(AnalyticsEvents.INVESTMENT_DETAIL_ON_BACK_CLICKED)
-                            onBackClicked()
+                            navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {

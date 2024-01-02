@@ -22,7 +22,7 @@ fun NavGraphBuilder.noteDetailGraph(
     navController: NavController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    onBackClicked: () -> Unit
+    navigateBack: () -> Unit
 ) {
 
     composable(
@@ -36,6 +36,6 @@ fun NavGraphBuilder.noteDetailGraph(
             NOTE
         )
         val note = noteBundle?.getParcelable<Note>(NOTE)
-        NoteDetailRoute(note, onBackClicked)
+        NoteDetailRoute(note, navigateBack)
     }
 }

@@ -120,20 +120,20 @@ fun CraftLogNavHost(
                 }
                 navController.navigate(ExpenseDetailDestination.route)
             },
-            onBackClicked = { navController.navigateUp() }
+            navigateBack = { navController.navigateUp() }
         )
 
         expenseDetailGraph(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
-            onBackClicked = { navController.navigateUp() }
+            navigateBack = { navController.navigateUp() }
         )
 
         addExpenseGraph(
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
-            onBackClicked = { navController.navigateUp() },
+            navigateBack = { navController.navigateUp() },
         )
 
         budgetGraph(
@@ -147,14 +147,14 @@ fun CraftLogNavHost(
                 }
                 navController.navigate(BudgetDetailDestination.route)
             },
-            onBackClicked = { navController.navigateUp() }
+            navigateBack = { navController.navigateUp() }
         )
 
         budgetDetailGraph(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
-            onBackClicked = { navController.navigateUp() }
+            navigateBack = { navController.navigateUp() }
         )
 
         investmentsGraph(
@@ -168,20 +168,20 @@ fun CraftLogNavHost(
                 }
                 navController.navigate(InvestmentDetailDestination.route)
             },
-            onBackClicked = { navController.navigateUp() }
+            navigateBack = { navController.navigateUp() }
         )
 
         investmentDetailGraph(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
-            onBackClicked = { navController.navigateUp() }
+            navigateBack = { navController.navigateUp() }
         )
 
         addInvestmentGraph(
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
-            onBackClicked = { navController.navigateUp() },
+            navigateBack = { navController.navigateUp() },
         )
 
         notesGraph(
@@ -201,13 +201,13 @@ fun CraftLogNavHost(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
-            onBackClicked = { navController.navigateUp() }
+            navigateBack = { navController.navigateUp() }
         )
 
         addNoteGraph(
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
-            onBackClicked = { navController.navigateUp() },
+            navigateBack = { navController.navigateUp() },
             navigateToNotes = {
                 navController.navigateSingleTop(NotesDestination.route)
             }

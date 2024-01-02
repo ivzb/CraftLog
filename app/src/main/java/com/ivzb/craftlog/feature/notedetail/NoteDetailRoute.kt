@@ -51,11 +51,11 @@ import com.ivzb.craftlog.util.onLinkClick
 @Composable
 fun NoteDetailRoute(
     note: Note?,
-    onBackClicked: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: NoteDetailViewModel = hiltViewModel()
 ) {
     note?.let {
-        NoteDetailScreen(note, viewModel, onBackClicked)
+        NoteDetailScreen(note, viewModel, navigateBack)
     }
 }
 
@@ -64,7 +64,7 @@ fun NoteDetailRoute(
 fun NoteDetailScreen(
     note: Note,
     viewModel: NoteDetailViewModel,
-    onBackClicked: () -> Unit
+    navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
     val analyticsHelper = AnalyticsHelper.getInstance(context)
@@ -78,7 +78,7 @@ fun NoteDetailScreen(
                     FloatingActionButton(
                         onClick = {
                             analyticsHelper.logEvent(AnalyticsEvents.NOTE_DETAIL_ON_BACK_CLICKED)
-                            onBackClicked()
+                            navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {

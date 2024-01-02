@@ -53,7 +53,7 @@ fun ExpandableSearchView(
     placeholderText: String,
     titleText: String,
     onSearch: (String) -> Unit,
-    onBackClicked: (() -> Unit)? = null,
+    navigateBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     expandedInitially: Boolean = false,
     tint: Color = MaterialTheme.colorScheme.primary,
@@ -76,7 +76,7 @@ fun ExpandableSearchView(
             false -> CollapsedSearchView(
                 titleText = titleText,
                 onExpandedChanged = onExpandedChanged,
-                onBackClicked = onBackClicked,
+                navigateBack = navigateBack,
                 modifier = modifier,
                 tint = tint,
             )
@@ -97,7 +97,7 @@ fun SearchIcon(iconTint: Color) {
 fun CollapsedSearchView(
     titleText: String,
     onExpandedChanged: (Boolean) -> Unit,
-    onBackClicked: (() -> Unit)? = null,
+    navigateBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     tint: Color = MaterialTheme.colorScheme.primary,
 ) {
@@ -115,10 +115,10 @@ fun CollapsedSearchView(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            if (onBackClicked != null) {
+            if (navigateBack != null) {
                 FloatingActionButton(
                     onClick = {
-                        onBackClicked()
+                        navigateBack()
                     },
                     elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                 ) {
@@ -241,7 +241,7 @@ fun CollapsedSearchViewPreview() {
                 searchText = "",
                 placeholderText = "",
                 titleText = "",
-                onBackClicked = {},
+                navigateBack = {},
                 onSearch = {},
             )
         }
@@ -260,7 +260,7 @@ fun ExpandedSearchViewPreview() {
                 placeholderText = "",
                 titleText = "",
                 onSearch = {},
-                onBackClicked = {},
+                navigateBack = {},
                 expandedInitially = true,
             )
         }

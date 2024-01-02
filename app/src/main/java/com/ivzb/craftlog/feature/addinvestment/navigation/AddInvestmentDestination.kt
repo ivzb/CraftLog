@@ -19,7 +19,7 @@ object AddInvestmentDestination : CraftLogNavigationDestination {
 fun NavGraphBuilder.addInvestmentGraph(
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    onBackClicked: () -> Unit,
+    navigateBack: () -> Unit,
 ) {
     composable(route = AddInvestmentDestination.route) {
         LaunchedEffect(null) {
@@ -27,6 +27,6 @@ fun NavGraphBuilder.addInvestmentGraph(
             fabBehaviour.value = null
         }
 
-        AddInvestmentRoute(onBackClicked)
+        AddInvestmentRoute(navigateBack)
     }
 }

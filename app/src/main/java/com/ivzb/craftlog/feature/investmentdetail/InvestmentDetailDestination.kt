@@ -22,7 +22,7 @@ fun NavGraphBuilder.investmentDetailGraph(
     navController: NavController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    onBackClicked: () -> Unit
+    navigateBack: () -> Unit
 ) {
 
     composable(
@@ -36,6 +36,6 @@ fun NavGraphBuilder.investmentDetailGraph(
             INVESTMENT
         )
         val investment = investmentBundle?.getParcelable<Investment>(INVESTMENT)
-        InvestmentDetailRoute(investment, onBackClicked)
+        InvestmentDetailRoute(investment, navigateBack)
     }
 }

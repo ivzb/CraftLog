@@ -29,7 +29,7 @@ import com.ivzb.craftlog.feature.budget.viewmodel.BudgetViewModel
 @Composable
 fun BudgetRoute(
     navigateToBudgetDetail: (Budget) -> Unit,
-    onBackClicked: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: BudgetViewModel = hiltViewModel()
 ) {
 
@@ -38,7 +38,7 @@ fun BudgetRoute(
     }
 
     val state = viewModel.state
-    BudgetScreen(state, navigateToBudgetDetail, onBackClicked)
+    BudgetScreen(state, navigateToBudgetDetail, navigateBack)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,7 +46,7 @@ fun BudgetRoute(
 fun BudgetScreen(
     state: BudgetOverviewState,
     navigateToBudgetDetail: (Budget) -> Unit,
-    onBackClicked: () -> Unit
+    navigateBack: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -56,7 +56,7 @@ fun BudgetScreen(
                 navigationIcon = {
                     FloatingActionButton(
                         onClick = {
-                            onBackClicked()
+                            navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {

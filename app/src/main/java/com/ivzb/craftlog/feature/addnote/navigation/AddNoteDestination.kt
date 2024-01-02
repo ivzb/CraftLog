@@ -19,7 +19,7 @@ object AddNoteDestination : CraftLogNavigationDestination {
 fun NavGraphBuilder.addNoteGraph(
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    onBackClicked: () -> Unit,
+    navigateBack: () -> Unit,
     navigateToNotes: () -> Unit,
 ) {
     composable(route = AddNoteDestination.route) {
@@ -28,6 +28,6 @@ fun NavGraphBuilder.addNoteGraph(
             fabBehaviour.value = null
         }
 
-        AddNoteRoute(onBackClicked, navigateToNotes)
+        AddNoteRoute(navigateBack, navigateToNotes)
     }
 }

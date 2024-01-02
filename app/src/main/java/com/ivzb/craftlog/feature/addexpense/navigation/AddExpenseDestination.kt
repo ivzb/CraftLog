@@ -19,7 +19,7 @@ object AddExpenseDestination : CraftLogNavigationDestination {
 fun NavGraphBuilder.addExpenseGraph(
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    onBackClicked: () -> Unit,
+    navigateBack: () -> Unit,
 ) {
     composable(route = AddExpenseDestination.route) {
         LaunchedEffect(null) {
@@ -27,6 +27,6 @@ fun NavGraphBuilder.addExpenseGraph(
             fabBehaviour.value = null
         }
 
-        AddExpenseRoute(onBackClicked)
+        AddExpenseRoute(navigateBack)
     }
 }

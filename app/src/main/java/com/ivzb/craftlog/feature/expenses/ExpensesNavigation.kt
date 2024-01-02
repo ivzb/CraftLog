@@ -26,7 +26,7 @@ fun NavGraphBuilder.expensesGraph(
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
     navigateToExpenseDetail: (Expense) -> Unit,
-    onBackClicked: () -> Unit
+    navigateBack: () -> Unit
 ) {
     composable(route = ExpensesDestination.route) {
         LaunchedEffect(null) {
@@ -40,6 +40,6 @@ fun NavGraphBuilder.expensesGraph(
             )
         }
 
-        ExpensesRoute(navigateToExpenseDetail, onBackClicked)
+        ExpensesRoute(navigateToExpenseDetail, navigateBack)
     }
 }

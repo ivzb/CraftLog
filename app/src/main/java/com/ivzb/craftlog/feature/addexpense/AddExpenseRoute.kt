@@ -63,22 +63,22 @@ const val INSURANCE = "insurance"
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AddExpenseRoute(onBackClicked = {})
+    AddExpenseRoute(navigateBack = {})
 }
 
 @Composable
 fun AddExpenseRoute(
-    onBackClicked: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: AddExpenseViewModel = hiltViewModel()
 ) {
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    AddExpenseScreen(onBackClicked, viewModel, analyticsHelper)
+    AddExpenseScreen(navigateBack, viewModel, analyticsHelper)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddExpenseScreen(
-    onBackClicked: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: AddExpenseViewModel,
     analyticsHelper: AnalyticsHelper,
 ) {
@@ -101,7 +101,7 @@ fun AddExpenseScreen(
         viewModel
             .isExpenseSaved
             .collect {
-                onBackClicked()
+                navigateBack()
                 analyticsHelper.logEvent(AnalyticsEvents.EXPENSE_SAVED)
             }
     }
@@ -123,7 +123,7 @@ fun AddExpenseScreen(
                     FloatingActionButton(
                         onClick = {
                             analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_ON_BACK_CLICKED)
-                            onBackClicked()
+                            navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {

@@ -46,11 +46,11 @@ import com.ivzb.craftlog.util.ExpenseCategory
 @Composable
 fun ExpenseDetailRoute(
     expense: Expense?,
-    onBackClicked: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: ExpenseDetailViewModel = hiltViewModel()
 ) {
     expense?.let {
-        ExpenseDetailScreen(expense, viewModel, onBackClicked)
+        ExpenseDetailScreen(expense, viewModel, navigateBack)
     }
 }
 
@@ -59,7 +59,7 @@ fun ExpenseDetailRoute(
 fun ExpenseDetailScreen(
     expense: Expense,
     viewModel: ExpenseDetailViewModel,
-    onBackClicked: () -> Unit
+    navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
     val analyticsHelper = AnalyticsHelper.getInstance(context)
@@ -73,7 +73,7 @@ fun ExpenseDetailScreen(
                     FloatingActionButton(
                         onClick = {
                             analyticsHelper.logEvent(AnalyticsEvents.EXPENSE_DETAIL_ON_BACK_CLICKED)
-                            onBackClicked()
+                            navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {

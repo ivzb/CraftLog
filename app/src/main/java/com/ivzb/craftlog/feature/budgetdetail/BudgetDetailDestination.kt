@@ -22,7 +22,7 @@ fun NavGraphBuilder.budgetDetailGraph(
     navController: NavController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    onBackClicked: () -> Unit
+    navigateBack: () -> Unit
 ) {
 
     composable(
@@ -36,6 +36,6 @@ fun NavGraphBuilder.budgetDetailGraph(
             BUDGET
         )
         val budget = budgetBundle?.getParcelable<Budget>(BUDGET)
-        BudgetDetailRoute(budget, onBackClicked)
+        BudgetDetailRoute(budget, navigateBack)
     }
 }

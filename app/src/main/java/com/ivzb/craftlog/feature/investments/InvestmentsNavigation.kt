@@ -27,7 +27,7 @@ fun NavGraphBuilder.investmentsGraph(
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
     navigateToInvestmentDetail: (Investment) -> Unit,
-    onBackClicked: () -> Unit
+    navigateBack: () -> Unit
 ) {
     composable(route = InvestmentsDestination.route) {
         LaunchedEffect(null) {
@@ -41,6 +41,6 @@ fun NavGraphBuilder.investmentsGraph(
             )
         }
 
-        InvestmentsRoute(navigateToInvestmentDetail, onBackClicked)
+        InvestmentsRoute(navigateToInvestmentDetail, navigateBack)
     }
 }
