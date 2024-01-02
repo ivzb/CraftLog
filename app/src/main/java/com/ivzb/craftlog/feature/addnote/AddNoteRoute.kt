@@ -27,7 +27,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -78,6 +80,7 @@ fun AddNoteScreen(
 ) {
     var content by rememberSaveable { mutableStateOf("") }
     var tags by rememberSaveable { mutableStateOf("") }
+    val additionalData = remember { mutableStateMapOf<String, String>() }
 
     val context = LocalContext.current
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -130,6 +133,7 @@ fun AddNoteScreen(
                     validateNote(
                         content = content,
                         tags = tags.split(',').map { it.trim() }.filterNot { it.isEmpty() },
+                        additionalData = additionalData.toMap(),
                         onInvalidate = {
                             val invalidatedValue = context.getString(it)
 
@@ -226,6 +230,7 @@ fun AddNoteScreen(
 private fun validateNote(
     content: String,
     tags: List<String>,
+    additionalData: Map<String, String>,
     onInvalidate: (Int) -> Unit,
     onValidate: (Note) -> Unit,
     viewModel: AddNoteViewModel
@@ -239,6 +244,7 @@ private fun validateNote(
         content = content,
         tags = tags,
         date = Date(),
+        additionalData = additionalData
     )
 
     onValidate(note)

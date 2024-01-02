@@ -55,19 +55,6 @@ fun ExpensesRoute(
     ExpensesScreen(viewModel, navigateToExpenseDetail, navigateBack)
 }
 
-// todo: add todo list as notes feature
-// todo: add future reminders
-
-// todo: when pasting to notes, show confirmation dialog on paste when field is not empty (or concatinate to current value)
-
-// todo: allow user to see previous budgets with calendar view with months only
-
-// todo: additional data to investments
-
-// todo: add action menu to expenses and investments
-
-// todo: cars - create, parts bought and mileage mounted, fuel consumption, reminders - technical review, insurance, vignette, etc
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpensesScreen(

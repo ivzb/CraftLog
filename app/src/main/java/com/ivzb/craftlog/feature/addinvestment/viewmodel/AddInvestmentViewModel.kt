@@ -31,7 +31,8 @@ class AddInvestmentViewModel @Inject constructor(
         amount: BigDecimal,
         cost: BigDecimal,
         categoryId: String,
-        date: Date
+        date: Date,
+        additionalData: Map<String, String>
     ): Investment {
         return Investment(
             id = 0,
@@ -40,6 +41,7 @@ class AddInvestmentViewModel @Inject constructor(
             cost = cost,
             categoryId = categoryId,
             date = date,
+            additionalData = additionalData
         )
     }
 

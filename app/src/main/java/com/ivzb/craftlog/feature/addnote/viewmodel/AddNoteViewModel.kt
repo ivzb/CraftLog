@@ -29,17 +29,19 @@ class AddNoteViewModel @Inject constructor(
         content: String,
         tags: List<String>,
         date: Date,
-        link: Link? = null
+        link: Link? = null,
+        additionalData: Map<String, String>
     ): Note = Note(
         id = 0,
         content = content,
         tags = tags,
         date = date,
         link = link,
+        additionalData = additionalData
     )
 
     fun createNote(note: Note, link: Link?): Note =
-        createNote(note.content, note.tags, note.date, link)
+        createNote(note.content, note.tags, note.date, link, note.additionalData)
 
     fun addNote(state: AddNoteState) {
         viewModelScope.launch {

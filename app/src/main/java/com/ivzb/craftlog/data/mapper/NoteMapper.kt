@@ -9,7 +9,8 @@ fun NoteEntity.toNote(): Note {
         content = content,
         tags = tags,
         date = date,
-        link = link?.toLink()
+        link = link?.toLink(),
+        additionalData = additionalData,
     )
 }
 
@@ -19,6 +20,7 @@ fun Note.toNoteEntity(): NoteEntity {
         content = content,
         tags = tags,
         date = date,
-        link = link?.toLinkEntity()
+        link = link?.toLinkEntity(),
+        additionalData = additionalData,
     )
 }

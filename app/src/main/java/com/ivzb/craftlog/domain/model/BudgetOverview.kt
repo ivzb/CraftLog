@@ -21,6 +21,6 @@ data class BudgetOverview(
         get() = expenses.sumOf { it.amount }
 
     val saved: BigDecimal
-        get() = investments.sumOf { it.amount }
+        get() = investments.sumOf { it.cost }
 
 }

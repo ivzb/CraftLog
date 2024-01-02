@@ -14,7 +14,8 @@ data class Investment(
     val amount: BigDecimal,
     val cost: BigDecimal,
     val categoryId: String,
-    val date: Date
+    val date: Date,
+    val additionalData: Map<String, String>
 ) : Parcelable {
 
     @IgnoredOnParcel

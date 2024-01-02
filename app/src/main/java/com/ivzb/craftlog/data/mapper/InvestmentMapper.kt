@@ -11,6 +11,7 @@ fun InvestmentEntity.toInvestment(): Investment {
         cost = cost,
         categoryId = categoryId,
         date = date,
+        additionalData = additionalData,
     )
 }
 
@@ -22,5 +23,6 @@ fun Investment.toInvestmentEntity(): InvestmentEntity {
         cost = cost,
         categoryId = categoryId,
         date = date,
+        additionalData = additionalData,
     )
 }

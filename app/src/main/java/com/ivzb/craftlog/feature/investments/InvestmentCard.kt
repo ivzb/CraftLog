@@ -96,6 +96,7 @@ private fun InvestmentCardPreview() {
             cost = 50.toBigDecimal(),
             categoryId = InvestmentCategory.Stocks.id,
             date = Date(),
+            additionalData = mapOf()
         )
     ) { }
 }
