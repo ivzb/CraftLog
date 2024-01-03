@@ -1,6 +1,7 @@
 package com.ivzb.craftlog.feature.expenses
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,14 +18,23 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Expense
+import com.ivzb.craftlog.ui.components.ActionDialog
+import com.ivzb.craftlog.ui.components.ActionItem
 import java.util.Date
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExpenseCard(
     modifier: Modifier = Modifier,
@@ -32,13 +42,23 @@ fun ExpenseCard(
     navigateToExpenseDetail: (Expense) -> Unit
 ) {
 
+    var showDialog by remember { mutableStateOf(false) }
+    val showActionDialog = {
+        showDialog = true
+    }
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable {
-                navigateToExpenseDetail(expense)
-            },
+            .combinedClickable(
+                onClick = {
+                    navigateToExpenseDetail(expense)
+                },
+                onLongClick = {
+                    showActionDialog()
+                },
+            ),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -60,7 +80,9 @@ fun ExpenseCard(
                 Text(
                     text = expense.name,
                     fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
 
@@ -82,6 +104,27 @@ fun ExpenseCard(
                 )
             }
         }
+    }
+
+    if (showDialog) {
+        ActionDialog(
+            title = expense.name,
+            onDismissRequest = { showDialog = false },
+            actionItems = listOf(
+                {
+                    ActionItem(R.string.edit, R.drawable.ic_edit) {
+                        // todo: navigate to expense edit screen
+                        showDialog = false
+                    }
+                },
+                {
+                    ActionItem(R.string.delete, R.drawable.ic_delete) {
+                        // todo: delete expense
+                        showDialog = false
+                    }
+                },
+            )
+        )
     }
 }
 

@@ -45,7 +45,8 @@ import androidx.core.app.ShareCompat
 import coil.compose.AsyncImage
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Note
-import com.ivzb.craftlog.ui.components.NoteActionDialog
+import com.ivzb.craftlog.ui.components.ActionDialog
+import com.ivzb.craftlog.ui.components.ActionItem
 import com.ivzb.craftlog.util.appendLink
 import com.ivzb.craftlog.util.onLinkClick
 import java.util.Date
@@ -71,21 +72,29 @@ fun NoteCard(
     }
 
     if (showDialog) {
-        NoteActionDialog(
+        ActionDialog(
             title = note.link?.url ?: note.content,
             onDismissRequest = { showDialog = false },
-            onCopy = {
-                copy(context, note.link?.url ?: note.content)
-                showDialog = false
-            },
-            onShare = {
-                share(context, note.link?.url ?: note.content)
-                showDialog = false
-            },
-            onDelete = {
-                onDelete(note)
-                showDialog = false
-            },
+            actionItems = listOf(
+                {
+                    ActionItem(R.string.copy, R.drawable.ic_copy) {
+                        copy(context, note.link?.url ?: note.content)
+                        showDialog = false
+                    }
+                },
+                {
+                    ActionItem(R.string.share, R.drawable.ic_share) {
+                        share(context, note.link?.url ?: note.content)
+                        showDialog = false
+                    }
+                },
+                {
+                    ActionItem(R.string.delete, R.drawable.ic_delete) {
+                        onDelete(note)
+                        showDialog = false
+                    }
+                },
+            )
         )
     }
 }

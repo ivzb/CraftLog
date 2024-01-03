@@ -87,4 +87,5 @@
     <string name="insurance">Insurance</string>
     <string name="no_results_found_for">No results found for %s</string>
     <string name="please_enter_at_least_one_field">Please enter at least one field</string>
+    <string name="edit">Edit</string>
 </resources>
