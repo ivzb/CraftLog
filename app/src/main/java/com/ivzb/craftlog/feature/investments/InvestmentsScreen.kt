@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
+import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.feature.investments.InvestmentListItem.HeaderItem
 import com.ivzb.craftlog.feature.investments.InvestmentListItem.InvestmentItem
@@ -100,7 +101,13 @@ fun InvestmentsScreen(
                     searchQuery = ""
                     viewModel.loadInvestments(searchQuery)
                 },
-                navigateToInvestmentDetail = navigateToInvestmentDetail
+                navigateToInvestmentDetail = navigateToInvestmentDetail,
+                onEdit = { investment ->
+                    // todo: navigate to edit investment screen
+                },
+                onDelete = { investment ->
+                    viewModel.deleteInvestment(investment)
+                },
             )
         }
     }
@@ -111,18 +118,32 @@ fun InvestmentList(
     investments: List<Investment>,
     searchQuery: String,
     onClearSearch: () -> Unit,
-    navigateToInvestmentDetail: (Investment) -> Unit
+    navigateToInvestmentDetail: (Investment) -> Unit,
+    onEdit: (Investment) -> Unit,
+    onDelete: (Investment) -> Unit,
 ) {
     val sortedInvestmentList = investments
         .sortedByDescending { it.date }
         .map { InvestmentItem(it) }
         .groupBy { it.investment.date.trim() }
-        .flatMap { (time, investments) -> listOf(HeaderItem(time, investments.sumOf { it.investment.cost })) + investments }
+        .flatMap { (time, investments) ->
+            listOf(
+                HeaderItem(
+                    time,
+                    investments.sumOf { it.investment.cost })
+            ) + investments
+        }
 
     if (sortedInvestmentList.isEmpty()) {
         InvestmentEmptyView(searchQuery, onClearSearch)
     } else {
-        InvestmentLazyColumn(sortedInvestmentList, searchQuery, navigateToInvestmentDetail)
+        InvestmentLazyColumn(
+            sortedInvestmentList,
+            searchQuery,
+            navigateToInvestmentDetail,
+            onEdit,
+            onDelete
+        )
     }
 }
 
@@ -131,7 +152,9 @@ fun InvestmentList(
 fun InvestmentLazyColumn(
     items: List<InvestmentListItem>,
     searchQuery: String,
-    navigateToInvestmentDetail: (Investment) -> Unit
+    navigateToInvestmentDetail: (Investment) -> Unit,
+    onEdit: (Investment) -> Unit,
+    onDelete: (Investment) -> Unit,
 ) {
     val lazyListState = rememberLazyListState()
 
@@ -150,7 +173,7 @@ fun InvestmentLazyColumn(
             items = items,
             key = { it.id },
             itemContent = {
-                InvestmentListItem(it, navigateToInvestmentDetail)
+                InvestmentListItem(it, navigateToInvestmentDetail, onEdit, onDelete)
             }
         )
     }
@@ -158,7 +181,12 @@ fun InvestmentLazyColumn(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LazyItemScope.InvestmentListItem(it: InvestmentListItem, navigateToInvestmentDetail: (Investment) -> Unit) {
+fun LazyItemScope.InvestmentListItem(
+    it: InvestmentListItem,
+    navigateToInvestmentDetail: (Investment) -> Unit,
+    onEditInvestment: (Investment) -> Unit,
+    onDeleteInvestment: (Investment) -> Unit,
+) {
     when (it) {
         is OverviewItem -> {}
 
@@ -170,7 +198,13 @@ fun LazyItemScope.InvestmentListItem(it: InvestmentListItem, navigateToInvestmen
                 investment = it.investment,
                 navigateToInvestmentDetail = { investment ->
                     navigateToInvestmentDetail(investment)
-                }
+                },
+                onEdit = { investment ->
+                    onEditInvestment(investment)
+                },
+                onDelete = { investment ->
+                    onDeleteInvestment(investment)
+                },
             )
         }
     }

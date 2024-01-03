@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ivzb.craftlog.domain.model.Expense
+import com.ivzb.craftlog.feature.expenses.usecase.DeleteExpenseUseCase
 import com.ivzb.craftlog.feature.expenses.usecase.GetExpensesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -14,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExpensesViewModel @Inject constructor(
-    private val getExpensesUseCase: GetExpensesUseCase
+    private val getExpensesUseCase: GetExpensesUseCase,
+    private val deleteExpenseUseCase: DeleteExpenseUseCase,
 ) : ViewModel() {
 
     var state by mutableStateOf(ExpensesState())
@@ -35,6 +38,12 @@ class ExpensesViewModel @Inject constructor(
                     expenses = filteredExpensesList
                 )
             }.launchIn(viewModelScope)
+        }
+    }
+
+    fun deleteExpense(expense: Expense) {
+        viewModelScope.launch {
+            deleteExpenseUseCase.deleteExpense(expense.copy())
         }
     }
 }

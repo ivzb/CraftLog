@@ -100,7 +100,13 @@ fun ExpensesScreen(
                     searchQuery = ""
                     viewModel.loadExpenses(searchQuery)
                 },
-                navigateToExpenseDetail = navigateToExpenseDetail
+                navigateToExpenseDetail = navigateToExpenseDetail,
+                onEdit = { expense ->
+                    // todo: navigate to edit expense screen
+                },
+                onDelete = { expense ->
+                    viewModel.deleteExpense(expense)
+                }
             )
         }
     }
@@ -111,7 +117,9 @@ fun ExpenseList(
     expenses: List<Expense>,
     searchQuery: String,
     onClearSearch: () -> Unit,
-    navigateToExpenseDetail: (Expense) -> Unit
+    navigateToExpenseDetail: (Expense) -> Unit,
+    onEdit: (Expense) -> Unit,
+    onDelete: (Expense) -> Unit
 ) {
     val sortedExpenseList = expenses
         .sortedByDescending { it.date }
@@ -122,16 +130,17 @@ fun ExpenseList(
     if (sortedExpenseList.isEmpty()) {
         ExpenseEmptyView(searchQuery, onClearSearch)
     } else {
-        ExpenseLazyColumn(sortedExpenseList, searchQuery, navigateToExpenseDetail)
+        ExpenseLazyColumn(sortedExpenseList, searchQuery, navigateToExpenseDetail, onEdit, onDelete)
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExpenseLazyColumn(
     items: List<ExpenseListItem>,
     searchQuery: String,
-    navigateToExpenseDetail: (Expense) -> Unit
+    navigateToExpenseDetail: (Expense) -> Unit,
+    onEdit: (Expense) -> Unit,
+    onDelete: (Expense) -> Unit
 ) {
     val lazyListState = rememberLazyListState()
 
@@ -150,7 +159,7 @@ fun ExpenseLazyColumn(
             items = items,
             key = { it.id },
             itemContent = {
-                ExpenseListItem(it, navigateToExpenseDetail)
+                ExpenseListItem(it, navigateToExpenseDetail, onEdit, onDelete)
             }
         )
     }
@@ -158,7 +167,12 @@ fun ExpenseLazyColumn(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LazyItemScope.ExpenseListItem(it: ExpenseListItem, navigateToExpenseDetail: (Expense) -> Unit) {
+fun LazyItemScope.ExpenseListItem(
+    it: ExpenseListItem,
+    navigateToExpenseDetail: (Expense) -> Unit,
+    onEditExpense: (Expense) -> Unit,
+    onDeleteExpense: (Expense) -> Unit
+) {
     when (it) {
         is OverviewItem -> {}
 
@@ -170,6 +184,12 @@ fun LazyItemScope.ExpenseListItem(it: ExpenseListItem, navigateToExpenseDetail: 
                 expense = it.expense,
                 navigateToExpenseDetail = { expense ->
                     navigateToExpenseDetail(expense)
+                },
+                onEdit = { expense ->
+                    onEditExpense(expense)
+                },
+                onDelete = { expense ->
+                    onDeleteExpense(expense)
                 }
             )
         }

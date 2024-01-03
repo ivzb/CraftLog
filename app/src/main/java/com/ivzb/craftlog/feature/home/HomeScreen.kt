@@ -66,7 +66,19 @@ fun HomeRoute(
 
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
     val state = viewModel.state
-    HomeScreen(navController, analyticsHelper, state, navigateToExpenseDetail)
+
+    HomeScreen(
+        navController = navController,
+        analyticsHelper = analyticsHelper,
+        state = state,
+        navigateToExpenseDetail = navigateToExpenseDetail,
+        onEditExpense = { expense ->
+            // todo: navigate to edit expense screen
+        },
+        onDeleteExpense = { expense ->
+            viewModel.deleteExpense(expense)
+        }
+    )
 }
 
 @Composable
@@ -74,7 +86,9 @@ fun HomeScreen(
     navController: NavController,
     analyticsHelper: AnalyticsHelper,
     state: HomeState,
-    navigateToExpenseDetail: (Expense) -> Unit
+    navigateToExpenseDetail: (Expense) -> Unit,
+    onEditExpense: (Expense) -> Unit,
+    onDeleteExpense: (Expense) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -83,7 +97,9 @@ fun HomeScreen(
             navController,
             analyticsHelper,
             state,
-            navigateToExpenseDetail
+            navigateToExpenseDetail,
+            onEditExpense,
+            onDeleteExpense
         )
     }
 }
@@ -199,7 +215,9 @@ fun LastExpenses(
     navController: NavController,
     analyticsHelper: AnalyticsHelper,
     state: HomeState,
-    navigateToExpenseDetail: (Expense) -> Unit
+    navigateToExpenseDetail: (Expense) -> Unit,
+    onEditExpense: (Expense) -> Unit,
+    onDeleteExpense: (Expense) -> Unit
 ) {
 
     if (state.loading) {
@@ -234,10 +252,20 @@ fun LastExpenses(
                         expense = it,
                         navigateToExpenseDetail = { expense ->
                             navigateToExpenseDetail(expense)
+                        },
+                        onEdit = { expense ->
+                            onEditExpense(expense)
+                        },
+                        onDelete = { expense ->
+                            onDeleteExpense(expense)
                         }
                     )
                 }
             )
+
+            // todo: add filtered investments
+
+            // todo: add filtered notes
         }
     }
 }

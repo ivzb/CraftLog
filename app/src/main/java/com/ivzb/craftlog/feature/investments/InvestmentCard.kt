@@ -1,7 +1,6 @@
 package com.ivzb.craftlog.feature.investments
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,7 +40,9 @@ import java.util.Date
 fun InvestmentCard(
     modifier: Modifier = Modifier,
     investment: Investment,
-    navigateToInvestmentDetail: (Investment) -> Unit
+    navigateToInvestmentDetail: (Investment) -> Unit,
+    onEdit: (Investment) -> Unit,
+    onDelete: (Investment) -> Unit
 ) {
 
     var showDialog by remember { mutableStateOf(false) }
@@ -116,13 +117,13 @@ fun InvestmentCard(
             actionItems = listOf(
                 {
                     ActionItem(R.string.edit, R.drawable.ic_edit) {
-                        // todo: navigate to investment edit screen
+                        onEdit(investment)
                         showDialog = false
                     }
                 },
                 {
                     ActionItem(R.string.delete, R.drawable.ic_delete) {
-                        // todo: delete investment
+                        onDelete(investment)
                         showDialog = false
                     }
                 },
@@ -144,6 +145,9 @@ private fun InvestmentCardPreview() {
             categoryId = InvestmentCategory.Stocks.id,
             date = Date(),
             additionalData = mapOf()
-        )
-    ) { }
+        ),
+        navigateToInvestmentDetail = { },
+        onEdit = { },
+        onDelete = { }
+    )
 }

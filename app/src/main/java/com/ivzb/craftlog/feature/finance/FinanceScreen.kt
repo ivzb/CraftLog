@@ -48,7 +48,7 @@ fun FinanceRoute(
     }
 
     FinanceScreen(
-        viewModel.state,
+        viewModel,
         navigateToBudget,
         navigateToBudgetDetail,
         navigateToExpenses,
@@ -63,7 +63,7 @@ fun FinanceRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FinanceScreen(
-    state: FinanceState,
+    viewModel: FinanceViewModel,
     navigateToBudget: () -> Unit,
     navigateToBudgetDetail: (Budget) -> Unit,
     navigateToExpenses: () -> Unit,
@@ -94,7 +94,7 @@ fun FinanceScreen(
             modifier = Modifier.padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            state.budgetOverview?.let { budgetOverview ->
+            viewModel.state.budgetOverview?.let { budgetOverview ->
                 item {
                     CategoryTitleBar(
                         title = stringResource(id = R.string.budget),
@@ -124,7 +124,7 @@ fun FinanceScreen(
                 )
             }
 
-            val expenses = state.expenses
+            val expenses = viewModel.state.expenses
                 .sortedByDescending { it.date }
                 .map { ExpenseListItem.ExpenseItem(it) }
                 .groupBy { it.expense.date.trim() }
@@ -145,7 +145,17 @@ fun FinanceScreen(
             items(
                 items = expenses,
                 itemContent = {
-                    ExpenseListItem(it, navigateToExpenseDetail = navigateToExpenseDetail)
+                    ExpenseListItem(
+                        it,
+                        navigateToExpenseDetail = navigateToExpenseDetail,
+                        onEditExpense = { expense ->
+                            // todo: navigate to edit expense screen
+                        },
+                        onDeleteExpense = { expense ->
+                            viewModel.deleteExpense(expense)
+                            viewModel.load()
+                        }
+                    )
                 }
             )
 
@@ -160,7 +170,7 @@ fun FinanceScreen(
                     })
             }
 
-            val investments = state.investments
+            val investments = viewModel.state.investments
                 .sortedByDescending { it.date }
                 .map { InvestmentListItem.InvestmentItem(it) }
                 .groupBy { it.investment.date.trim() }
@@ -181,7 +191,17 @@ fun FinanceScreen(
             items(
                 items = investments,
                 itemContent = {
-                    InvestmentListItem(it, navigateToInvestmentDetail)
+                    InvestmentListItem(
+                        it,
+                        navigateToInvestmentDetail,
+                        onEditInvestment = { investment ->
+                            // todo: navigate to edit investment screen
+                        },
+                        onDeleteInvestment = { investment ->
+                            viewModel.deleteInvestment(investment)
+                            viewModel.load()
+                        },
+                    )
                 }
             )
         }

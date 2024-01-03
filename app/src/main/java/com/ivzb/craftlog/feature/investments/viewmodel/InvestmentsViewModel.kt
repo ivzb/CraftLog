@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ivzb.craftlog.domain.model.Investment
+import com.ivzb.craftlog.feature.investments.usecase.DeleteInvestmentUseCase
 import com.ivzb.craftlog.feature.investments.usecase.GetInvestmentsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -14,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InvestmentsViewModel @Inject constructor(
-    private val getInvestmentsUseCase: GetInvestmentsUseCase
+    private val getInvestmentsUseCase: GetInvestmentsUseCase,
+    private val deleteInvestmentUseCase: DeleteInvestmentUseCase,
 ) : ViewModel() {
 
     var state by mutableStateOf(InvestmentsState())
@@ -35,6 +38,12 @@ class InvestmentsViewModel @Inject constructor(
                     investments = filteredInvestmentsList
                 )
             }.launchIn(viewModelScope)
+        }
+    }
+
+    fun deleteInvestment(investment: Investment) {
+        viewModelScope.launch {
+            deleteInvestmentUseCase.deleteInvestment(investment.copy())
         }
     }
 }

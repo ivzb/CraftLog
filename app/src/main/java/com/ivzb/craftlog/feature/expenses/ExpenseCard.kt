@@ -39,7 +39,9 @@ import java.util.Date
 fun ExpenseCard(
     modifier: Modifier = Modifier,
     expense: Expense,
-    navigateToExpenseDetail: (Expense) -> Unit
+    navigateToExpenseDetail: (Expense) -> Unit,
+    onEdit: (Expense) -> Unit,
+    onDelete: (Expense) -> Unit
 ) {
 
     var showDialog by remember { mutableStateOf(false) }
@@ -113,13 +115,13 @@ fun ExpenseCard(
             actionItems = listOf(
                 {
                     ActionItem(R.string.edit, R.drawable.ic_edit) {
-                        // todo: navigate to expense edit screen
+                        onEdit(expense)
                         showDialog = false
                     }
                 },
                 {
                     ActionItem(R.string.delete, R.drawable.ic_delete) {
-                        // todo: delete expense
+                        onDelete(expense)
                         showDialog = false
                     }
                 },
@@ -138,7 +140,10 @@ private fun ExpenseCardPreview() {
             amount = 12.5.toBigDecimal(),
             categoryId = "food",
             date = Date(),
-            additionalData = mapOf()
-        )
-    ) { }
+            additionalData = mapOf(),
+        ),
+        navigateToExpenseDetail = { },
+        onEdit = { },
+        onDelete = { }
+    )
 }
