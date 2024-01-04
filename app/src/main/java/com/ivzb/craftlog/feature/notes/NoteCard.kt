@@ -56,6 +56,7 @@ fun NoteCard(
     modifier: Modifier = Modifier,
     note: Note,
     navigateToNoteDetail: (Note) -> Unit,
+    onEdit: (Note) -> Unit,
     onDelete: (Note) -> Unit
 ) {
     val context = LocalContext.current
@@ -85,6 +86,12 @@ fun NoteCard(
                 {
                     ActionItem(R.string.share, R.drawable.ic_share) {
                         share(context, note.link?.url ?: note.content)
+                        showDialog = false
+                    }
+                },
+                {
+                    ActionItem(R.string.delete, R.drawable.ic_edit) {
+                        onEdit(note)
                         showDialog = false
                     }
                 },
@@ -285,6 +292,7 @@ private fun NoteCardPreview() {
             link = null,
             additionalData = mapOf()
         ),
+        { },
         { },
         { }
     )

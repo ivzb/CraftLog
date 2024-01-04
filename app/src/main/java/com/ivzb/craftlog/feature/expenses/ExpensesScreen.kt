@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Expense
+import com.ivzb.craftlog.extenstion.toRelativeDateString
 import com.ivzb.craftlog.feature.expenses.ExpenseListItem.ExpenseItem
 import com.ivzb.craftlog.feature.expenses.ExpenseListItem.HeaderItem
 import com.ivzb.craftlog.feature.expenses.ExpenseListItem.OverviewItem
@@ -176,7 +177,7 @@ fun LazyItemScope.ExpenseListItem(
     when (it) {
         is OverviewItem -> {}
 
-        is HeaderItem -> ListHeader(it.time, -it.total)
+        is HeaderItem -> ListHeader(it.time.toRelativeDateString(), -it.total)
 
         is ExpenseItem -> {
             ExpenseCard(
@@ -250,7 +251,7 @@ sealed class ExpenseListItem(val id: Long) {
         val isExpenseListEmpty: Boolean
     ) : ExpenseListItem(-1)
 
-    data class ExpenseItem(val expense: Expense) : ExpenseListItem(expense.id ?: 0)
+    data class ExpenseItem(val expense: Expense, val offset: Long = 0) : ExpenseListItem((expense.id ?: 0) + offset)
 
     data class HeaderItem(val time: Long, val total: BigDecimal) : ExpenseListItem(time)
 }

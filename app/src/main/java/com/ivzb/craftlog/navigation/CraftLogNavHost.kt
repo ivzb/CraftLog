@@ -12,6 +12,7 @@ import com.ivzb.craftlog.feature.addexpense.navigation.AddExpenseDestination
 import com.ivzb.craftlog.feature.addexpense.navigation.addExpenseGraph
 import com.ivzb.craftlog.feature.addinvestment.navigation.AddInvestmentDestination
 import com.ivzb.craftlog.feature.addinvestment.navigation.addInvestmentGraph
+import com.ivzb.craftlog.feature.addnote.navigation.AddNoteDestination
 import com.ivzb.craftlog.feature.addnote.navigation.addNoteGraph
 import com.ivzb.craftlog.feature.budget.BUDGET
 import com.ivzb.craftlog.feature.budget.BudgetDestination
@@ -52,9 +53,11 @@ fun CraftLogNavHost(
         modifier = modifier,
     ) {
         homeGraph(
-            navController = navController,
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
+            navigateToExpenses = {
+                navController.navigate(ExpensesDestination.route)
+            },
             navigateToExpenseDetail = {
                 val bundle = Bundle()
                 bundle.putParcelable(EXPENSE, it)
@@ -62,7 +65,38 @@ fun CraftLogNavHost(
                     this?.set(EXPENSE, bundle)
                 }
                 navController.navigate(ExpenseDetailDestination.route)
-            }
+            },
+            navigateToAddExpense = {
+                navController.navigate(AddExpenseDestination.route)
+            },
+            navigateToInvestments = {
+                navController.navigate(InvestmentsDestination.route)
+            },
+            navigateToInvestmentDetail = {
+                val bundle = Bundle()
+                bundle.putParcelable(INVESTMENT, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(INVESTMENT, bundle)
+                }
+                navController.navigate(InvestmentDetailDestination.route)
+            },
+            navigateToAddInvestment = {
+                navController.navigate(AddInvestmentDestination.route)
+            },
+            navigateToNotes = {
+                navController.navigateSingleTop(NotesDestination.route)
+            },
+            navigateToNoteDetail = {
+                val bundle = Bundle()
+                bundle.putParcelable(NOTE, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(NOTE, bundle)
+                }
+                navController.navigate(NoteDetailDestination.route)
+            },
+            navigateToAddNote = {
+                navController.navigate(AddNoteDestination.route)
+            },
         )
 
         financeGraph(

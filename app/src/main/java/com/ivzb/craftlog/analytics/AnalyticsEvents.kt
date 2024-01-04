@@ -4,7 +4,6 @@ object AnalyticsEvents {
 
     const val EMPTY_CARD_SHOWN = "empty_card_shown"
 
-    const val ADD_EXPENSE_CLICKED_EMPTY_CARD = "add_expense_clicked_empty_card"
     const val ADD_EXPENSE_CLICKED_DAILY_OVERVIEW = "add_expense_clicked_daily_overview"
     const val ADD_EXPENSE_CLICKED_FAB = "add_expense_clicked_fab"
 

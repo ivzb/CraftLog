@@ -40,8 +40,8 @@ class FinanceViewModel @Inject constructor(
             zip(budget, expenses, investments) { budget, expenses, investments ->
                 FinanceState(
                     budget,
-                    expenses.sortedByDescending { it.date }.take(3),
-                    investments.sortedByDescending { it.date }.take(3),
+                    expenses.sortedByDescending { it.date }.take(LIMIT),
+                    investments.sortedByDescending { it.date }.take(LIMIT),
                     loading = false
                 )
             }.onEach {
@@ -60,6 +60,11 @@ class FinanceViewModel @Inject constructor(
         viewModelScope.launch {
             deleteInvestmentUseCase.deleteInvestment(investment.copy())
         }
+    }
+
+    companion object {
+
+        private const val LIMIT = 5
     }
 
 }

@@ -19,7 +19,7 @@ import java.util.Date
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LazyItemScope.ListHeader(time: Long, total: BigDecimal? = null) {
+fun LazyItemScope.ListHeader(title: String, total: BigDecimal? = null) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -30,7 +30,7 @@ fun LazyItemScope.ListHeader(time: Long, total: BigDecimal? = null) {
             modifier = Modifier
                 .animateItemPlacement()
                 .padding(3.dp, 12.dp, 8.dp, 0.dp),
-            text = Date(time).toRelativeDateString(),
+            text = title,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.primary

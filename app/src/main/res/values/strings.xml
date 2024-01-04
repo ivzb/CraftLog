@@ -20,8 +20,8 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="error">Error</string>
-    <string name="home_screen_empty_card_title">No expenses for %1$s</string>
-    <string name="home_screen_empty_card_message">It seems like you haven\'t logged any expenses for %1$s yet. Start by recording your spending for the day to keep a detailed record of your financial activities. Tap the \'Add Expense\' button to add expense. Let\'s get those transactions in and watch your financial progress unfold!</string>
+    <string name="home_screen_empty_card_title">Nothing logged for %1$s</string>
+    <string name="home_screen_empty_card_message">It seems like you haven\'t logged anything for %1$s yet. Start by recording your spending for the day to keep a detailed record of your financial activities. Tap the \'Add Expense\' button in \'Finance\' tab to add expense. Let\'s get those transactions in and watch your financial progress unfold!</string>
     <string name="confirm">Confirm</string>
     <string name="all_done">All done!</string>
     <string name="your_expense_is_saved">Your expense is saved.</string>

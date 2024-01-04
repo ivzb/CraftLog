@@ -41,65 +41,118 @@ import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Expense
+import com.ivzb.craftlog.domain.model.Investment
+import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.extenstion.toFormattedDateShortString
 import com.ivzb.craftlog.extenstion.toFormattedDateString
 import com.ivzb.craftlog.extenstion.toFormattedMonthDateString
 import com.ivzb.craftlog.feature.addexpense.navigation.AddExpenseDestination
-import com.ivzb.craftlog.feature.expenses.ExpenseCard
+import com.ivzb.craftlog.feature.expenses.ExpenseListItem
 import com.ivzb.craftlog.feature.home.data.CalendarDataSource
 import com.ivzb.craftlog.feature.home.model.CalendarModel
 import com.ivzb.craftlog.feature.home.viewmodel.HomeState
 import com.ivzb.craftlog.feature.home.viewmodel.HomeViewModel
+import com.ivzb.craftlog.feature.investments.InvestmentListItem
+import com.ivzb.craftlog.feature.notes.NoteListItem
+import com.ivzb.craftlog.ui.components.CategoryTitleBar
 import java.util.Calendar
 import java.util.Date
 
 @Composable
 fun HomeRoute(
-    navController: NavController,
+    navigateToExpenses: () -> Unit,
     navigateToExpenseDetail: (Expense) -> Unit,
+    navigateToAddExpense: () -> Unit,
+    navigateToInvestments: () -> Unit,
+    navigateToInvestmentDetail: (Investment) -> Unit,
+    navigateToAddInvestment: () -> Unit,
+    navigateToNotes: () -> Unit,
+    navigateToNoteDetail: (Note) -> Unit,
+    navigateToAddNote: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
 
     LaunchedEffect(Unit) {
-        viewModel.loadExpenses()
+        viewModel.load()
     }
 
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
     val state = viewModel.state
 
     HomeScreen(
-        navController = navController,
         analyticsHelper = analyticsHelper,
         state = state,
+        navigateToExpenses = navigateToExpenses,
         navigateToExpenseDetail = navigateToExpenseDetail,
+        navigateToAddExpense = navigateToAddExpense,
         onEditExpense = { expense ->
             // todo: navigate to edit expense screen
         },
         onDeleteExpense = { expense ->
             viewModel.deleteExpense(expense)
+        },
+        navigateToInvestments = navigateToInvestments,
+        navigateToInvestmentDetail = navigateToInvestmentDetail,
+        navigateToAddInvestment = navigateToAddInvestment,
+        onEditInvestment = { investment ->
+            // todo: navigate to edit investment screen
+        },
+        onDeleteInvestment = { investment ->
+            viewModel.deleteInvestment(investment)
+        },
+        navigateToNotes = navigateToNotes,
+        navigateToNoteDetail = navigateToNoteDetail,
+        navigateToAddNote = navigateToAddNote,
+        onEditNote = { note ->
+            // todo: navigate to edit note screen
+        },
+        onDeleteNote = { note ->
+            viewModel.deleteNote(note)
         }
     )
 }
 
 @Composable
 fun HomeScreen(
-    navController: NavController,
     analyticsHelper: AnalyticsHelper,
     state: HomeState,
+    navigateToExpenses: () -> Unit,
     navigateToExpenseDetail: (Expense) -> Unit,
+    navigateToAddExpense: () -> Unit,
     onEditExpense: (Expense) -> Unit,
-    onDeleteExpense: (Expense) -> Unit
+    onDeleteExpense: (Expense) -> Unit,
+    navigateToInvestments: () -> Unit,
+    navigateToInvestmentDetail: (Investment) -> Unit,
+    navigateToAddInvestment: () -> Unit,
+    onEditInvestment: (Investment) -> Unit,
+    onDeleteInvestment: (Investment) -> Unit,
+    navigateToNotes: () -> Unit,
+    navigateToNoteDetail: (Note) -> Unit,
+    navigateToAddNote: () -> Unit,
+    onEditNote: (Note) -> Unit,
+    onDeleteNote: (Note) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         LastExpenses(
-            navController,
             analyticsHelper,
             state,
+            navigateToExpenses,
             navigateToExpenseDetail,
+            navigateToAddExpense,
             onEditExpense,
-            onDeleteExpense
+            onDeleteExpense,
+            navigateToInvestments,
+            navigateToInvestmentDetail,
+            navigateToAddInvestment,
+            onEditInvestment,
+            onDeleteInvestment,
+            navigateToNotes,
+            navigateToNoteDetail,
+            navigateToAddNote,
+            onEditNote,
+            onDeleteNote
         )
     }
 }
@@ -172,7 +225,10 @@ fun DailyOverviewCard(
 }
 
 @Composable
-fun EmptyCard(navController: NavController, analyticsHelper: AnalyticsHelper, selectedDateString: String) {
+fun EmptyCard(
+    analyticsHelper: AnalyticsHelper,
+    selectedDateString: String,
+) {
     analyticsHelper.logEvent(AnalyticsEvents.EMPTY_CARD_SHOWN)
 
     Card(
@@ -182,10 +238,6 @@ fun EmptyCard(navController: NavController, analyticsHelper: AnalyticsHelper, se
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.tertiary
         ),
-        onClick = {
-            analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_CLICKED_EMPTY_CARD)
-            navController.navigate(AddExpenseDestination.route)
-        }
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Column(
@@ -196,13 +248,19 @@ fun EmptyCard(navController: NavController, analyticsHelper: AnalyticsHelper, se
             ) {
 
                 Text(
-                    text = stringResource(R.string.home_screen_empty_card_title, selectedDateString),
+                    text = stringResource(
+                        R.string.home_screen_empty_card_title,
+                        selectedDateString
+                    ),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge,
                 )
 
                 Text(
-                    text = stringResource(R.string.home_screen_empty_card_message, selectedDateString),
+                    text = stringResource(
+                        R.string.home_screen_empty_card_message,
+                        selectedDateString
+                    ),
                     style = MaterialTheme.typography.titleSmall,
                 )
             }
@@ -212,60 +270,141 @@ fun EmptyCard(navController: NavController, analyticsHelper: AnalyticsHelper, se
 
 @Composable
 fun LastExpenses(
-    navController: NavController,
     analyticsHelper: AnalyticsHelper,
     state: HomeState,
+    navigateToExpenses: () -> Unit,
     navigateToExpenseDetail: (Expense) -> Unit,
+    navigateToAddExpense: () -> Unit,
     onEditExpense: (Expense) -> Unit,
-    onDeleteExpense: (Expense) -> Unit
+    onDeleteExpense: (Expense) -> Unit,
+    navigateToInvestments: () -> Unit,
+    navigateToInvestmentDetail: (Investment) -> Unit,
+    navigateToAddInvestment: () -> Unit,
+    onEditInvestment: (Investment) -> Unit,
+    onDeleteInvestment: (Investment) -> Unit,
+    navigateToNotes: () -> Unit,
+    navigateToNoteDetail: (Note) -> Unit,
+    navigateToAddNote: () -> Unit,
+    onEditNote: (Note) -> Unit,
+    onDeleteNote: (Note) -> Unit
 ) {
 
     if (state.loading) {
         return
     }
 
-    var filteredExpenses: List<Expense> by remember { mutableStateOf(emptyList()) }
+    var expenses: List<ExpenseListItem> by remember { mutableStateOf(emptyList()) }
+    var investments: List<InvestmentListItem> by remember { mutableStateOf(emptyList()) }
+    var notes: List<NoteListItem> by remember { mutableStateOf(emptyList()) }
     var selectedDateString = ""
 
     DatesHeader(analyticsHelper) { selectedDate ->
         val newExpenseList = state.expenses
-            .filter { expense ->
-                expense.date.toFormattedDateString() == selectedDate.date.toFormattedDateString()
+            .filter {
+                it.date.toFormattedDateString() == selectedDate.date.toFormattedDateString()
             }
             .sortedByDescending { it.date }
+            .map { ExpenseListItem.ExpenseItem(it, EXPENSES_OFFSET) }
 
-        filteredExpenses = newExpenseList
+        val newInvestmentList = state.investments
+            .filter {
+                it.date.toFormattedDateString() == selectedDate.date.toFormattedDateString()
+            }
+            .sortedByDescending { it.date }
+            .map { InvestmentListItem.InvestmentItem(it, INVESTMENTS_OFFSET) }
+
+        val newNoteList = state.notes
+            .filter {
+                it.date.toFormattedDateString() == selectedDate.date.toFormattedDateString()
+            }
+            .sortedByDescending { it.date }
+            .map { NoteListItem.NoteItem(it, NOTES_OFFSET) }
+
+        expenses = newExpenseList
+        investments = newInvestmentList
+        notes = newNoteList
         selectedDateString = selectedDate.date.toFormattedDateString()
         analyticsHelper.logEvent(AnalyticsEvents.HOME_NEW_DATE_SELECTED)
     }
 
-    if (filteredExpenses.isEmpty()) {
-        EmptyCard(navController, analyticsHelper, selectedDateString)
-    } else {
-        LazyColumn(
-            modifier = Modifier,
-        ) {
+    LazyColumn(
+        modifier = Modifier,
+    ) {
+        if (expenses.isEmpty() && investments.isEmpty() && notes.isEmpty()) {
+            item {
+                EmptyCard(analyticsHelper, selectedDateString)
+            }
+        }
+
+        if (expenses.isNotEmpty()) {
+            item {
+                CategoryTitleBar(
+                    title = stringResource(id = R.string.expenses),
+                    onAddClick = {
+                        navigateToAddExpense()
+                    },
+                    onMoreClick = {
+                        navigateToExpenses()
+                    }
+                )
+            }
+
             items(
-                items = filteredExpenses,
+                items = expenses,
+                key = { it.id },
                 itemContent = {
-                    ExpenseCard(
-                        expense = it,
-                        navigateToExpenseDetail = { expense ->
-                            navigateToExpenseDetail(expense)
-                        },
-                        onEdit = { expense ->
-                            onEditExpense(expense)
-                        },
-                        onDelete = { expense ->
-                            onDeleteExpense(expense)
-                        }
+                    ExpenseListItem(it, navigateToExpenseDetail, onEditExpense, onDeleteExpense)
+                }
+            )
+        }
+
+        if (investments.isNotEmpty()) {
+            item {
+                CategoryTitleBar(
+                    title = stringResource(id = R.string.investments),
+                    onAddClick = {
+                        navigateToAddInvestment()
+                    },
+                    onMoreClick = {
+                        navigateToInvestments()
+                    }
+                )
+            }
+
+            items(
+                items = investments,
+                key = { it.id },
+                itemContent = {
+                    InvestmentListItem(
+                        it,
+                        navigateToInvestmentDetail,
+                        onEditInvestment,
+                        onDeleteInvestment
                     )
                 }
             )
+        }
 
-            // todo: add filtered investments
+        if (notes.isNotEmpty()) {
+            item {
+                CategoryTitleBar(
+                    title = stringResource(id = R.string.notes),
+                    onAddClick = {
+                        navigateToAddNote()
+                    },
+                    onMoreClick = {
+                        navigateToNotes()
+                    }
+                )
+            }
 
-            // todo: add filtered notes
+            items(
+                items = notes,
+                key = { it.id },
+                itemContent = {
+                    NoteListItem(it, navigateToNoteDetail, onEditNote, onDeleteNote)
+                }
+            )
         }
     }
 }
@@ -443,3 +582,7 @@ fun DateHeader(
         }
     }
 }
+
+private const val EXPENSES_OFFSET = 10_000_000L
+private const val INVESTMENTS_OFFSET = 20_000_000L
+private const val NOTES_OFFSET = 30_000_000L

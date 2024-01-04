@@ -17,6 +17,8 @@ fun Date.toRelativeDateString(): String = DateUtils.getRelativeTimeSpanString(
     DateUtils.DAY_IN_MILLIS
 ).toString()
 
+fun Long.toRelativeDateString(): String = Date(this).toRelativeDateString()
+
 fun Date.toFormattedMonthDateString(): String {
     val sdf = SimpleDateFormat("MMMM dd", Locale.getDefault())
     return sdf.format(this)

@@ -11,6 +11,8 @@ import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.domain.model.Expense
+import com.ivzb.craftlog.domain.model.Investment
+import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.feature.addexpense.navigation.AddExpenseDestination
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
 
@@ -23,10 +25,17 @@ object HomeDestination : CraftLogNavigationDestination {
 }
 
 fun NavGraphBuilder.homeGraph(
-    navController: NavController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    navigateToExpenseDetail: (Expense) -> Unit
+    navigateToExpenses: () -> Unit,
+    navigateToExpenseDetail: (Expense) -> Unit,
+    navigateToAddExpense: () -> Unit,
+    navigateToInvestments: () -> Unit,
+    navigateToInvestmentDetail: (Investment) -> Unit,
+    navigateToAddInvestment: () -> Unit,
+    navigateToNotes: () -> Unit,
+    navigateToNoteDetail: (Note) -> Unit,
+    navigateToAddNote: () -> Unit,
 ) {
     composable(route = HomeDestination.route) {
         LaunchedEffect(Unit) {
@@ -40,6 +49,16 @@ fun NavGraphBuilder.homeGraph(
             )
         }
 
-        HomeRoute(navController, navigateToExpenseDetail)
+        HomeRoute(
+            navigateToExpenses,
+            navigateToExpenseDetail,
+            navigateToAddExpense,
+            navigateToInvestments,
+            navigateToInvestmentDetail,
+            navigateToAddInvestment,
+            navigateToNotes,
+            navigateToNoteDetail,
+            navigateToAddNote
+        )
     }
 }

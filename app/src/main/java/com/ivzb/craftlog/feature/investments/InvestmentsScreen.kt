@@ -33,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Investment
+import com.ivzb.craftlog.extenstion.toRelativeDateString
 import com.ivzb.craftlog.feature.investments.InvestmentListItem.HeaderItem
 import com.ivzb.craftlog.feature.investments.InvestmentListItem.InvestmentItem
 import com.ivzb.craftlog.feature.investments.InvestmentListItem.OverviewItem
@@ -147,7 +148,6 @@ fun InvestmentList(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun InvestmentLazyColumn(
     items: List<InvestmentListItem>,
@@ -190,7 +190,7 @@ fun LazyItemScope.InvestmentListItem(
     when (it) {
         is OverviewItem -> {}
 
-        is HeaderItem -> ListHeader(it.time, it.total)
+        is HeaderItem -> ListHeader(it.time.toRelativeDateString(), it.total)
 
         is InvestmentItem -> {
             InvestmentCard(
@@ -265,7 +265,7 @@ sealed class InvestmentListItem(val id: Long) {
         val isInvestmentListEmpty: Boolean
     ) : InvestmentListItem(-1)
 
-    data class InvestmentItem(val investment: Investment) : InvestmentListItem(investment.id ?: 0)
+    data class InvestmentItem(val investment: Investment, val offset: Long = 0L) : InvestmentListItem((investment.id ?: 0) + offset)
 
     data class HeaderItem(val time: Long, val total: BigDecimal) : InvestmentListItem(time)
 }

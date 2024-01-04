@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,7 +27,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
+import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Note
+import com.ivzb.craftlog.extenstion.toRelativeDateString
+import com.ivzb.craftlog.feature.expenses.ExpenseListItem
 import com.ivzb.craftlog.feature.notes.NoteListItem.HeaderItem
 import com.ivzb.craftlog.feature.notes.NoteListItem.NoteItem
 import com.ivzb.craftlog.feature.notes.NoteListItem.OverviewItem
@@ -85,6 +89,9 @@ fun NotesScreen(viewModel: NotesViewModel, navigateToNoteDetail: (Note) -> Unit)
                 notes = viewModel.state.notes,
                 searchQuery = searchQuery,
                 navigateToNoteDetail = navigateToNoteDetail,
+                onEdit = { note ->
+                    // todo: navigate to edit note screen
+                },
                 onDelete = { note ->
                     viewModel.deleteNote(note)
                 }
@@ -98,6 +105,7 @@ fun NoteList(
     notes: List<Note>,
     searchQuery: String = "",
     navigateToNoteDetail: (Note) -> Unit,
+    onEdit: (Note) -> Unit,
     onDelete: (Note) -> Unit
 ) {
     val sortedNoteList = notes
@@ -109,7 +117,7 @@ fun NoteList(
     if (sortedNoteList.isEmpty()) {
         EmptyView()
     } else {
-        NoteLazyColumn(sortedNoteList, searchQuery, navigateToNoteDetail, onDelete)
+        NoteLazyColumn(sortedNoteList, searchQuery, navigateToNoteDetail, onEdit, onDelete)
     }
 }
 
@@ -119,6 +127,7 @@ fun NoteLazyColumn(
     items: List<NoteListItem>,
     searchQuery: String,
     navigateToNoteDetail: (Note) -> Unit,
+    onEdit: (Note) -> Unit,
     onDelete: (Note) -> Unit
 ) {
     val lazyListState = rememberLazyListState()
@@ -138,22 +147,34 @@ fun NoteLazyColumn(
             items = items,
             key = { it.id },
             itemContent = {
-                when (it) {
-                    is OverviewItem -> { }
-
-                    is HeaderItem -> ListHeader(it.time)
-
-                    is NoteItem -> {
-                        NoteCard(
-                            modifier = Modifier.animateItemPlacement(),
-                            note = it.note,
-                            navigateToNoteDetail,
-                            onDelete
-                        )
-                    }
-                }
+                NoteListItem(it, navigateToNoteDetail, onEdit, onDelete)
             }
         )
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun LazyItemScope.NoteListItem(
+    it: NoteListItem,
+    navigateToNoteDetail: (Note) -> Unit,
+    onEditNote: (Note) -> Unit,
+    onDeleteNote: (Note) -> Unit
+) {
+    when (it) {
+        is OverviewItem -> {}
+
+        is HeaderItem -> ListHeader(it.time.toRelativeDateString())
+
+        is NoteItem -> {
+            NoteCard(
+                modifier = Modifier.animateItemPlacement(),
+                note = it.note,
+                navigateToNoteDetail,
+                onEditNote,
+                onDeleteNote
+            )
+        }
     }
 }
 
@@ -182,7 +203,7 @@ sealed class NoteListItem(val id: Long) {
         val isNoteListEmpty: Boolean
     ) : NoteListItem(-1)
 
-    data class NoteItem(val note: Note) : NoteListItem(note.id ?: 0)
+    data class NoteItem(val note: Note, val offset: Long = 0L) : NoteListItem((note.id ?: 0) + offset)
 
     data class HeaderItem(val time: Long) : NoteListItem(time)
 }
