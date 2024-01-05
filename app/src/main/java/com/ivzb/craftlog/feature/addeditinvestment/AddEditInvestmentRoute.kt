@@ -1,4 +1,4 @@
-package com.ivzb.craftlog.feature.addinvestment
+package com.ivzb.craftlog.feature.addeditinvestment
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -45,8 +45,8 @@ import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Investment
-import com.ivzb.craftlog.feature.addinvestment.viewmodel.AddInvestmentState
-import com.ivzb.craftlog.feature.addinvestment.viewmodel.AddInvestmentViewModel
+import com.ivzb.craftlog.feature.addeditinvestment.viewmodel.AddEditInvestmentState
+import com.ivzb.craftlog.feature.addeditinvestment.viewmodel.AddEditInvestmentViewModel
 import com.ivzb.craftlog.ui.components.CategoryDropdownMenu
 import com.ivzb.craftlog.ui.components.DateTextField
 import com.ivzb.craftlog.ui.components.SuggestionsDropdownMenu
@@ -58,31 +58,35 @@ import java.util.Date
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AddInvestmentRoute(navigateBack = {})
+    AddEditInvestmentRoute(null, navigateBack = {})
 }
 
 @Composable
-fun AddInvestmentRoute(
+fun AddEditInvestmentRoute(
+    investment: Investment?,
     navigateBack: () -> Unit,
-    viewModel: AddInvestmentViewModel = hiltViewModel()
+    viewModel: AddEditInvestmentViewModel = hiltViewModel()
 ) {
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    AddInvestmentScreen(navigateBack, viewModel, analyticsHelper)
+    AddEditInvestmentScreen(investment, navigateBack, viewModel, analyticsHelper)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddInvestmentScreen(
+fun AddEditInvestmentScreen(
+    investment: Investment?,
     navigateBack: () -> Unit,
-    viewModel: AddInvestmentViewModel,
+    viewModel: AddEditInvestmentViewModel,
     analyticsHelper: AnalyticsHelper,
 ) {
-    var name by rememberSaveable { mutableStateOf("") }
-    var amount by rememberSaveable { mutableStateOf("") }
-    var cost by rememberSaveable { mutableStateOf("") }
-    var category by rememberSaveable { mutableStateOf(InvestmentCategory.entries.first()) }
-    var date by rememberSaveable { mutableStateOf(Date()) }
+    val id by rememberSaveable { mutableStateOf(investment?.id ?: 0L) }
+    var name by rememberSaveable { mutableStateOf(investment?.name ?: "") }
+    var amount by rememberSaveable { mutableStateOf(investment?.amount?.toPlainString() ?: "") }
+    var cost by rememberSaveable { mutableStateOf(investment?.cost?.toPlainString() ?: "") }
+    var category by rememberSaveable { mutableStateOf(investment?.category ?: InvestmentCategory.entries.first()) }
+    var date by rememberSaveable { mutableStateOf(investment?.date ?: Date()) }
     val additionalData = remember { mutableStateMapOf<String, String>() }
+    investment?.additionalData?.forEach { (key, value) -> additionalData[key] = value }
 
     var suggestedInvestments by rememberSaveable { mutableStateOf(listOf<Investment>()) }
     val nameState = mutableStateOf(name)
@@ -96,7 +100,7 @@ fun AddInvestmentScreen(
             .isInvestmentSaved
             .collect {
                 navigateBack()
-                analyticsHelper.logEvent(AnalyticsEvents.INVESTMENT_SAVED)
+                analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_INVESTMENT_SAVED)
             }
     }
 
@@ -130,7 +134,7 @@ fun AddInvestmentScreen(
                 title = {
                     Text(
                         modifier = Modifier.padding(8.dp),
-                        text = stringResource(id = R.string.add_investment),
+                        text = stringResource(id = if (id == 0L) R.string.add_investment else R.string.edit_investment),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.displaySmall
                     )
@@ -145,6 +149,7 @@ fun AddInvestmentScreen(
                     .height(56.dp),
                 onClick = {
                     validateInvestment(
+                        id = id,
                         name = name,
                         amount = amount.toBigDecimalOrNull(),
                         cost = cost.toBigDecimalOrNull(),
@@ -162,15 +167,20 @@ fun AddInvestmentScreen(
                             )
 
                             val event = String.format(
-                                AnalyticsEvents.ADD_INVESTMENT_VALUE_INVALIDATED,
+                                AnalyticsEvents.ADD_EDIT_INVESTMENT_VALUE_INVALIDATED,
                                 invalidatedValue
                             )
 
                             analyticsHelper.logEvent(event)
                         },
                         onValidate = { investment ->
-                            viewModel.addInvestment(AddInvestmentState(investment))
-                            analyticsHelper.logEvent(AnalyticsEvents.ADD_INVESTMENT_ON_SAVE_CLICKED)
+                            if (investment.id == 0L) {
+                                viewModel.addInvestment(AddEditInvestmentState(investment))
+                            } else {
+                                viewModel.editInvestment(AddEditInvestmentState(investment))
+                            }
+
+                            analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_INVESTMENT_ON_SAVE_CLICKED)
                         },
                         viewModel = viewModel
                     )
@@ -272,6 +282,7 @@ fun AddInvestmentScreen(
 }
 
 private fun validateInvestment(
+    id: Long,
     name: String,
     amount: BigDecimal?,
     cost: BigDecimal?,
@@ -280,7 +291,7 @@ private fun validateInvestment(
     additionalData: Map<String, String>,
     onInvalidate: (Int) -> Unit,
     onValidate: (Investment) -> Unit,
-    viewModel: AddInvestmentViewModel
+    viewModel: AddEditInvestmentViewModel
 ) {
     if (name.isEmpty()) {
         onInvalidate(R.string.name)
@@ -308,6 +319,7 @@ private fun validateInvestment(
     }
 
     val investment = viewModel.createInvestment(
+        id,
         name,
         amount,
         cost,

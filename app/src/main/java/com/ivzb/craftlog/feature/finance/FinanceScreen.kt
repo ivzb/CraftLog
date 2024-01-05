@@ -41,6 +41,7 @@ fun FinanceRoute(
     navigateToInvestments: () -> Unit,
     navigateToInvestmentDetail: (Investment) -> Unit,
     navigateToAddInvestment: () -> Unit,
+    navigateToEditInvestment: (Investment) -> Unit,
     viewModel: FinanceViewModel = hiltViewModel(),
 ) {
 
@@ -58,7 +59,8 @@ fun FinanceRoute(
         navigateToEditExpense,
         navigateToInvestments,
         navigateToInvestmentDetail,
-        navigateToAddInvestment
+        navigateToAddInvestment,
+        navigateToEditInvestment
     )
 }
 
@@ -75,6 +77,7 @@ fun FinanceScreen(
     navigateToInvestments: () -> Unit,
     navigateToInvestmentDetail: (Investment) -> Unit,
     navigateToAddInvestment: () -> Unit,
+    navigateToEditInvestment: (Investment) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -198,7 +201,7 @@ fun FinanceScreen(
                         it,
                         navigateToInvestmentDetail,
                         onEditInvestment = { investment ->
-                            // todo: navigate to edit investment screen
+                            navigateToEditInvestment(investment)
                         },
                         onDeleteInvestment = { investment ->
                             viewModel.deleteInvestment(investment)

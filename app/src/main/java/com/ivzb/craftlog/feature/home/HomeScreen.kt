@@ -67,6 +67,7 @@ fun HomeRoute(
     navigateToInvestments: () -> Unit,
     navigateToInvestmentDetail: (Investment) -> Unit,
     navigateToAddInvestment: () -> Unit,
+    navigateToEditInvestment: (Investment) -> Unit,
     navigateToNotes: () -> Unit,
     navigateToNoteDetail: (Note) -> Unit,
     navigateToAddNote: () -> Unit,
@@ -96,7 +97,7 @@ fun HomeRoute(
         navigateToInvestmentDetail = navigateToInvestmentDetail,
         navigateToAddInvestment = navigateToAddInvestment,
         onEditInvestment = { investment ->
-            // todo: navigate to edit investment screen
+            navigateToEditInvestment(investment)
         },
         onDeleteInvestment = { investment ->
             viewModel.deleteInvestment(investment)

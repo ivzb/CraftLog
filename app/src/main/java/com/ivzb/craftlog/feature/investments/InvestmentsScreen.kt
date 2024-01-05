@@ -46,6 +46,7 @@ import java.math.BigDecimal
 @Composable
 fun InvestmentsRoute(
     navigateToInvestmentDetail: (Investment) -> Unit,
+    navigateToEditInvestment: (Investment) -> Unit,
     navigateBack: () -> Unit,
     viewModel: InvestmentsViewModel = hiltViewModel()
 ) {
@@ -54,7 +55,7 @@ fun InvestmentsRoute(
         viewModel.loadInvestments()
     }
 
-    InvestmentsScreen(viewModel, navigateToInvestmentDetail, navigateBack)
+    InvestmentsScreen(viewModel, navigateToInvestmentDetail, navigateToEditInvestment, navigateBack)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,6 +63,7 @@ fun InvestmentsRoute(
 fun InvestmentsScreen(
     viewModel: InvestmentsViewModel,
     navigateToInvestmentDetail: (Investment) -> Unit,
+    navigateToEditInvestment: (Investment) -> Unit,
     navigateBack: () -> Unit
 ) {
     var searchQuery by remember {
@@ -104,7 +106,7 @@ fun InvestmentsScreen(
                 },
                 navigateToInvestmentDetail = navigateToInvestmentDetail,
                 onEdit = { investment ->
-                    // todo: navigate to edit investment screen
+                    navigateToEditInvestment(investment)
                 },
                 onDelete = { investment ->
                     viewModel.deleteInvestment(investment)

@@ -1,4 +1,4 @@
-package com.ivzb.craftlog.feature.addinvestment.usecase
+package com.ivzb.craftlog.feature.addeditinvestment.usecase
 
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.domain.repository.InvestmentRepository

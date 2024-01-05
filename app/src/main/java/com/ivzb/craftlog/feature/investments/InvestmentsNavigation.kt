@@ -10,7 +10,7 @@ import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.domain.model.Investment
-import com.ivzb.craftlog.feature.addinvestment.navigation.AddInvestmentDestination
+import com.ivzb.craftlog.feature.addeditinvestment.navigation.AddInvestmentDestination
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
 
 const val INVESTMENT = "investment"
@@ -26,6 +26,7 @@ fun NavGraphBuilder.investmentsGraph(
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
     navigateToInvestmentDetail: (Investment) -> Unit,
+    navigateToEditInvestment: (Investment) -> Unit,
     navigateBack: () -> Unit
 ) {
     composable(route = InvestmentsDestination.route) {
@@ -40,6 +41,6 @@ fun NavGraphBuilder.investmentsGraph(
             )
         }
 
-        InvestmentsRoute(navigateToInvestmentDetail, navigateBack)
+        InvestmentsRoute(navigateToInvestmentDetail, navigateToEditInvestment, navigateBack)
     }
 }

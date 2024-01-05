@@ -1,11 +1,11 @@
-package com.ivzb.craftlog.feature.addinvestment.navigation
+package com.ivzb.craftlog.feature.addeditinvestment.navigation
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
-import com.ivzb.craftlog.feature.addinvestment.AddInvestmentRoute
+import com.ivzb.craftlog.feature.addeditinvestment.AddEditInvestmentRoute
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
 
 object AddInvestmentDestination : CraftLogNavigationDestination {
@@ -27,6 +27,6 @@ fun NavGraphBuilder.addInvestmentGraph(
             fabBehaviour.value = null
         }
 
-        AddInvestmentRoute(navigateBack)
+        AddEditInvestmentRoute(null, navigateBack)
     }
 }

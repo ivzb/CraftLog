@@ -30,9 +30,9 @@ object AnalyticsEvents {
 
     const val ADD_INVESTMENT_CLICKED_FAB = "add_investment_clicked_fab"
 
-    const val ADD_INVESTMENT_VALUE_INVALIDATED = "add_investment_%s_invalidated"
-    const val ADD_INVESTMENT_ON_SAVE_CLICKED = "add_investment_on_save_clicked"
-    const val INVESTMENT_SAVED = "investment_saved"
+    const val ADD_EDIT_INVESTMENT_VALUE_INVALIDATED = "add_edit_investment_%s_invalidated"
+    const val ADD_EDIT_INVESTMENT_ON_SAVE_CLICKED = "add_edit_investment_on_save_clicked"
+    const val ADD_EDIT_INVESTMENT_SAVED = "add_edit_investment_saved"
 
     const val INVESTMENT_DETAIL_ON_BACK_CLICKED = "investment_detail_on_back_clicked"
     const val INVESTMENT_DETAIL_DONE_CLICKED = "investment_detail_done_clicked"

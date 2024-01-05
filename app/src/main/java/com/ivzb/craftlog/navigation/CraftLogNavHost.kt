@@ -12,8 +12,10 @@ import com.ivzb.craftlog.feature.addeditexpense.navigation.AddExpenseDestination
 import com.ivzb.craftlog.feature.addeditexpense.navigation.EditExpenseDestination
 import com.ivzb.craftlog.feature.addeditexpense.navigation.addExpenseGraph
 import com.ivzb.craftlog.feature.addeditexpense.navigation.editExpenseGraph
-import com.ivzb.craftlog.feature.addinvestment.navigation.AddInvestmentDestination
-import com.ivzb.craftlog.feature.addinvestment.navigation.addInvestmentGraph
+import com.ivzb.craftlog.feature.addeditinvestment.navigation.AddInvestmentDestination
+import com.ivzb.craftlog.feature.addeditinvestment.navigation.EditInvestmentDestination
+import com.ivzb.craftlog.feature.addeditinvestment.navigation.addInvestmentGraph
+import com.ivzb.craftlog.feature.addeditinvestment.navigation.editInvestmentGraph
 import com.ivzb.craftlog.feature.addnote.navigation.AddNoteDestination
 import com.ivzb.craftlog.feature.addnote.navigation.addNoteGraph
 import com.ivzb.craftlog.feature.budget.BUDGET
@@ -94,7 +96,18 @@ fun CraftLogNavHost(
                 navController.navigate(InvestmentDetailDestination.route)
             },
             navigateToAddInvestment = {
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(INVESTMENT, null)
+                }
                 navController.navigate(AddInvestmentDestination.route)
+            },
+            navigateToEditInvestment = {
+                val bundle = Bundle()
+                bundle.putParcelable(INVESTMENT, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(INVESTMENT, bundle)
+                }
+                navController.navigate(EditInvestmentDestination.route)
             },
             navigateToNotes = {
                 navController.navigateSingleTop(NotesDestination.route)
@@ -163,7 +176,18 @@ fun CraftLogNavHost(
                 navController.navigate(InvestmentDetailDestination.route)
             },
             navigateToAddInvestment = {
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(INVESTMENT, null)
+                }
                 navController.navigate(AddInvestmentDestination.route)
+            },
+            navigateToEditInvestment = {
+                val bundle = Bundle()
+                bundle.putParcelable(INVESTMENT, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(INVESTMENT, bundle)
+                }
+                navController.navigate(EditInvestmentDestination.route)
             }
         )
 
@@ -241,6 +265,14 @@ fun CraftLogNavHost(
                 }
                 navController.navigate(InvestmentDetailDestination.route)
             },
+            navigateToEditInvestment = {
+                val bundle = Bundle()
+                bundle.putParcelable(INVESTMENT, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(INVESTMENT, bundle)
+                }
+                navController.navigate(EditInvestmentDestination.route)
+            },
             navigateBack = { navController.navigateUp() }
         )
 
@@ -252,6 +284,13 @@ fun CraftLogNavHost(
         )
 
         addInvestmentGraph(
+            bottomBarVisibility = bottomBarVisibility,
+            fabBehaviour = fabBehaviour,
+            navigateBack = { navController.navigateUp() },
+        )
+
+        editInvestmentGraph(
+            navController = navController,
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
             navigateBack = { navController.navigateUp() },
