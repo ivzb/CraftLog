@@ -28,7 +28,7 @@ import java.util.Calendar
 import java.util.Date
 
 @Composable
-fun DateTextField(onDateSelected: (Date) -> Unit) {
+fun DateTextField(initialDate: Date, onDateSelected: (Date) -> Unit) {
     Text(
         text = stringResource(id = R.string.date),
         style = MaterialTheme.typography.bodyLarge
@@ -37,8 +37,7 @@ fun DateTextField(onDateSelected: (Date) -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed: Boolean by interactionSource.collectIsPressedAsState()
 
-    val currentDate = Date().toFormattedString()
-    var selectedDate by rememberSaveable { mutableStateOf(currentDate) }
+    var selectedDate by rememberSaveable { mutableStateOf(initialDate.toFormattedString()) }
 
     val context = LocalContext.current
 

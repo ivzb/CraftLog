@@ -4,12 +4,12 @@ object AnalyticsEvents {
 
     const val EMPTY_CARD_SHOWN = "empty_card_shown"
 
-    const val ADD_EXPENSE_CLICKED_DAILY_OVERVIEW = "add_expense_clicked_daily_overview"
-    const val ADD_EXPENSE_CLICKED_FAB = "add_expense_clicked_fab"
+    const val ADD_EDIT_EXPENSE_CLICKED_DAILY_OVERVIEW = "add_edit_expense_clicked_daily_overview"
+    const val ADD_EDIT_EXPENSE_CLICKED_FAB = "add_edit_expense_clicked_fab"
 
-    const val ADD_EXPENSE_ON_BACK_CLICKED = "add_expense_on_back_clicked"
-    const val ADD_EXPENSE_VALUE_INVALIDATED = "add_expense_%s_invalidated"
-    const val ADD_EXPENSE_ON_SAVE_CLICKED = "add_expense_on_save_clicked"
+    const val ADD_EDIT_EXPENSE_ON_BACK_CLICKED = "add_edit_expense_on_back_clicked"
+    const val ADD_EDIT_EXPENSE_VALUE_INVALIDATED = "add_edit_expense_%s_invalidated"
+    const val ADD_EDIT_EXPENSE_ON_SAVE_CLICKED = "add_edit_expense_on_save_clicked"
 
     const val EXPENSE_SAVED = "expense_saved"
     

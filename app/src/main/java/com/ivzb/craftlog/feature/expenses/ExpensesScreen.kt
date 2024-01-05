@@ -45,6 +45,7 @@ import java.math.BigDecimal
 @Composable
 fun ExpensesRoute(
     navigateToExpenseDetail: (Expense) -> Unit,
+    navigateToEditExpense: (Expense) -> Unit,
     navigateBack: () -> Unit,
     viewModel: ExpensesViewModel = hiltViewModel()
 ) {
@@ -53,7 +54,7 @@ fun ExpensesRoute(
         viewModel.loadExpenses()
     }
 
-    ExpensesScreen(viewModel, navigateToExpenseDetail, navigateBack)
+    ExpensesScreen(viewModel, navigateToExpenseDetail, navigateToEditExpense, navigateBack)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,6 +62,7 @@ fun ExpensesRoute(
 fun ExpensesScreen(
     viewModel: ExpensesViewModel,
     navigateToExpenseDetail: (Expense) -> Unit,
+    navigateToEditExpense: (Expense) -> Unit,
     navigateBack: () -> Unit
 ) {
     var searchQuery by remember {
@@ -103,7 +105,7 @@ fun ExpensesScreen(
                 },
                 navigateToExpenseDetail = navigateToExpenseDetail,
                 onEdit = { expense ->
-                    // todo: navigate to edit expense screen
+                    navigateToEditExpense(expense)
                 },
                 onDelete = { expense ->
                     viewModel.deleteExpense(expense)

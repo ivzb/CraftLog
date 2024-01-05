@@ -1,4 +1,4 @@
-package com.ivzb.craftlog.feature.addexpense
+package com.ivzb.craftlog.feature.addeditexpense
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -46,8 +46,8 @@ import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Expense
-import com.ivzb.craftlog.feature.addexpense.viewmodel.AddExpenseState
-import com.ivzb.craftlog.feature.addexpense.viewmodel.AddExpenseViewModel
+import com.ivzb.craftlog.feature.addeditexpense.viewmodel.AddEditExpenseState
+import com.ivzb.craftlog.feature.addeditexpense.viewmodel.AddEditExpenseViewModel
 import com.ivzb.craftlog.ui.components.CategoryDropdownMenu
 import com.ivzb.craftlog.ui.components.DateTextField
 import com.ivzb.craftlog.ui.components.SuggestionsDropdownMenu
@@ -63,30 +63,34 @@ const val INSURANCE = "insurance"
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AddExpenseRoute(navigateBack = {})
+    AddEditExpenseRoute(null, navigateBack = {})
 }
 
 @Composable
-fun AddExpenseRoute(
+fun AddEditExpenseRoute(
+    expense: Expense?,
     navigateBack: () -> Unit,
-    viewModel: AddExpenseViewModel = hiltViewModel()
+    viewModel: AddEditExpenseViewModel = hiltViewModel()
 ) {
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    AddExpenseScreen(navigateBack, viewModel, analyticsHelper)
+    AddEditExpenseScreen(expense, navigateBack, viewModel, analyticsHelper)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddExpenseScreen(
+fun AddEditExpenseScreen(
+    expense: Expense?,
     navigateBack: () -> Unit,
-    viewModel: AddExpenseViewModel,
+    viewModel: AddEditExpenseViewModel,
     analyticsHelper: AnalyticsHelper,
 ) {
-    var name by rememberSaveable { mutableStateOf("") }
-    var amount by rememberSaveable { mutableStateOf("") }
-    var category by rememberSaveable { mutableStateOf(ExpenseCategory.entries.first()) }
-    var date by rememberSaveable { mutableStateOf(Date()) }
+    val id by rememberSaveable { mutableStateOf(expense?.id ?: 0L) }
+    var name by rememberSaveable { mutableStateOf(expense?.name ?: "") }
+    var amount by rememberSaveable { mutableStateOf(expense?.amount?.toPlainString() ?: "") }
+    var category by rememberSaveable { mutableStateOf(expense?.category ?: ExpenseCategory.entries.first()) }
+    var date by rememberSaveable { mutableStateOf(expense?.date ?: Date()) }
     val additionalData = remember { mutableStateMapOf<String, String>() }
+    expense?.additionalData?.forEach { (key, value) -> additionalData[key] = value }
 
     val hasAdditionalFields = category in listOf(ExpenseCategory.Mortgage)
 
@@ -122,7 +126,7 @@ fun AddExpenseScreen(
                 navigationIcon = {
                     FloatingActionButton(
                         onClick = {
-                            analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_ON_BACK_CLICKED)
+                            analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_EXPENSE_ON_BACK_CLICKED)
                             navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
@@ -136,7 +140,7 @@ fun AddExpenseScreen(
                 title = {
                     Text(
                         modifier = Modifier.padding(8.dp),
-                        text = stringResource(id = R.string.add_expense),
+                        text = stringResource(id = if (id == 0L) R.string.add_expense else R.string.edit_expense),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.displaySmall
                     )
@@ -151,6 +155,7 @@ fun AddExpenseScreen(
                     .height(56.dp),
                 onClick = {
                     validateExpense(
+                        id = id,
                         name = name,
                         amount = amount.toBigDecimalOrNull(),
                         categoryId = category.id,
@@ -167,15 +172,20 @@ fun AddExpenseScreen(
                             )
 
                             val event = String.format(
-                                AnalyticsEvents.ADD_EXPENSE_VALUE_INVALIDATED,
+                                AnalyticsEvents.ADD_EDIT_EXPENSE_VALUE_INVALIDATED,
                                 invalidatedValue
                             )
 
                             analyticsHelper.logEvent(event)
                         },
                         onValidate = { expense ->
-                            viewModel.addExpense(AddExpenseState(expense))
-                            analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_ON_SAVE_CLICKED)
+                            if (expense.id == 0L) {
+                                viewModel.addExpense(AddEditExpenseState(expense))
+                            } else {
+                                viewModel.editExpense(AddEditExpenseState(expense))
+                            }
+
+                            analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_EXPENSE_ON_SAVE_CLICKED)
                         },
                         viewModel = viewModel
                     )
@@ -253,7 +263,7 @@ fun AddExpenseScreen(
 
             Spacer(modifier = Modifier.padding(4.dp))
 
-            DateTextField { date = it }
+            DateTextField(date) { date = it }
 
             if (hasAdditionalFields) {
                 when {
@@ -337,6 +347,7 @@ private fun MortgageFields(additionalData: SnapshotStateMap<String, String>) {
 }
 
 private fun validateExpense(
+    id: Long,
     name: String,
     amount: BigDecimal?,
     categoryId: String,
@@ -344,7 +355,7 @@ private fun validateExpense(
     additionalData: Map<String, String>,
     onInvalidate: (Int) -> Unit,
     onValidate: (Expense) -> Unit,
-    viewModel: AddExpenseViewModel
+    viewModel: AddEditExpenseViewModel
 ) {
     if (name.isEmpty()) {
         onInvalidate(R.string.name)
@@ -384,6 +395,7 @@ private fun validateExpense(
     }
 
     val expense = viewModel.createExpense(
+        id,
         name,
         amount,
         categoryId,

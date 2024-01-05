@@ -10,7 +10,7 @@ import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.domain.model.Expense
-import com.ivzb.craftlog.feature.addexpense.navigation.AddExpenseDestination
+import com.ivzb.craftlog.feature.addeditexpense.navigation.AddExpenseDestination
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
 
 const val EXPENSE = "expense"
@@ -26,6 +26,7 @@ fun NavGraphBuilder.expensesGraph(
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
     navigateToExpenseDetail: (Expense) -> Unit,
+    navigateToEditExpense: (Expense) -> Unit,
     navigateBack: () -> Unit
 ) {
     composable(route = ExpensesDestination.route) {
@@ -35,11 +36,11 @@ fun NavGraphBuilder.expensesGraph(
                 visibility = true,
                 textId = R.string.add_expense,
                 icon = Icons.Default.Add,
-                analyticsEvent = AnalyticsEvents.ADD_EXPENSE_CLICKED_FAB,
+                analyticsEvent = AnalyticsEvents.ADD_EDIT_EXPENSE_CLICKED_FAB,
                 destinationRoute = AddExpenseDestination.route,
             )
         }
 
-        ExpensesRoute(navigateToExpenseDetail, navigateBack)
+        ExpensesRoute(navigateToExpenseDetail, navigateToEditExpense, navigateBack)
     }
 }

@@ -55,11 +55,13 @@ Remember to design the menu in a clear and visually appealing way, with easily r
 
 // todo: allow user to see previous budgets with calendar view with months only
 
-// todo: edit expense screen
-
 // todo: edit investment screen
 
 // todo: edit note screen
+
+// todo: change OverviewItem to EmptyItem and move the empty state to the ListItem
+
+// todo: instead of using callbacks for navigation, provide navController to the screens and navigate to destination directly or via some extension class
 
 // todo: apply ktlint https://github.com/JLLeitschuh/ktlint-gradle
 

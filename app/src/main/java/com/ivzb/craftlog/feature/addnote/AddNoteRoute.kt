@@ -102,7 +102,7 @@ fun AddNoteScreen(
                 navigationIcon = {
                     FloatingActionButton(
                         onClick = {
-                            analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_ON_BACK_CLICKED)
+                            analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_EXPENSE_ON_BACK_CLICKED)
                             navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)

@@ -1,4 +1,4 @@
-package com.ivzb.craftlog.feature.addexpense.usecase
+package com.ivzb.craftlog.feature.addeditexpense.usecase
 
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.repository.ExpenseRepository

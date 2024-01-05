@@ -46,7 +46,7 @@ import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.extenstion.toFormattedDateShortString
 import com.ivzb.craftlog.extenstion.toFormattedDateString
 import com.ivzb.craftlog.extenstion.toFormattedMonthDateString
-import com.ivzb.craftlog.feature.addexpense.navigation.AddExpenseDestination
+import com.ivzb.craftlog.feature.addeditexpense.navigation.AddExpenseDestination
 import com.ivzb.craftlog.feature.expenses.ExpenseListItem
 import com.ivzb.craftlog.feature.home.data.CalendarDataSource
 import com.ivzb.craftlog.feature.home.model.CalendarModel
@@ -63,6 +63,7 @@ fun HomeRoute(
     navigateToExpenses: () -> Unit,
     navigateToExpenseDetail: (Expense) -> Unit,
     navigateToAddExpense: () -> Unit,
+    navigateToEditExpense: (Expense) -> Unit,
     navigateToInvestments: () -> Unit,
     navigateToInvestmentDetail: (Investment) -> Unit,
     navigateToAddInvestment: () -> Unit,
@@ -86,7 +87,7 @@ fun HomeRoute(
         navigateToExpenseDetail = navigateToExpenseDetail,
         navigateToAddExpense = navigateToAddExpense,
         onEditExpense = { expense ->
-            // todo: navigate to edit expense screen
+            navigateToEditExpense(expense)
         },
         onDeleteExpense = { expense ->
             viewModel.deleteExpense(expense)
@@ -176,7 +177,7 @@ fun DailyOverviewCard(
             contentColor = MaterialTheme.colorScheme.tertiary
         ),
         onClick = {
-            analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_CLICKED_DAILY_OVERVIEW)
+            analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_EXPENSE_CLICKED_DAILY_OVERVIEW)
             navController.navigate(AddExpenseDestination.route)
         }
     ) {

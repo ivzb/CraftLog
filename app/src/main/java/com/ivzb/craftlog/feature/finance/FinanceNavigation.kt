@@ -26,6 +26,7 @@ fun NavGraphBuilder.financeGraph(
     navigateToExpenses: () -> Unit,
     navigateToExpenseDetail: (Expense) -> Unit,
     navigateToAddExpense: () -> Unit,
+    navigateToEditExpense: (Expense) -> Unit,
     navigateToInvestments: () -> Unit,
     navigateToInvestmentDetail: (Investment) -> Unit,
     navigateToAddInvestment: () -> Unit
@@ -42,6 +43,7 @@ fun NavGraphBuilder.financeGraph(
             navigateToExpenses,
             navigateToExpenseDetail,
             navigateToAddExpense,
+            navigateToEditExpense,
             navigateToInvestments,
             navigateToInvestmentDetail,
             navigateToAddInvestment

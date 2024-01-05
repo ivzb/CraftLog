@@ -31,16 +31,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.extenstion.toFormattedDateString
-import com.ivzb.craftlog.feature.addexpense.INSURANCE
-import com.ivzb.craftlog.feature.addexpense.INTEREST
-import com.ivzb.craftlog.feature.addexpense.PRINCIPAL
-import com.ivzb.craftlog.feature.expensedetail.viewmodel.ExpenseDetailViewModel
+import com.ivzb.craftlog.feature.addeditexpense.INSURANCE
+import com.ivzb.craftlog.feature.addeditexpense.INTEREST
+import com.ivzb.craftlog.feature.addeditexpense.PRINCIPAL
 import com.ivzb.craftlog.util.ExpenseCategory
 
 @Composable

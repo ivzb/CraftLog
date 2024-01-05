@@ -116,7 +116,7 @@ fun AddInvestmentScreen(
                 navigationIcon = {
                     FloatingActionButton(
                         onClick = {
-                            analyticsHelper.logEvent(AnalyticsEvents.ADD_EXPENSE_ON_BACK_CLICKED)
+                            analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_EXPENSE_ON_BACK_CLICKED)
                             navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
@@ -266,7 +266,7 @@ fun AddInvestmentScreen(
 
             Spacer(modifier = Modifier.padding(4.dp))
 
-            DateTextField { date = it }
+            DateTextField(date) { date = it }
         }
     }
 }

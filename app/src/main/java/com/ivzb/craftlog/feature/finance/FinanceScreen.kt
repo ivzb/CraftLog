@@ -37,6 +37,7 @@ fun FinanceRoute(
     navigateToExpenses: () -> Unit,
     navigateToExpenseDetail: (Expense) -> Unit,
     navigateToAddExpense: () -> Unit,
+    navigateToEditExpense: (Expense) -> Unit,
     navigateToInvestments: () -> Unit,
     navigateToInvestmentDetail: (Investment) -> Unit,
     navigateToAddInvestment: () -> Unit,
@@ -54,6 +55,7 @@ fun FinanceRoute(
         navigateToExpenses,
         navigateToExpenseDetail,
         navigateToAddExpense,
+        navigateToEditExpense,
         navigateToInvestments,
         navigateToInvestmentDetail,
         navigateToAddInvestment
@@ -69,6 +71,7 @@ fun FinanceScreen(
     navigateToExpenses: () -> Unit,
     navigateToExpenseDetail: (Expense) -> Unit,
     navigateToAddExpense: () -> Unit,
+    navigateToEditExpense: (Expense) -> Unit,
     navigateToInvestments: () -> Unit,
     navigateToInvestmentDetail: (Investment) -> Unit,
     navigateToAddInvestment: () -> Unit,
@@ -149,7 +152,7 @@ fun FinanceScreen(
                         it,
                         navigateToExpenseDetail = navigateToExpenseDetail,
                         onEditExpense = { expense ->
-                            // todo: navigate to edit expense screen
+                            navigateToEditExpense(expense)
                         },
                         onDeleteExpense = { expense ->
                             viewModel.deleteExpense(expense)

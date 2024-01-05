@@ -9,9 +9,7 @@ import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
-import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Note
-import com.ivzb.craftlog.feature.addexpense.navigation.AddExpenseDestination
 import com.ivzb.craftlog.feature.addnote.navigation.AddNoteDestination
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
 
