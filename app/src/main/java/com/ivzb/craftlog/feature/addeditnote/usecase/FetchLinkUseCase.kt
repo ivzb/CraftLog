@@ -1,4 +1,4 @@
-package com.ivzb.craftlog.feature.addnote.usecase
+package com.ivzb.craftlog.feature.addeditnote.usecase
 
 import android.webkit.URLUtil
 import com.ivzb.craftlog.domain.model.Link

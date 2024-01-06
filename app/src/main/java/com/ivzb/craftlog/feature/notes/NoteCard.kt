@@ -90,7 +90,7 @@ fun NoteCard(
                     }
                 },
                 {
-                    ActionItem(R.string.delete, R.drawable.ic_edit) {
+                    ActionItem(R.string.edit, R.drawable.ic_edit) {
                         onEdit(note)
                         showDialog = false
                     }

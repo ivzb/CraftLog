@@ -1,4 +1,4 @@
-package com.ivzb.craftlog.feature.addnote
+package com.ivzb.craftlog.feature.addeditnote
 
 import android.content.ClipboardManager
 import android.content.Context
@@ -47,8 +47,8 @@ import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Note
-import com.ivzb.craftlog.feature.addnote.viewmodel.AddNoteState
-import com.ivzb.craftlog.feature.addnote.viewmodel.AddNoteViewModel
+import com.ivzb.craftlog.feature.addeditnote.viewmodel.AddEditNoteState
+import com.ivzb.craftlog.feature.addeditnote.viewmodel.AddEditNoteViewModel
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
 import com.ivzb.craftlog.util.getItem
 import com.ivzb.craftlog.util.isClipboardEnabled
@@ -57,30 +57,34 @@ import java.util.Date
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AddNoteRoute(navigateBack = {}, navigateToNotes = {})
+    AddEditNoteRoute(null, navigateBack = {}, navigateToNotes = {})
 }
 
 @Composable
-fun AddNoteRoute(
+fun AddEditNoteRoute(
+    note: Note?,
     navigateBack: () -> Unit,
     navigateToNotes: () -> Unit,
-    viewModel: AddNoteViewModel = hiltViewModel()
+    viewModel: AddEditNoteViewModel = hiltViewModel()
 ) {
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    AddNoteScreen(navigateBack, navigateToNotes, viewModel, analyticsHelper)
+    AddEditNoteScreen(note, navigateBack, navigateToNotes, viewModel, analyticsHelper)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddNoteScreen(
+fun AddEditNoteScreen(
+    note: Note?,
     navigateBack: () -> Unit,
     navigateToNotes: () -> Unit,
-    viewModel: AddNoteViewModel,
+    viewModel: AddEditNoteViewModel,
     analyticsHelper: AnalyticsHelper,
 ) {
-    var content by rememberSaveable { mutableStateOf("") }
-    var tags by rememberSaveable { mutableStateOf("") }
+    val id by rememberSaveable { mutableStateOf(note?.id ?: 0L) }
+    var content by rememberSaveable { mutableStateOf(note?.content ?: "") }
+    var tags by rememberSaveable { mutableStateOf(note?.tags?.joinToString(",") ?: "") }
     val additionalData = remember { mutableStateMapOf<String, String>() }
+    note?.additionalData?.forEach { (key, value) -> additionalData[key] = value }
 
     val context = LocalContext.current
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -90,7 +94,7 @@ fun AddNoteScreen(
             .isNoteSaved
             .collect {
                 navigateToNotes()
-                analyticsHelper.logEvent(AnalyticsEvents.NOTE_SAVED)
+                analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_NOTE_SAVED)
             }
     }
 
@@ -116,7 +120,7 @@ fun AddNoteScreen(
                 title = {
                     Text(
                         modifier = Modifier.padding(8.dp),
-                        text = stringResource(id = R.string.add_note),
+                        text = stringResource(id = if (id == 0L) R.string.add_note else R.string.edit_note),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.displaySmall
                     )
@@ -131,6 +135,7 @@ fun AddNoteScreen(
                     .height(56.dp),
                 onClick = {
                     validateNote(
+                        id = id,
                         content = content,
                         tags = tags.split(',').map { it.trim() }.filterNot { it.isEmpty() },
                         additionalData = additionalData.toMap(),
@@ -145,15 +150,20 @@ fun AddNoteScreen(
                             )
 
                             val event = String.format(
-                                AnalyticsEvents.ADD_NOTE_VALUE_INVALIDATED,
+                                AnalyticsEvents.ADD_EDIT_NOTE_VALUE_INVALIDATED,
                                 invalidatedValue
                             )
 
                             analyticsHelper.logEvent(event)
                         },
                         onValidate = { note ->
-                            viewModel.addNote(AddNoteState(note))
-                            analyticsHelper.logEvent(AnalyticsEvents.ADD_NOTE_ON_SAVE_CLICKED)
+                            if (note.id == 0L) {
+                                viewModel.addNote(AddEditNoteState(note))
+                            } else {
+                                viewModel.editNote(AddEditNoteState(note))
+                            }
+
+                            analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_NOTE_ON_SAVE_CLICKED)
                         },
                         viewModel = viewModel
                     )
@@ -228,12 +238,13 @@ fun AddNoteScreen(
 }
 
 private fun validateNote(
+    id: Long,
     content: String,
     tags: List<String>,
     additionalData: Map<String, String>,
     onInvalidate: (Int) -> Unit,
     onValidate: (Note) -> Unit,
-    viewModel: AddNoteViewModel
+    viewModel: AddEditNoteViewModel
 ) {
     if (content.isEmpty()) {
         onInvalidate(R.string.content)
@@ -241,6 +252,7 @@ private fun validateNote(
     }
 
     val note = viewModel.createNote(
+        id = id,
         content = content,
         tags = tags,
         date = Date(),

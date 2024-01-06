@@ -34,6 +34,7 @@ fun NavGraphBuilder.homeGraph(
     navigateToInvestmentDetail: (Investment) -> Unit,
     navigateToAddInvestment: () -> Unit,
     navigateToEditInvestment: (Investment) -> Unit,
+    navigateToEditNote: (Note) -> Unit,
     navigateToNotes: () -> Unit,
     navigateToNoteDetail: (Note) -> Unit,
     navigateToAddNote: () -> Unit,
@@ -61,6 +62,7 @@ fun NavGraphBuilder.homeGraph(
             navigateToEditInvestment,
             navigateToNotes,
             navigateToNoteDetail,
+            navigateToEditNote,
             navigateToAddNote
         )
     }

@@ -42,6 +42,7 @@ import com.ivzb.craftlog.util.trim
 @Composable
 fun NotesRoute(
     navigateToNoteDetail: (Note) -> Unit,
+    navigateToEditNote: (Note) -> Unit,
     viewModel: NotesViewModel = hiltViewModel()
 ) {
 
@@ -49,12 +50,16 @@ fun NotesRoute(
         viewModel.loadNotes()
     }
 
-    NotesScreen(viewModel, navigateToNoteDetail)
+    NotesScreen(viewModel, navigateToNoteDetail, navigateToEditNote)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotesScreen(viewModel: NotesViewModel, navigateToNoteDetail: (Note) -> Unit) {
+fun NotesScreen(
+    viewModel: NotesViewModel,
+    navigateToNoteDetail: (Note) -> Unit,
+    navigateToEditNote: (Note) -> Unit
+) {
     var searchQuery by remember {
         mutableStateOf("")
     }
@@ -90,7 +95,7 @@ fun NotesScreen(viewModel: NotesViewModel, navigateToNoteDetail: (Note) -> Unit)
                 searchQuery = searchQuery,
                 navigateToNoteDetail = navigateToNoteDetail,
                 onEdit = { note ->
-                    // todo: navigate to edit note screen
+                    navigateToEditNote(note)
                 },
                 onDelete = { note ->
                     viewModel.deleteNote(note)
@@ -203,7 +208,8 @@ sealed class NoteListItem(val id: Long) {
         val isNoteListEmpty: Boolean
     ) : NoteListItem(-1)
 
-    data class NoteItem(val note: Note, val offset: Long = 0L) : NoteListItem((note.id ?: 0) + offset)
+    data class NoteItem(val note: Note, val offset: Long = 0L) :
+        NoteListItem((note.id ?: 0) + offset)
 
     data class HeaderItem(val time: Long) : NoteListItem(time)
 }

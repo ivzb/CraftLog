@@ -16,8 +16,10 @@ import com.ivzb.craftlog.feature.addeditinvestment.navigation.AddInvestmentDesti
 import com.ivzb.craftlog.feature.addeditinvestment.navigation.EditInvestmentDestination
 import com.ivzb.craftlog.feature.addeditinvestment.navigation.addInvestmentGraph
 import com.ivzb.craftlog.feature.addeditinvestment.navigation.editInvestmentGraph
-import com.ivzb.craftlog.feature.addnote.navigation.AddNoteDestination
-import com.ivzb.craftlog.feature.addnote.navigation.addNoteGraph
+import com.ivzb.craftlog.feature.addeditnote.navigation.AddNoteDestination
+import com.ivzb.craftlog.feature.addeditnote.navigation.EditNoteDestination
+import com.ivzb.craftlog.feature.addeditnote.navigation.addNoteGraph
+import com.ivzb.craftlog.feature.addeditnote.navigation.editNoteGraph
 import com.ivzb.craftlog.feature.budget.BUDGET
 import com.ivzb.craftlog.feature.budget.BudgetDestination
 import com.ivzb.craftlog.feature.budget.budgetGraph
@@ -121,8 +123,19 @@ fun CraftLogNavHost(
                 navController.navigate(NoteDetailDestination.route)
             },
             navigateToAddNote = {
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(NOTE, null)
+                }
                 navController.navigate(AddNoteDestination.route)
             },
+            navigateToEditNote = {
+                val bundle = Bundle()
+                bundle.putParcelable(NOTE, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(NOTE, bundle)
+                }
+                navController.navigate(EditNoteDestination.route)
+            }
         )
 
         financeGraph(
@@ -306,6 +319,14 @@ fun CraftLogNavHost(
                     this?.set(NOTE, bundle)
                 }
                 navController.navigate(NoteDetailDestination.route)
+            },
+            navigateToEditNote = {
+                val bundle = Bundle()
+                bundle.putParcelable(NOTE, it)
+                navController.currentBackStackEntry?.savedStateHandle.apply {
+                    this?.set(NOTE, bundle)
+                }
+                navController.navigate(EditNoteDestination.route)
             }
         )
 
@@ -317,6 +338,16 @@ fun CraftLogNavHost(
         )
 
         addNoteGraph(
+            bottomBarVisibility = bottomBarVisibility,
+            fabBehaviour = fabBehaviour,
+            navigateBack = { navController.navigateUp() },
+            navigateToNotes = {
+                navController.navigateSingleTop(NotesDestination.route)
+            }
+        )
+
+        editNoteGraph(
+            navController = navController,
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
             navigateBack = { navController.navigateUp() },

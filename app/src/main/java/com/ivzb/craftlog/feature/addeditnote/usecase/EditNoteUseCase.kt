@@ -1,13 +1,14 @@
-package com.ivzb.craftlog.feature.addnote.usecase
+package com.ivzb.craftlog.feature.addeditnote.usecase
 
 import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.domain.repository.NoteRepository
 import javax.inject.Inject
 
-class AddNoteUseCase @Inject constructor(
+class EditNoteUseCase @Inject constructor(
     private val repository: NoteRepository
 ) {
-    suspend fun addNote(note: Note) {
-        repository.insertNote(note)
+
+    suspend fun editNote(note: Note) {
+        return repository.updateNote(note)
     }
 }

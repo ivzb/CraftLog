@@ -10,7 +10,7 @@ import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.domain.model.Note
-import com.ivzb.craftlog.feature.addnote.navigation.AddNoteDestination
+import com.ivzb.craftlog.feature.addeditnote.navigation.AddNoteDestination
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
 
 const val NOTE = "note"
@@ -27,6 +27,7 @@ fun NavGraphBuilder.notesGraph(
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
     navigateToNoteDetail: (Note) -> Unit,
+    navigateToEditNote: (Note) -> Unit
 ) {
     composable(route = NotesDestination.route) {
         LaunchedEffect(Unit) {
@@ -40,6 +41,6 @@ fun NavGraphBuilder.notesGraph(
             )
         }
 
-        NotesRoute(navigateToNoteDetail)
+        NotesRoute(navigateToNoteDetail, navigateToEditNote)
     }
 }

@@ -70,6 +70,7 @@ fun HomeRoute(
     navigateToEditInvestment: (Investment) -> Unit,
     navigateToNotes: () -> Unit,
     navigateToNoteDetail: (Note) -> Unit,
+    navigateToEditNote: (Note) -> Unit,
     navigateToAddNote: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -106,7 +107,7 @@ fun HomeRoute(
         navigateToNoteDetail = navigateToNoteDetail,
         navigateToAddNote = navigateToAddNote,
         onEditNote = { note ->
-            // todo: navigate to edit note screen
+            navigateToEditNote(note)
         },
         onDeleteNote = { note ->
             viewModel.deleteNote(note)
