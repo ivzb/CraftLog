@@ -2,7 +2,9 @@ package com.ivzb.craftlog.feature.finance
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.domain.model.Budget
@@ -19,18 +21,9 @@ object FinanceDestination : CraftLogNavigationDestination {
 }
 
 fun NavGraphBuilder.financeGraph(
+    navController: NavHostController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    navigateToBudget: () -> Unit,
-    navigateToBudgetDetail: (Budget) -> Unit,
-    navigateToExpenses: () -> Unit,
-    navigateToExpenseDetail: (Expense) -> Unit,
-    navigateToAddExpense: () -> Unit,
-    navigateToEditExpense: (Expense) -> Unit,
-    navigateToInvestments: () -> Unit,
-    navigateToInvestmentDetail: (Investment) -> Unit,
-    navigateToAddInvestment: () -> Unit,
-    navigateToEditInvestment: (Investment) -> Unit,
 ) {
     composable(route = FinanceDestination.route) {
         LaunchedEffect(Unit) {
@@ -38,17 +31,6 @@ fun NavGraphBuilder.financeGraph(
             fabBehaviour.value = null
         }
 
-        FinanceRoute(
-            navigateToBudget,
-            navigateToBudgetDetail,
-            navigateToExpenses,
-            navigateToExpenseDetail,
-            navigateToAddExpense,
-            navigateToEditExpense,
-            navigateToInvestments,
-            navigateToInvestmentDetail,
-            navigateToAddInvestment,
-            navigateToEditInvestment
-        )
+        FinanceRoute(navController)
     }
 }

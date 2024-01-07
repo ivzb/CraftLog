@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
@@ -45,24 +46,25 @@ import com.ivzb.craftlog.domain.model.Link
 import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.extenstion.toFormattedDateString
 import com.ivzb.craftlog.feature.notedetail.viewmodel.NoteDetailViewModel
+import com.ivzb.craftlog.navigation.navigateBack
 import com.ivzb.craftlog.util.appendLink
 import com.ivzb.craftlog.util.onLinkClick
 
 @Composable
 fun NoteDetailRoute(
+    navController: NavHostController,
     note: Note?,
-    navigateBack: () -> Unit,
 ) {
     note?.let {
-        NoteDetailScreen(note, navigateBack)
+        NoteDetailScreen(navController, note)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteDetailScreen(
+    navController: NavHostController,
     note: Note,
-    navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
     val analyticsHelper = AnalyticsHelper.getInstance(context)
@@ -76,7 +78,7 @@ fun NoteDetailScreen(
                     FloatingActionButton(
                         onClick = {
                             analyticsHelper.logEvent(AnalyticsEvents.NOTE_DETAIL_ON_BACK_CLICKED)
-                            navigateBack()
+                            navController.navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {

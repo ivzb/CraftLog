@@ -43,40 +43,35 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.feature.addeditnote.viewmodel.AddEditNoteState
 import com.ivzb.craftlog.feature.addeditnote.viewmodel.AddEditNoteViewModel
+import com.ivzb.craftlog.navigation.navigateBack
+import com.ivzb.craftlog.navigation.navigateToNotes
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
 import com.ivzb.craftlog.util.getItem
 import com.ivzb.craftlog.util.isClipboardEnabled
 import java.util.Date
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    AddEditNoteRoute(null, navigateBack = {}, navigateToNotes = {})
-}
-
 @Composable
 fun AddEditNoteRoute(
     note: Note?,
-    navigateBack: () -> Unit,
-    navigateToNotes: () -> Unit,
+    navController: NavHostController,
     viewModel: AddEditNoteViewModel = hiltViewModel()
 ) {
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    AddEditNoteScreen(note, navigateBack, navigateToNotes, viewModel, analyticsHelper)
+    AddEditNoteScreen(note, navController, viewModel, analyticsHelper)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditNoteScreen(
     note: Note?,
-    navigateBack: () -> Unit,
-    navigateToNotes: () -> Unit,
+    navController: NavHostController,
     viewModel: AddEditNoteViewModel,
     analyticsHelper: AnalyticsHelper,
 ) {
@@ -93,7 +88,7 @@ fun AddEditNoteScreen(
         viewModel
             .isNoteSaved
             .collect {
-                navigateToNotes()
+                navController.navigateToNotes()
                 analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_NOTE_SAVED)
             }
     }
@@ -107,7 +102,7 @@ fun AddEditNoteScreen(
                     FloatingActionButton(
                         onClick = {
                             analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_EXPENSE_ON_BACK_CLICKED)
-                            navigateBack()
+                            navController.navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {

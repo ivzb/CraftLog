@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.R
@@ -23,11 +24,9 @@ object ExpensesDestination : CraftLogNavigationDestination {
 }
 
 fun NavGraphBuilder.expensesGraph(
+    navController: NavHostController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    navigateToExpenseDetail: (Expense) -> Unit,
-    navigateToEditExpense: (Expense) -> Unit,
-    navigateBack: () -> Unit
 ) {
     composable(route = ExpensesDestination.route) {
         LaunchedEffect(null) {
@@ -41,6 +40,6 @@ fun NavGraphBuilder.expensesGraph(
             )
         }
 
-        ExpensesRoute(navigateToExpenseDetail, navigateToEditExpense, navigateBack)
+        ExpensesRoute(navController)
     }
 }

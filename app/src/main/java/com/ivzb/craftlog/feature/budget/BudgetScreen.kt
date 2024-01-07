@@ -20,16 +20,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Budget
 import com.ivzb.craftlog.domain.model.BudgetOverview
 import com.ivzb.craftlog.feature.budget.viewmodel.BudgetOverviewState
 import com.ivzb.craftlog.feature.budget.viewmodel.BudgetViewModel
+import com.ivzb.craftlog.navigation.navigateBack
+import com.ivzb.craftlog.navigation.navigateToBudgetDetail
 
 @Composable
 fun BudgetRoute(
-    navigateToBudgetDetail: (Budget) -> Unit,
-    navigateBack: () -> Unit,
+    navController: NavHostController,
     viewModel: BudgetViewModel = hiltViewModel()
 ) {
 
@@ -38,15 +40,14 @@ fun BudgetRoute(
     }
 
     val state = viewModel.state
-    BudgetScreen(state, navigateToBudgetDetail, navigateBack)
+    BudgetScreen(navController, state)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BudgetScreen(
+    navController: NavHostController,
     state: BudgetOverviewState,
-    navigateToBudgetDetail: (Budget) -> Unit,
-    navigateBack: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -56,7 +57,7 @@ fun BudgetScreen(
                 navigationIcon = {
                     FloatingActionButton(
                         onClick = {
-                            navigateBack()
+                            navController.navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {
@@ -84,7 +85,9 @@ fun BudgetScreen(
         ) {
             BudgetList(
                 state.budgetOverview,
-                navigateToBudgetDetail
+                navigateToBudgetDetail = { budget ->
+                    navController.navigateToBudgetDetail(budget)
+                }
             )
         }
     }

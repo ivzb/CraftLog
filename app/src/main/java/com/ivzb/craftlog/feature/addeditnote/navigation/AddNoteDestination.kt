@@ -3,6 +3,7 @@ package com.ivzb.craftlog.feature.addeditnote.navigation
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.feature.addeditnote.AddEditNoteRoute
@@ -17,10 +18,9 @@ object AddNoteDestination : CraftLogNavigationDestination {
 }
 
 fun NavGraphBuilder.addNoteGraph(
+    navController: NavHostController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    navigateBack: () -> Unit,
-    navigateToNotes: () -> Unit,
 ) {
     composable(route = AddNoteDestination.route) {
         LaunchedEffect(null) {
@@ -28,6 +28,6 @@ fun NavGraphBuilder.addNoteGraph(
             fabBehaviour.value = null
         }
 
-        AddEditNoteRoute(null, navigateBack, navigateToNotes)
+        AddEditNoteRoute(null, navController)
     }
 }

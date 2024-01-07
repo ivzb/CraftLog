@@ -37,12 +37,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
-import com.ivzb.craftlog.domain.model.Expense
-import com.ivzb.craftlog.domain.model.Investment
-import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.extenstion.toFormattedDateShortString
 import com.ivzb.craftlog.extenstion.toFormattedDateString
 import com.ivzb.craftlog.extenstion.toFormattedMonthDateString
@@ -50,28 +48,28 @@ import com.ivzb.craftlog.feature.addeditexpense.navigation.AddExpenseDestination
 import com.ivzb.craftlog.feature.expenses.ExpenseListItem
 import com.ivzb.craftlog.feature.home.data.CalendarDataSource
 import com.ivzb.craftlog.feature.home.model.CalendarModel
-import com.ivzb.craftlog.feature.home.viewmodel.HomeState
 import com.ivzb.craftlog.feature.home.viewmodel.HomeViewModel
 import com.ivzb.craftlog.feature.investments.InvestmentListItem
 import com.ivzb.craftlog.feature.notes.NoteListItem
+import com.ivzb.craftlog.navigation.navigateToAddExpense
+import com.ivzb.craftlog.navigation.navigateToAddInvestment
+import com.ivzb.craftlog.navigation.navigateToAddNote
+import com.ivzb.craftlog.navigation.navigateToEditExpense
+import com.ivzb.craftlog.navigation.navigateToEditInvestment
+import com.ivzb.craftlog.navigation.navigateToEditNote
+import com.ivzb.craftlog.navigation.navigateToExpenseDetail
+import com.ivzb.craftlog.navigation.navigateToExpenses
+import com.ivzb.craftlog.navigation.navigateToInvestmentDetail
+import com.ivzb.craftlog.navigation.navigateToInvestments
+import com.ivzb.craftlog.navigation.navigateToNoteDetail
+import com.ivzb.craftlog.navigation.navigateToNotes
 import com.ivzb.craftlog.ui.components.CategoryTitleBar
 import java.util.Calendar
 import java.util.Date
 
 @Composable
 fun HomeRoute(
-    navigateToExpenses: () -> Unit,
-    navigateToExpenseDetail: (Expense) -> Unit,
-    navigateToAddExpense: () -> Unit,
-    navigateToEditExpense: (Expense) -> Unit,
-    navigateToInvestments: () -> Unit,
-    navigateToInvestmentDetail: (Investment) -> Unit,
-    navigateToAddInvestment: () -> Unit,
-    navigateToEditInvestment: (Investment) -> Unit,
-    navigateToNotes: () -> Unit,
-    navigateToNoteDetail: (Note) -> Unit,
-    navigateToEditNote: (Note) -> Unit,
-    navigateToAddNote: () -> Unit,
+    navController: NavHostController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
 
@@ -80,82 +78,27 @@ fun HomeRoute(
     }
 
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    val state = viewModel.state
 
     HomeScreen(
+        navController = navController,
+        viewModel = viewModel,
         analyticsHelper = analyticsHelper,
-        state = state,
-        navigateToExpenses = navigateToExpenses,
-        navigateToExpenseDetail = navigateToExpenseDetail,
-        navigateToAddExpense = navigateToAddExpense,
-        onEditExpense = { expense ->
-            navigateToEditExpense(expense)
-        },
-        onDeleteExpense = { expense ->
-            viewModel.deleteExpense(expense)
-        },
-        navigateToInvestments = navigateToInvestments,
-        navigateToInvestmentDetail = navigateToInvestmentDetail,
-        navigateToAddInvestment = navigateToAddInvestment,
-        onEditInvestment = { investment ->
-            navigateToEditInvestment(investment)
-        },
-        onDeleteInvestment = { investment ->
-            viewModel.deleteInvestment(investment)
-        },
-        navigateToNotes = navigateToNotes,
-        navigateToNoteDetail = navigateToNoteDetail,
-        navigateToAddNote = navigateToAddNote,
-        onEditNote = { note ->
-            navigateToEditNote(note)
-        },
-        onDeleteNote = { note ->
-            viewModel.deleteNote(note)
-        }
     )
 }
 
 @Composable
 fun HomeScreen(
+    navController: NavHostController,
+    viewModel: HomeViewModel,
     analyticsHelper: AnalyticsHelper,
-    state: HomeState,
-    navigateToExpenses: () -> Unit,
-    navigateToExpenseDetail: (Expense) -> Unit,
-    navigateToAddExpense: () -> Unit,
-    onEditExpense: (Expense) -> Unit,
-    onDeleteExpense: (Expense) -> Unit,
-    navigateToInvestments: () -> Unit,
-    navigateToInvestmentDetail: (Investment) -> Unit,
-    navigateToAddInvestment: () -> Unit,
-    onEditInvestment: (Investment) -> Unit,
-    onDeleteInvestment: (Investment) -> Unit,
-    navigateToNotes: () -> Unit,
-    navigateToNoteDetail: (Note) -> Unit,
-    navigateToAddNote: () -> Unit,
-    onEditNote: (Note) -> Unit,
-    onDeleteNote: (Note) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         LastExpenses(
+            navController,
+            viewModel,
             analyticsHelper,
-            state,
-            navigateToExpenses,
-            navigateToExpenseDetail,
-            navigateToAddExpense,
-            onEditExpense,
-            onDeleteExpense,
-            navigateToInvestments,
-            navigateToInvestmentDetail,
-            navigateToAddInvestment,
-            onEditInvestment,
-            onDeleteInvestment,
-            navigateToNotes,
-            navigateToNoteDetail,
-            navigateToAddNote,
-            onEditNote,
-            onDeleteNote
         )
     }
 }
@@ -273,26 +216,12 @@ fun EmptyCard(
 
 @Composable
 fun LastExpenses(
+    navController: NavHostController,
+    viewModel: HomeViewModel,
     analyticsHelper: AnalyticsHelper,
-    state: HomeState,
-    navigateToExpenses: () -> Unit,
-    navigateToExpenseDetail: (Expense) -> Unit,
-    navigateToAddExpense: () -> Unit,
-    onEditExpense: (Expense) -> Unit,
-    onDeleteExpense: (Expense) -> Unit,
-    navigateToInvestments: () -> Unit,
-    navigateToInvestmentDetail: (Investment) -> Unit,
-    navigateToAddInvestment: () -> Unit,
-    onEditInvestment: (Investment) -> Unit,
-    onDeleteInvestment: (Investment) -> Unit,
-    navigateToNotes: () -> Unit,
-    navigateToNoteDetail: (Note) -> Unit,
-    navigateToAddNote: () -> Unit,
-    onEditNote: (Note) -> Unit,
-    onDeleteNote: (Note) -> Unit
 ) {
 
-    if (state.loading) {
+    if (viewModel.state.loading) {
         return
     }
 
@@ -302,21 +231,21 @@ fun LastExpenses(
     var selectedDateString = ""
 
     DatesHeader(analyticsHelper) { selectedDate ->
-        val newExpenseList = state.expenses
+        val newExpenseList = viewModel.state.expenses
             .filter {
                 it.date.toFormattedDateString() == selectedDate.date.toFormattedDateString()
             }
             .sortedByDescending { it.date }
             .map { ExpenseListItem.ExpenseItem(it, EXPENSES_OFFSET) }
 
-        val newInvestmentList = state.investments
+        val newInvestmentList = viewModel.state.investments
             .filter {
                 it.date.toFormattedDateString() == selectedDate.date.toFormattedDateString()
             }
             .sortedByDescending { it.date }
             .map { InvestmentListItem.InvestmentItem(it, INVESTMENTS_OFFSET) }
 
-        val newNoteList = state.notes
+        val newNoteList = viewModel.state.notes
             .filter {
                 it.date.toFormattedDateString() == selectedDate.date.toFormattedDateString()
             }
@@ -344,10 +273,10 @@ fun LastExpenses(
                 CategoryTitleBar(
                     title = stringResource(id = R.string.expenses),
                     onAddClick = {
-                        navigateToAddExpense()
+                        navController.navigateToAddExpense()
                     },
                     onMoreClick = {
-                        navigateToExpenses()
+                        navController.navigateToExpenses()
                     }
                 )
             }
@@ -356,7 +285,18 @@ fun LastExpenses(
                 items = expenses,
                 key = { it.id },
                 itemContent = {
-                    ExpenseListItem(it, navigateToExpenseDetail, onEditExpense, onDeleteExpense)
+                    ExpenseListItem(
+                        it,
+                        onExpenseDetail = { expense ->
+                            navController.navigateToExpenseDetail(expense)
+                        },
+                        onEditExpense = { expense ->
+                            navController.navigateToEditExpense(expense)
+                        },
+                        onDeleteExpense = { expense ->
+                            viewModel.deleteExpense(expense)
+                        }
+                    )
                 }
             )
         }
@@ -366,10 +306,10 @@ fun LastExpenses(
                 CategoryTitleBar(
                     title = stringResource(id = R.string.investments),
                     onAddClick = {
-                        navigateToAddInvestment()
+                        navController.navigateToAddInvestment()
                     },
                     onMoreClick = {
-                        navigateToInvestments()
+                        navController.navigateToInvestments()
                     }
                 )
             }
@@ -380,9 +320,15 @@ fun LastExpenses(
                 itemContent = {
                     InvestmentListItem(
                         it,
-                        navigateToInvestmentDetail,
-                        onEditInvestment,
-                        onDeleteInvestment
+                        onInvestmentDetail = { investment ->
+                            navController.navigateToInvestmentDetail(investment)
+                        },
+                        onEditInvestment = { investment ->
+                            navController.navigateToEditInvestment(investment)
+                        },
+                        onDeleteInvestment = { investment ->
+                            viewModel.deleteInvestment(investment)
+                        }
                     )
                 }
             )
@@ -393,10 +339,10 @@ fun LastExpenses(
                 CategoryTitleBar(
                     title = stringResource(id = R.string.notes),
                     onAddClick = {
-                        navigateToAddNote()
+                        navController.navigateToAddNote()
                     },
                     onMoreClick = {
-                        navigateToNotes()
+                        navController.navigateToNotes()
                     }
                 )
             }
@@ -405,7 +351,18 @@ fun LastExpenses(
                 items = notes,
                 key = { it.id },
                 itemContent = {
-                    NoteListItem(it, navigateToNoteDetail, onEditNote, onDeleteNote)
+                    NoteListItem(
+                        it,
+                        onNoteDetail = { note ->
+                            navController.navigateToNoteDetail(note)
+                        },
+                        onEditNote = { note ->
+                            navController.navigateToEditNote(note)
+                        },
+                        onDeleteNote = { note ->
+                            viewModel.deleteNote(note)
+                        }
+                    )
                 }
             )
         }

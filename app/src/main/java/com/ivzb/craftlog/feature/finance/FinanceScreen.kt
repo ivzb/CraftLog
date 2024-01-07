@@ -16,32 +16,30 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ivzb.craftlog.R
-import com.ivzb.craftlog.domain.model.Budget
-import com.ivzb.craftlog.domain.model.Expense
-import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.feature.budget.BudgetCard
 import com.ivzb.craftlog.feature.expenses.ExpenseEmptyView
 import com.ivzb.craftlog.feature.expenses.ExpenseListItem
-import com.ivzb.craftlog.feature.finance.viewmodel.FinanceState
 import com.ivzb.craftlog.feature.finance.viewmodel.FinanceViewModel
 import com.ivzb.craftlog.feature.investments.InvestmentEmptyView
 import com.ivzb.craftlog.feature.investments.InvestmentListItem
+import com.ivzb.craftlog.navigation.navigateToAddExpense
+import com.ivzb.craftlog.navigation.navigateToAddInvestment
+import com.ivzb.craftlog.navigation.navigateToBudget
+import com.ivzb.craftlog.navigation.navigateToBudgetDetail
+import com.ivzb.craftlog.navigation.navigateToEditExpense
+import com.ivzb.craftlog.navigation.navigateToEditInvestment
+import com.ivzb.craftlog.navigation.navigateToExpenseDetail
+import com.ivzb.craftlog.navigation.navigateToExpenses
+import com.ivzb.craftlog.navigation.navigateToInvestmentDetail
+import com.ivzb.craftlog.navigation.navigateToInvestments
 import com.ivzb.craftlog.ui.components.CategoryTitleBar
 import com.ivzb.craftlog.util.trim
 
 @Composable
 fun FinanceRoute(
-    navigateToBudget: () -> Unit,
-    navigateToBudgetDetail: (Budget) -> Unit,
-    navigateToExpenses: () -> Unit,
-    navigateToExpenseDetail: (Expense) -> Unit,
-    navigateToAddExpense: () -> Unit,
-    navigateToEditExpense: (Expense) -> Unit,
-    navigateToInvestments: () -> Unit,
-    navigateToInvestmentDetail: (Investment) -> Unit,
-    navigateToAddInvestment: () -> Unit,
-    navigateToEditInvestment: (Investment) -> Unit,
+    navController: NavHostController,
     viewModel: FinanceViewModel = hiltViewModel(),
 ) {
 
@@ -50,34 +48,16 @@ fun FinanceRoute(
     }
 
     FinanceScreen(
+        navController,
         viewModel,
-        navigateToBudget,
-        navigateToBudgetDetail,
-        navigateToExpenses,
-        navigateToExpenseDetail,
-        navigateToAddExpense,
-        navigateToEditExpense,
-        navigateToInvestments,
-        navigateToInvestmentDetail,
-        navigateToAddInvestment,
-        navigateToEditInvestment
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FinanceScreen(
+    navController: NavHostController,
     viewModel: FinanceViewModel,
-    navigateToBudget: () -> Unit,
-    navigateToBudgetDetail: (Budget) -> Unit,
-    navigateToExpenses: () -> Unit,
-    navigateToExpenseDetail: (Expense) -> Unit,
-    navigateToAddExpense: () -> Unit,
-    navigateToEditExpense: (Expense) -> Unit,
-    navigateToInvestments: () -> Unit,
-    navigateToInvestmentDetail: (Investment) -> Unit,
-    navigateToAddInvestment: () -> Unit,
-    navigateToEditInvestment: (Investment) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -106,14 +86,14 @@ fun FinanceScreen(
                         title = stringResource(id = R.string.budget),
                         showAddButton = false,
                         onMoreClick = {
-                            navigateToBudget()
+                            navController.navigateToBudget()
                         }
                     )
                 }
 
                 item {
                     BudgetCard(budgetOverview) { budget ->
-                        navigateToBudgetDetail(budget)
+                        navController.navigateToBudgetDetail(budget)
                     }
                 }
             }
@@ -122,10 +102,10 @@ fun FinanceScreen(
                 CategoryTitleBar(
                     title = stringResource(id = R.string.expenses),
                     onAddClick = {
-                        navigateToAddExpense()
+                        navController.navigateToAddExpense()
                     },
                     onMoreClick = {
-                        navigateToExpenses()
+                        navController.navigateToExpenses()
                     }
                 )
             }
@@ -153,9 +133,11 @@ fun FinanceScreen(
                 itemContent = {
                     ExpenseListItem(
                         it,
-                        navigateToExpenseDetail = navigateToExpenseDetail,
+                        onExpenseDetail = { expense ->
+                            navController.navigateToExpenseDetail(expense)
+                        },
                         onEditExpense = { expense ->
-                            navigateToEditExpense(expense)
+                            navController.navigateToEditExpense(expense)
                         },
                         onDeleteExpense = { expense ->
                             viewModel.deleteExpense(expense)
@@ -169,10 +151,10 @@ fun FinanceScreen(
                 CategoryTitleBar(
                     title = stringResource(id = R.string.investments),
                     onAddClick = {
-                        navigateToAddInvestment()
+                        navController.navigateToAddInvestment()
                     },
                     onMoreClick = {
-                        navigateToInvestments()
+                        navController.navigateToInvestments()
                     })
             }
 
@@ -199,9 +181,11 @@ fun FinanceScreen(
                 itemContent = {
                     InvestmentListItem(
                         it,
-                        navigateToInvestmentDetail,
+                        onInvestmentDetail = { investment ->
+                            navController.navigateToInvestmentDetail(investment)
+                        },
                         onEditInvestment = { investment ->
-                            navigateToEditInvestment(investment)
+                            navController.navigateToEditInvestment(investment)
                         },
                         onDeleteInvestment = { investment ->
                             viewModel.deleteInvestment(investment)

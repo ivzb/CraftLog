@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
@@ -39,15 +40,16 @@ import com.ivzb.craftlog.extenstion.toFormattedDateString
 import com.ivzb.craftlog.feature.addeditexpense.INSURANCE
 import com.ivzb.craftlog.feature.addeditexpense.INTEREST
 import com.ivzb.craftlog.feature.addeditexpense.PRINCIPAL
+import com.ivzb.craftlog.navigation.navigateBack
 import com.ivzb.craftlog.util.ExpenseCategory
 
 @Composable
 fun ExpenseDetailRoute(
     expense: Expense?,
-    navigateBack: () -> Unit,
+    navController: NavHostController,
 ) {
     expense?.let {
-        ExpenseDetailScreen(expense, navigateBack)
+        ExpenseDetailScreen(expense, navController)
     }
 }
 
@@ -55,7 +57,7 @@ fun ExpenseDetailRoute(
 @Composable
 fun ExpenseDetailScreen(
     expense: Expense,
-    navigateBack: () -> Unit
+    navController: NavHostController,
 ) {
     val context = LocalContext.current
     val analyticsHelper = AnalyticsHelper.getInstance(context)
@@ -69,7 +71,7 @@ fun ExpenseDetailScreen(
                     FloatingActionButton(
                         onClick = {
                             analyticsHelper.logEvent(AnalyticsEvents.EXPENSE_DETAIL_ON_BACK_CLICKED)
-                            navigateBack()
+                            navController.navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {

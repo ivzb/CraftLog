@@ -143,10 +143,11 @@ private fun NoteTextCard(
                     .padding(8.dp, 0.dp),
                 horizontalAlignment = Alignment.Start
             ) {
+
                 Text(
                     text = note.content,
                     fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.titleLarge,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis
                 )

@@ -3,6 +3,7 @@ package com.ivzb.craftlog.feature.budget
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.domain.model.Budget
@@ -18,10 +19,9 @@ object BudgetDestination : CraftLogNavigationDestination {
 }
 
 fun NavGraphBuilder.budgetGraph(
+    navController: NavHostController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    navigateToBudgetDetail: (Budget) -> Unit,
-    navigateBack: () -> Unit
 ) {
     composable(route = BudgetDestination.route) {
         LaunchedEffect(null) {
@@ -29,6 +29,6 @@ fun NavGraphBuilder.budgetGraph(
             fabBehaviour.value = null
         }
 
-        BudgetRoute(navigateToBudgetDetail, navigateBack)
+        BudgetRoute(navController)
     }
 }

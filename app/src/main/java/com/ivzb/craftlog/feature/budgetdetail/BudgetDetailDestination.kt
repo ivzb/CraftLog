@@ -1,16 +1,15 @@
 package com.ivzb.craftlog.feature.budgetdetail
 
-import android.os.Bundle
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.domain.model.Budget
 import com.ivzb.craftlog.feature.budget.BUDGET
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
-import com.ivzb.craftlog.util.getParcelable
+import com.ivzb.craftlog.navigation.getItem
 
 object BudgetDetailDestination : CraftLogNavigationDestination {
 
@@ -20,10 +19,9 @@ object BudgetDetailDestination : CraftLogNavigationDestination {
 }
 
 fun NavGraphBuilder.budgetDetailGraph(
-    navController: NavController,
+    navController: NavHostController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    navigateBack: () -> Unit
 ) {
 
     composable(
@@ -33,10 +31,9 @@ fun NavGraphBuilder.budgetDetailGraph(
             bottomBarVisibility.value = false
             fabBehaviour.value = null
         }
-        val budgetBundle = navController.previousBackStackEntry?.savedStateHandle?.get<Bundle>(
-            BUDGET
-        )
-        val budget = getParcelable<Budget>(budgetBundle, BUDGET)
-        BudgetDetailRoute(budget, navigateBack)
+
+        val budget = navController.getItem<Budget>(BUDGET)
+
+        BudgetDetailRoute(navController, budget)
     }
 }

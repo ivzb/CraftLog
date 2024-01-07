@@ -57,7 +57,7 @@ Remember to design the menu in a clear and visually appealing way, with easily r
 
 // todo: change OverviewItem to EmptyItem and move the empty state to the ListItem
 
-// todo: instead of using callbacks for navigation, provide navController to the screens and navigate to destination directly or via some extension class
+// todo: fix bottom bar navigation after adding note (not possible to go back to home tab)
 
 // todo: apply ktlint https://github.com/JLLeitschuh/ktlint-gradle
 

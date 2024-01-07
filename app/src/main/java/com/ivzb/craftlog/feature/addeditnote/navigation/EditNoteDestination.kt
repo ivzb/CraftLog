@@ -1,17 +1,16 @@
 package com.ivzb.craftlog.feature.addeditnote.navigation
 
-import android.os.Bundle
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.feature.addeditnote.AddEditNoteRoute
 import com.ivzb.craftlog.feature.notes.NOTE
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
-import com.ivzb.craftlog.util.getParcelable
+import com.ivzb.craftlog.navigation.getItem
 
 object EditNoteDestination : CraftLogNavigationDestination {
 
@@ -22,11 +21,9 @@ object EditNoteDestination : CraftLogNavigationDestination {
 }
 
 fun NavGraphBuilder.editNoteGraph(
-    navController: NavController,
+    navController: NavHostController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    navigateBack: () -> Unit,
-    navigateToNotes: () -> Unit,
 ) {
     composable(route = EditNoteDestination.route) {
         LaunchedEffect(null) {
@@ -34,9 +31,8 @@ fun NavGraphBuilder.editNoteGraph(
             fabBehaviour.value = null
         }
 
-        val noteBundle = navController.previousBackStackEntry?.savedStateHandle?.get<Bundle>(NOTE)
-        val note = getParcelable<Note>(noteBundle, NOTE)
+        val note = navController.getItem<Note>(NOTE)
 
-        AddEditNoteRoute(note, navigateBack, navigateToNotes)
+        AddEditNoteRoute(note, navController)
     }
 }

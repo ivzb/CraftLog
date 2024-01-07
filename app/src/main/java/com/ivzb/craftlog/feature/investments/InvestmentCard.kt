@@ -40,7 +40,7 @@ import java.util.Date
 fun InvestmentCard(
     modifier: Modifier = Modifier,
     investment: Investment,
-    navigateToInvestmentDetail: (Investment) -> Unit,
+    onInvestmentDetail: (Investment) -> Unit,
     onEdit: (Investment) -> Unit,
     onDelete: (Investment) -> Unit
 ) {
@@ -56,7 +56,7 @@ fun InvestmentCard(
             .padding(vertical = 8.dp)
             .combinedClickable(
                 onClick = {
-                    navigateToInvestmentDetail(investment)
+                    onInvestmentDetail(investment)
                 },
                 onLongClick = {
                     showActionDialog()
@@ -146,7 +146,7 @@ private fun InvestmentCardPreview() {
             date = Date(),
             additionalData = mapOf()
         ),
-        navigateToInvestmentDetail = { },
+        onInvestmentDetail = { },
         onEdit = { },
         onDelete = { }
     )

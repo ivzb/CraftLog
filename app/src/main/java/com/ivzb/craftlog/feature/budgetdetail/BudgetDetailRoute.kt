@@ -37,32 +37,34 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Budget
 import com.ivzb.craftlog.feature.budgetdetail.viewmodel.BudgetDetailState
 import com.ivzb.craftlog.feature.budgetdetail.viewmodel.BudgetDetailViewModel
+import com.ivzb.craftlog.navigation.navigateBack
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
 import java.math.BigDecimal
 
 @Composable
 fun BudgetDetailRoute(
+    navController: NavHostController,
     budget: Budget?,
-    navigateBack: () -> Unit,
     viewModel: BudgetDetailViewModel = hiltViewModel()
 ) {
     budget?.let {
-        BudgetDetailScreen(budget, viewModel, navigateBack)
+        BudgetDetailScreen(navController, budget, viewModel)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BudgetDetailScreen(
+    navController: NavHostController,
     budget: Budget,
     viewModel: BudgetDetailViewModel,
-    navigateBack: () -> Unit
 ) {
 
     var income by rememberSaveable { mutableStateOf(budget.income?.toPlainString() ?: "") }
@@ -76,7 +78,7 @@ fun BudgetDetailScreen(
         viewModel
             .isBudgetSaved
             .collect {
-                navigateBack()
+                navController.navigateBack()
                 showSnackbar(context.getString(R.string.your_budget_is_saved))
                 analyticsHelper.logEvent(AnalyticsEvents.BUDGET_DETAIL_SAVED)
             }
@@ -91,7 +93,7 @@ fun BudgetDetailScreen(
                     FloatingActionButton(
                         onClick = {
                             analyticsHelper.logEvent(AnalyticsEvents.BUDGET_DETAIL_ON_BACK_CLICKED)
-                            navigateBack()
+                            navController.navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {

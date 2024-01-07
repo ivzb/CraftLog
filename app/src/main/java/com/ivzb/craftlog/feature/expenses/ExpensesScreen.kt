@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.extenstion.toRelativeDateString
@@ -37,6 +38,9 @@ import com.ivzb.craftlog.feature.expenses.ExpenseListItem.ExpenseItem
 import com.ivzb.craftlog.feature.expenses.ExpenseListItem.HeaderItem
 import com.ivzb.craftlog.feature.expenses.ExpenseListItem.OverviewItem
 import com.ivzb.craftlog.feature.expenses.viewmodel.ExpensesViewModel
+import com.ivzb.craftlog.navigation.navigateBack
+import com.ivzb.craftlog.navigation.navigateToEditExpense
+import com.ivzb.craftlog.navigation.navigateToExpenseDetail
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
 import com.ivzb.craftlog.ui.components.ListHeader
 import com.ivzb.craftlog.util.trim
@@ -44,9 +48,7 @@ import java.math.BigDecimal
 
 @Composable
 fun ExpensesRoute(
-    navigateToExpenseDetail: (Expense) -> Unit,
-    navigateToEditExpense: (Expense) -> Unit,
-    navigateBack: () -> Unit,
+    navController: NavHostController,
     viewModel: ExpensesViewModel = hiltViewModel()
 ) {
 
@@ -54,16 +56,14 @@ fun ExpensesRoute(
         viewModel.loadExpenses()
     }
 
-    ExpensesScreen(viewModel, navigateToExpenseDetail, navigateToEditExpense, navigateBack)
+    ExpensesScreen(navController, viewModel)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpensesScreen(
+    navController: NavHostController,
     viewModel: ExpensesViewModel,
-    navigateToExpenseDetail: (Expense) -> Unit,
-    navigateToEditExpense: (Expense) -> Unit,
-    navigateBack: () -> Unit
 ) {
     var searchQuery by remember {
         mutableStateOf("")
@@ -85,7 +85,9 @@ fun ExpensesScreen(
                                 viewModel.loadExpenses(searchQuery)
                             }
                         },
-                        navigateBack = navigateBack
+                        navigateBack = {
+                            navController.navigateBack()
+                        }
                     )
                 }
             )
@@ -103,9 +105,11 @@ fun ExpensesScreen(
                     searchQuery = ""
                     viewModel.loadExpenses(searchQuery)
                 },
-                navigateToExpenseDetail = navigateToExpenseDetail,
+                onExpenseDetail = { expense ->
+                    navController.navigateToExpenseDetail(expense)
+                },
                 onEdit = { expense ->
-                    navigateToEditExpense(expense)
+                    navController.navigateToEditExpense(expense)
                 },
                 onDelete = { expense ->
                     viewModel.deleteExpense(expense)
@@ -120,7 +124,7 @@ fun ExpenseList(
     expenses: List<Expense>,
     searchQuery: String,
     onClearSearch: () -> Unit,
-    navigateToExpenseDetail: (Expense) -> Unit,
+    onExpenseDetail: (Expense) -> Unit,
     onEdit: (Expense) -> Unit,
     onDelete: (Expense) -> Unit
 ) {
@@ -128,12 +132,18 @@ fun ExpenseList(
         .sortedByDescending { it.date }
         .map { ExpenseItem(it) }
         .groupBy { it.expense.date.trim() }
-        .flatMap { (time, expenses) -> listOf(HeaderItem(time, expenses.sumOf { it.expense.amount })) + expenses }
+        .flatMap { (time, expenses) ->
+            listOf(
+                HeaderItem(
+                    time,
+                    expenses.sumOf { it.expense.amount })
+            ) + expenses
+        }
 
     if (sortedExpenseList.isEmpty()) {
         ExpenseEmptyView(searchQuery, onClearSearch)
     } else {
-        ExpenseLazyColumn(sortedExpenseList, searchQuery, navigateToExpenseDetail, onEdit, onDelete)
+        ExpenseLazyColumn(sortedExpenseList, searchQuery, onExpenseDetail, onEdit, onDelete)
     }
 }
 
@@ -141,7 +151,7 @@ fun ExpenseList(
 fun ExpenseLazyColumn(
     items: List<ExpenseListItem>,
     searchQuery: String,
-    navigateToExpenseDetail: (Expense) -> Unit,
+    onExpenseDetail: (Expense) -> Unit,
     onEdit: (Expense) -> Unit,
     onDelete: (Expense) -> Unit
 ) {
@@ -162,7 +172,7 @@ fun ExpenseLazyColumn(
             items = items,
             key = { it.id },
             itemContent = {
-                ExpenseListItem(it, navigateToExpenseDetail, onEdit, onDelete)
+                ExpenseListItem(it, onExpenseDetail, onEdit, onDelete)
             }
         )
     }
@@ -172,7 +182,7 @@ fun ExpenseLazyColumn(
 @Composable
 fun LazyItemScope.ExpenseListItem(
     it: ExpenseListItem,
-    navigateToExpenseDetail: (Expense) -> Unit,
+    onExpenseDetail: (Expense) -> Unit,
     onEditExpense: (Expense) -> Unit,
     onDeleteExpense: (Expense) -> Unit
 ) {
@@ -186,7 +196,7 @@ fun LazyItemScope.ExpenseListItem(
                 modifier = Modifier.animateItemPlacement(),
                 expense = it.expense,
                 navigateToExpenseDetail = { expense ->
-                    navigateToExpenseDetail(expense)
+                    onExpenseDetail(expense)
                 },
                 onEdit = { expense ->
                     onEditExpense(expense)
@@ -253,7 +263,8 @@ sealed class ExpenseListItem(val id: Long) {
         val isExpenseListEmpty: Boolean
     ) : ExpenseListItem(-1)
 
-    data class ExpenseItem(val expense: Expense, val offset: Long = 0) : ExpenseListItem((expense.id ?: 0) + offset)
+    data class ExpenseItem(val expense: Expense, val offset: Long = 0) :
+        ExpenseListItem((expense.id ?: 0) + offset)
 
     data class HeaderItem(val time: Long, val total: BigDecimal) : ExpenseListItem(time)
 }

@@ -39,15 +39,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.feature.addeditexpense.viewmodel.AddEditExpenseState
 import com.ivzb.craftlog.feature.addeditexpense.viewmodel.AddEditExpenseViewModel
+import com.ivzb.craftlog.navigation.navigateBack
 import com.ivzb.craftlog.ui.components.CategoryDropdownMenu
 import com.ivzb.craftlog.ui.components.DateTextField
 import com.ivzb.craftlog.ui.components.SuggestionsDropdownMenu
@@ -60,27 +61,21 @@ const val PRINCIPAL = "principal"
 const val INTEREST = "interest"
 const val INSURANCE = "insurance"
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    AddEditExpenseRoute(null, navigateBack = {})
-}
-
 @Composable
 fun AddEditExpenseRoute(
     expense: Expense?,
-    navigateBack: () -> Unit,
+    navController: NavHostController,
     viewModel: AddEditExpenseViewModel = hiltViewModel()
 ) {
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    AddEditExpenseScreen(expense, navigateBack, viewModel, analyticsHelper)
+    AddEditExpenseScreen(expense, navController, viewModel, analyticsHelper)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditExpenseScreen(
     expense: Expense?,
-    navigateBack: () -> Unit,
+    navController: NavHostController,
     viewModel: AddEditExpenseViewModel,
     analyticsHelper: AnalyticsHelper,
 ) {
@@ -105,7 +100,7 @@ fun AddEditExpenseScreen(
         viewModel
             .isExpenseSaved
             .collect {
-                navigateBack()
+                navController.navigateBack()
                 analyticsHelper.logEvent(AnalyticsEvents.EXPENSE_SAVED)
             }
     }
@@ -127,7 +122,7 @@ fun AddEditExpenseScreen(
                     FloatingActionButton(
                         onClick = {
                             analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_EXPENSE_ON_BACK_CLICKED)
-                            navigateBack()
+                            navController.navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {

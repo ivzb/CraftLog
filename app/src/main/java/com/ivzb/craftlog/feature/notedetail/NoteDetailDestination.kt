@@ -5,11 +5,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.feature.notes.NOTE
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
+import com.ivzb.craftlog.navigation.getItem
 import com.ivzb.craftlog.util.getParcelable
 
 object NoteDetailDestination : CraftLogNavigationDestination {
@@ -20,10 +22,9 @@ object NoteDetailDestination : CraftLogNavigationDestination {
 }
 
 fun NavGraphBuilder.noteDetailGraph(
-    navController: NavController,
+    navController: NavHostController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    navigateBack: () -> Unit
 ) {
 
     composable(
@@ -33,10 +34,9 @@ fun NavGraphBuilder.noteDetailGraph(
             bottomBarVisibility.value = false
             fabBehaviour.value = null
         }
-        val noteBundle = navController.previousBackStackEntry?.savedStateHandle?.get<Bundle>(
-            NOTE
-        )
-        val note = getParcelable<Note>(noteBundle, NOTE)
-        NoteDetailRoute(note, navigateBack)
+
+        val note = navController.getItem<Note>(NOTE)
+
+        NoteDetailRoute(navController, note)
     }
 }

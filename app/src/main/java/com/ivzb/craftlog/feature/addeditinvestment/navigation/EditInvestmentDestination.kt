@@ -3,14 +3,15 @@ package com.ivzb.craftlog.feature.addeditinvestment.navigation
 import android.os.Bundle
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.feature.addeditinvestment.AddEditInvestmentRoute
 import com.ivzb.craftlog.feature.investments.INVESTMENT
 import com.ivzb.craftlog.navigation.CraftLogNavigationDestination
+import com.ivzb.craftlog.navigation.getItem
 import com.ivzb.craftlog.util.getParcelable
 
 object EditInvestmentDestination : CraftLogNavigationDestination {
@@ -22,10 +23,9 @@ object EditInvestmentDestination : CraftLogNavigationDestination {
 }
 
 fun NavGraphBuilder.editInvestmentGraph(
-    navController: NavController,
+    navController: NavHostController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    navigateBack: () -> Unit,
 ) {
     composable(route = EditInvestmentDestination.route) {
         LaunchedEffect(null) {
@@ -33,9 +33,8 @@ fun NavGraphBuilder.editInvestmentGraph(
             fabBehaviour.value = null
         }
 
-        val investmentBundle = navController.previousBackStackEntry?.savedStateHandle?.get<Bundle>(INVESTMENT)
-        val investment = getParcelable<Investment>(investmentBundle, INVESTMENT)
+        val investment = navController.getItem<Investment>(INVESTMENT)
 
-        AddEditInvestmentRoute(investment, navigateBack)
+        AddEditInvestmentRoute(navController, investment)
     }
 }

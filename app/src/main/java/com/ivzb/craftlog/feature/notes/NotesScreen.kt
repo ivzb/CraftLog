@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Note
@@ -35,14 +36,15 @@ import com.ivzb.craftlog.feature.notes.NoteListItem.HeaderItem
 import com.ivzb.craftlog.feature.notes.NoteListItem.NoteItem
 import com.ivzb.craftlog.feature.notes.NoteListItem.OverviewItem
 import com.ivzb.craftlog.feature.notes.viewmodel.NotesViewModel
+import com.ivzb.craftlog.navigation.navigateToEditNote
+import com.ivzb.craftlog.navigation.navigateToNoteDetail
 import com.ivzb.craftlog.ui.components.ListHeader
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
 import com.ivzb.craftlog.util.trim
 
 @Composable
 fun NotesRoute(
-    navigateToNoteDetail: (Note) -> Unit,
-    navigateToEditNote: (Note) -> Unit,
+    navController: NavHostController,
     viewModel: NotesViewModel = hiltViewModel()
 ) {
 
@@ -50,15 +52,14 @@ fun NotesRoute(
         viewModel.loadNotes()
     }
 
-    NotesScreen(viewModel, navigateToNoteDetail, navigateToEditNote)
+    NotesScreen(navController, viewModel)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotesScreen(
+    navController: NavHostController,
     viewModel: NotesViewModel,
-    navigateToNoteDetail: (Note) -> Unit,
-    navigateToEditNote: (Note) -> Unit
 ) {
     var searchQuery by remember {
         mutableStateOf("")
@@ -93,9 +94,11 @@ fun NotesScreen(
             NoteList(
                 notes = viewModel.state.notes,
                 searchQuery = searchQuery,
-                navigateToNoteDetail = navigateToNoteDetail,
+                onNoteDetail = { note ->
+                    navController.navigateToNoteDetail(note)
+                },
                 onEdit = { note ->
-                    navigateToEditNote(note)
+                    navController.navigateToEditNote(note)
                 },
                 onDelete = { note ->
                     viewModel.deleteNote(note)
@@ -109,7 +112,7 @@ fun NotesScreen(
 fun NoteList(
     notes: List<Note>,
     searchQuery: String = "",
-    navigateToNoteDetail: (Note) -> Unit,
+    onNoteDetail: (Note) -> Unit,
     onEdit: (Note) -> Unit,
     onDelete: (Note) -> Unit
 ) {
@@ -122,7 +125,7 @@ fun NoteList(
     if (sortedNoteList.isEmpty()) {
         EmptyView()
     } else {
-        NoteLazyColumn(sortedNoteList, searchQuery, navigateToNoteDetail, onEdit, onDelete)
+        NoteLazyColumn(sortedNoteList, searchQuery, onNoteDetail, onEdit, onDelete)
     }
 }
 
@@ -131,7 +134,7 @@ fun NoteList(
 fun NoteLazyColumn(
     items: List<NoteListItem>,
     searchQuery: String,
-    navigateToNoteDetail: (Note) -> Unit,
+    onNoteDetail: (Note) -> Unit,
     onEdit: (Note) -> Unit,
     onDelete: (Note) -> Unit
 ) {
@@ -152,7 +155,7 @@ fun NoteLazyColumn(
             items = items,
             key = { it.id },
             itemContent = {
-                NoteListItem(it, navigateToNoteDetail, onEdit, onDelete)
+                NoteListItem(it, onNoteDetail, onEdit, onDelete)
             }
         )
     }
@@ -162,7 +165,7 @@ fun NoteLazyColumn(
 @Composable
 fun LazyItemScope.NoteListItem(
     it: NoteListItem,
-    navigateToNoteDetail: (Note) -> Unit,
+    onNoteDetail: (Note) -> Unit,
     onEditNote: (Note) -> Unit,
     onDeleteNote: (Note) -> Unit
 ) {
@@ -175,7 +178,7 @@ fun LazyItemScope.NoteListItem(
             NoteCard(
                 modifier = Modifier.animateItemPlacement(),
                 note = it.note,
-                navigateToNoteDetail,
+                onNoteDetail,
                 onEditNote,
                 onDeleteNote
             )

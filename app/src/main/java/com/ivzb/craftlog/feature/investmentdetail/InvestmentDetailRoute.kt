@@ -33,29 +33,31 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.extenstion.toFormattedDateString
 import com.ivzb.craftlog.feature.investmentdetail.viewmodel.InvestmentDetailViewModel
+import com.ivzb.craftlog.navigation.navigateBack
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
 
 @Composable
 fun InvestmentDetailRoute(
+    navController: NavHostController,
     investment: Investment?,
-    navigateBack: () -> Unit,
 ) {
     investment?.let {
-        InvestmentDetailScreen(investment, navigateBack)
+        InvestmentDetailScreen(navController, investment)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InvestmentDetailScreen(
+    navController: NavHostController,
     investment: Investment,
-    navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
     val analyticsHelper = AnalyticsHelper.getInstance(context)
@@ -69,7 +71,7 @@ fun InvestmentDetailScreen(
                     FloatingActionButton(
                         onClick = {
                             analyticsHelper.logEvent(AnalyticsEvents.INVESTMENT_DETAIL_ON_BACK_CLICKED)
-                            navigateBack()
+                            navController.navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {

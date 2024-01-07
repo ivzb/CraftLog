@@ -4,7 +4,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.R
@@ -24,10 +26,9 @@ object NotesDestination : CraftLogNavigationDestination {
 }
 
 fun NavGraphBuilder.notesGraph(
+    navController: NavHostController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    navigateToNoteDetail: (Note) -> Unit,
-    navigateToEditNote: (Note) -> Unit
 ) {
     composable(route = NotesDestination.route) {
         LaunchedEffect(Unit) {
@@ -41,6 +42,6 @@ fun NavGraphBuilder.notesGraph(
             )
         }
 
-        NotesRoute(navigateToNoteDetail, navigateToEditNote)
+        NotesRoute(navController)
     }
 }

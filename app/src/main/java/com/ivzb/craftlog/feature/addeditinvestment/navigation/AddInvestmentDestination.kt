@@ -3,6 +3,7 @@ package com.ivzb.craftlog.feature.addeditinvestment.navigation
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.ivzb.craftlog.FabBehaviour
 import com.ivzb.craftlog.feature.addeditinvestment.AddEditInvestmentRoute
@@ -17,9 +18,9 @@ object AddInvestmentDestination : CraftLogNavigationDestination {
 }
 
 fun NavGraphBuilder.addInvestmentGraph(
+    navController: NavHostController,
     bottomBarVisibility: MutableState<Boolean>,
     fabBehaviour: MutableState<FabBehaviour?>,
-    navigateBack: () -> Unit,
 ) {
     composable(route = AddInvestmentDestination.route) {
         LaunchedEffect(null) {
@@ -27,6 +28,6 @@ fun NavGraphBuilder.addInvestmentGraph(
             fabBehaviour.value = null
         }
 
-        AddEditInvestmentRoute(null, navigateBack)
+        AddEditInvestmentRoute(navController, null)
     }
 }

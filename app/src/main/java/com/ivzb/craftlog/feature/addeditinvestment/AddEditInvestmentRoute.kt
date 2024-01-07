@@ -38,15 +38,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ivzb.craftlog.R
 import com.ivzb.craftlog.analytics.AnalyticsEvents
 import com.ivzb.craftlog.analytics.AnalyticsHelper
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.feature.addeditinvestment.viewmodel.AddEditInvestmentState
 import com.ivzb.craftlog.feature.addeditinvestment.viewmodel.AddEditInvestmentViewModel
+import com.ivzb.craftlog.navigation.navigateBack
 import com.ivzb.craftlog.ui.components.CategoryDropdownMenu
 import com.ivzb.craftlog.ui.components.DateTextField
 import com.ivzb.craftlog.ui.components.SuggestionsDropdownMenu
@@ -55,27 +56,21 @@ import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
 import java.math.BigDecimal
 import java.util.Date
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    AddEditInvestmentRoute(null, navigateBack = {})
-}
-
 @Composable
 fun AddEditInvestmentRoute(
+    navController: NavHostController,
     investment: Investment?,
-    navigateBack: () -> Unit,
     viewModel: AddEditInvestmentViewModel = hiltViewModel()
 ) {
     val analyticsHelper = AnalyticsHelper.getInstance(LocalContext.current)
-    AddEditInvestmentScreen(investment, navigateBack, viewModel, analyticsHelper)
+    AddEditInvestmentScreen(navController, investment, viewModel, analyticsHelper)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditInvestmentScreen(
+    navController: NavHostController,
     investment: Investment?,
-    navigateBack: () -> Unit,
     viewModel: AddEditInvestmentViewModel,
     analyticsHelper: AnalyticsHelper,
 ) {
@@ -99,7 +94,7 @@ fun AddEditInvestmentScreen(
         viewModel
             .isInvestmentSaved
             .collect {
-                navigateBack()
+                navController.navigateBack()
                 analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_INVESTMENT_SAVED)
             }
     }
@@ -121,7 +116,7 @@ fun AddEditInvestmentScreen(
                     FloatingActionButton(
                         onClick = {
                             analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_EXPENSE_ON_BACK_CLICKED)
-                            navigateBack()
+                            navController.navigateBack()
                         },
                         elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp)
                     ) {

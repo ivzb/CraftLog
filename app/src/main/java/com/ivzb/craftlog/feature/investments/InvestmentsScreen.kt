@@ -30,24 +30,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ivzb.craftlog.R
-import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.extenstion.toRelativeDateString
 import com.ivzb.craftlog.feature.investments.InvestmentListItem.HeaderItem
 import com.ivzb.craftlog.feature.investments.InvestmentListItem.InvestmentItem
 import com.ivzb.craftlog.feature.investments.InvestmentListItem.OverviewItem
 import com.ivzb.craftlog.feature.investments.viewmodel.InvestmentsViewModel
-import com.ivzb.craftlog.ui.components.ListHeader
+import com.ivzb.craftlog.navigation.navigateBack
+import com.ivzb.craftlog.navigation.navigateToEditInvestment
+import com.ivzb.craftlog.navigation.navigateToInvestmentDetail
 import com.ivzb.craftlog.ui.components.ExpandableSearchView
+import com.ivzb.craftlog.ui.components.ListHeader
 import com.ivzb.craftlog.util.trim
 import java.math.BigDecimal
 
 @Composable
 fun InvestmentsRoute(
-    navigateToInvestmentDetail: (Investment) -> Unit,
-    navigateToEditInvestment: (Investment) -> Unit,
-    navigateBack: () -> Unit,
+    navController: NavHostController,
     viewModel: InvestmentsViewModel = hiltViewModel()
 ) {
 
@@ -55,16 +56,14 @@ fun InvestmentsRoute(
         viewModel.loadInvestments()
     }
 
-    InvestmentsScreen(viewModel, navigateToInvestmentDetail, navigateToEditInvestment, navigateBack)
+    InvestmentsScreen(navController, viewModel)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InvestmentsScreen(
+    navController: NavHostController,
     viewModel: InvestmentsViewModel,
-    navigateToInvestmentDetail: (Investment) -> Unit,
-    navigateToEditInvestment: (Investment) -> Unit,
-    navigateBack: () -> Unit
 ) {
     var searchQuery by remember {
         mutableStateOf("")
@@ -86,7 +85,9 @@ fun InvestmentsScreen(
                                 viewModel.loadInvestments(searchQuery)
                             }
                         },
-                        navigateBack = navigateBack
+                        navigateBack = {
+                            navController.navigateBack()
+                        }
                     )
                 }
             )
@@ -104,9 +105,11 @@ fun InvestmentsScreen(
                     searchQuery = ""
                     viewModel.loadInvestments(searchQuery)
                 },
-                navigateToInvestmentDetail = navigateToInvestmentDetail,
+                onInvestmentDetail = { investment ->
+                    navController.navigateToInvestmentDetail(investment)
+                },
                 onEdit = { investment ->
-                    navigateToEditInvestment(investment)
+                    navController.navigateToEditInvestment(investment)
                 },
                 onDelete = { investment ->
                     viewModel.deleteInvestment(investment)
@@ -121,7 +124,7 @@ fun InvestmentList(
     investments: List<Investment>,
     searchQuery: String,
     onClearSearch: () -> Unit,
-    navigateToInvestmentDetail: (Investment) -> Unit,
+    onInvestmentDetail: (Investment) -> Unit,
     onEdit: (Investment) -> Unit,
     onDelete: (Investment) -> Unit,
 ) {
@@ -143,7 +146,7 @@ fun InvestmentList(
         InvestmentLazyColumn(
             sortedInvestmentList,
             searchQuery,
-            navigateToInvestmentDetail,
+            onInvestmentDetail,
             onEdit,
             onDelete
         )
@@ -154,7 +157,7 @@ fun InvestmentList(
 fun InvestmentLazyColumn(
     items: List<InvestmentListItem>,
     searchQuery: String,
-    navigateToInvestmentDetail: (Investment) -> Unit,
+    onInvestmentDetail: (Investment) -> Unit,
     onEdit: (Investment) -> Unit,
     onDelete: (Investment) -> Unit,
 ) {
@@ -175,7 +178,7 @@ fun InvestmentLazyColumn(
             items = items,
             key = { it.id },
             itemContent = {
-                InvestmentListItem(it, navigateToInvestmentDetail, onEdit, onDelete)
+                InvestmentListItem(it, onInvestmentDetail, onEdit, onDelete)
             }
         )
     }
@@ -185,7 +188,7 @@ fun InvestmentLazyColumn(
 @Composable
 fun LazyItemScope.InvestmentListItem(
     it: InvestmentListItem,
-    navigateToInvestmentDetail: (Investment) -> Unit,
+    onInvestmentDetail: (Investment) -> Unit,
     onEditInvestment: (Investment) -> Unit,
     onDeleteInvestment: (Investment) -> Unit,
 ) {
@@ -198,8 +201,8 @@ fun LazyItemScope.InvestmentListItem(
             InvestmentCard(
                 modifier = Modifier.animateItemPlacement(),
                 investment = it.investment,
-                navigateToInvestmentDetail = { investment ->
-                    navigateToInvestmentDetail(investment)
+                onInvestmentDetail = { investment ->
+                    onInvestmentDetail(investment)
                 },
                 onEdit = { investment ->
                     onEditInvestment(investment)
@@ -267,7 +270,8 @@ sealed class InvestmentListItem(val id: Long) {
         val isInvestmentListEmpty: Boolean
     ) : InvestmentListItem(-1)
 
-    data class InvestmentItem(val investment: Investment, val offset: Long = 0L) : InvestmentListItem((investment.id ?: 0) + offset)
+    data class InvestmentItem(val investment: Investment, val offset: Long = 0L) :
+        InvestmentListItem((investment.id ?: 0) + offset)
 
     data class HeaderItem(val time: Long, val total: BigDecimal) : InvestmentListItem(time)
 }
