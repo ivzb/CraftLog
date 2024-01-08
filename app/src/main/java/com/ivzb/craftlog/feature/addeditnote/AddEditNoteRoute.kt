@@ -40,7 +40,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -51,7 +50,6 @@ import com.ivzb.craftlog.domain.model.Note
 import com.ivzb.craftlog.feature.addeditnote.viewmodel.AddEditNoteState
 import com.ivzb.craftlog.feature.addeditnote.viewmodel.AddEditNoteViewModel
 import com.ivzb.craftlog.navigation.navigateBack
-import com.ivzb.craftlog.navigation.navigateToNotes
 import com.ivzb.craftlog.util.SnackbarUtil.showSnackbar
 import com.ivzb.craftlog.util.getItem
 import com.ivzb.craftlog.util.isClipboardEnabled
@@ -88,7 +86,7 @@ fun AddEditNoteScreen(
         viewModel
             .isNoteSaved
             .collect {
-                navController.navigateToNotes()
+                navController.navigateBack()
                 analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_NOTE_SAVED)
             }
     }

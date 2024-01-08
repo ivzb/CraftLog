@@ -57,8 +57,4 @@ Remember to design the menu in a clear and visually appealing way, with easily r
 
 // todo: change OverviewItem to EmptyItem and move the empty state to the ListItem
 
-// todo: fix bottom bar navigation after adding note (not possible to go back to home tab)
-
-// todo: apply ktlint https://github.com/JLLeitschuh/ktlint-gradle
-
 // todo: cars - create, parts bought and mileage mounted, fuel consumption, reminders - technical review, insurance, vignette, etc

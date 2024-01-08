@@ -57,76 +57,75 @@ android {
 }
 
 dependencies {
-    val compose_ui_version = "1.6.0-beta03"
-    val compose_version = "1.5.4"
-    val nav_version = "2.7.6"
-    val hilt_version = "2.47"
-    val androidx_hilt_version = "1.1.0"
-    val gson_version = "2.10"
-    val room_version = "2.6.1"
-    val okhttp_version = "4.10.0"
-    val core_version = "1.12.0"
-    val material3_version = "1.2.0-beta01"
-    val material_icons_version = "1.5.4"
-    val lifecycle_version = "2.7.0-rc02"
-    val activity_version = "1.8.2"
-    val firebase_version = "32.5.0"
-    val jsoup_version = "1.17.1"
-    val coil_version = "2.5.0"
-    val constraint_layout_version = "1.0.1"
+    val composeUIVersion = "1.6.0-beta03"
+    val composeVersion = "1.5.4"
+    val navVersion = "2.7.6"
+    val hiltVersion = "2.47"
+    val androidxHiltVersion = "1.1.0"
+    val gsonVersion = "2.10"
+    val roomVersion = "2.6.1"
+    val okhttpVersion = "4.10.0"
+    val coreVersion = "1.12.0"
+    val material3Version = "1.2.0-beta01"
+    val materialIconsVersion = "1.5.4"
+    val lifecycleVersion = "2.7.0-rc02"
+    val activityVersion = "1.8.2"
+    val firebaseVersion = "32.5.0"
+    val jsoupVersion = "1.17.1"
+    val coilVersion = "2.5.0"
+    val constraintLayoutVersion = "1.0.1"
 
-    implementation("androidx.core:core-ktx:$core_version")
-    implementation("androidx.compose.ui:ui:$compose_ui_version")
-    implementation("androidx.compose.material3:material3:$material3_version")
-    implementation("androidx.compose.material:material-icons-core:$material_icons_version")
-    implementation("androidx.navigation:navigation-compose:$nav_version")
-    implementation("androidx.compose.foundation:foundation:$compose_version")
+    implementation("androidx.core:core-ktx:$coreVersion")
+    implementation("androidx.compose.ui:ui:$composeUIVersion")
+    implementation("androidx.compose.material3:material3:$material3Version")
+    implementation("androidx.compose.material:material-icons-core:$materialIconsVersion")
+    implementation("androidx.navigation:navigation-compose:$navVersion")
+    implementation("androidx.compose.foundation:foundation:$composeVersion")
 
-    implementation("androidx.compose.ui:ui-tooling-preview:$compose_ui_version")
+    implementation("androidx.compose.ui:ui-tooling-preview:$composeUIVersion")
 
-    implementation("androidx.activity:activity-compose:$activity_version")
-    implementation("androidx.constraintlayout:constraintlayout-compose:$constraint_layout_version")
+    implementation("androidx.activity:activity-compose:$activityVersion")
+    implementation("androidx.constraintlayout:constraintlayout-compose:$constraintLayoutVersion")
 
     // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:$hilt_version")
-    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
-    implementation("androidx.hilt:hilt-navigation-compose:$androidx_hilt_version")
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
+    implementation("androidx.hilt:hilt-navigation-compose:$androidxHiltVersion")
 
     // Gson
-    implementation("com.google.code.gson:gson:$gson_version")
+    implementation("com.google.code.gson:gson:$gsonVersion")
 
     // Room
-    implementation("androidx.room:room-runtime:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
 
     // OkHttp
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttpVersion"))
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:$firebase_version"))
+    implementation(platform("com.google.firebase:firebase-bom:$firebaseVersion"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-crashlytics")
 
     // HTML parser
-    implementation("org.jsoup:jsoup:$jsoup_version")
+    implementation("org.jsoup:jsoup:$jsoupVersion")
 
     // Image loading library
-    implementation("io.coil-kt:coil-compose:$coil_version")
+    implementation("io.coil-kt:coil-compose:$coilVersion")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_ui_version")
-    debugImplementation("androidx.compose.ui:ui-tooling:$compose_ui_version")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_ui_version")
-
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeUIVersion")
+    debugImplementation("androidx.compose.ui:ui-tooling:$composeUIVersion")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeUIVersion")
 }
 
 // Allow references to generated code
