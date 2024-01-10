@@ -46,4 +46,6 @@ object AnalyticsEvents {
     const val NOTE_DETAIL_ON_BACK_CLICKED = "note_detail_on_back_clicked"
     const val NOTE_DETAIL_DONE_CLICKED = "note_detail_done_clicked"
 
+    const val ADD_CAR_CLICKED_FAB = "add_car_clicked_fab"
+
 }

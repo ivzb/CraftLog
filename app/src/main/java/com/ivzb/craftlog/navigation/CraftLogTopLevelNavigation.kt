@@ -3,11 +3,9 @@ package com.ivzb.craftlog.navigation
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.ivzb.craftlog.R
-import com.ivzb.craftlog.feature.budget.BudgetDestination
-import com.ivzb.craftlog.feature.expenses.ExpensesDestination
+import com.ivzb.craftlog.feature.cars.CarsDestination
 import com.ivzb.craftlog.feature.finance.FinanceDestination
 import com.ivzb.craftlog.feature.home.HomeDestination
-import com.ivzb.craftlog.feature.investments.InvestmentsDestination
 import com.ivzb.craftlog.feature.notes.NotesDestination
 
 class CraftLogTopLevelNavigation (private val navController: NavHostController) {
@@ -53,9 +51,16 @@ val TOP_LEVEL_DESTINATIONS = listOf(
 
     TopLevelDestination(
         route = NotesDestination.route,
-        selectedIconId = R.drawable.ic_notes,
-        unselectedIconId = R.drawable.ic_notes,
+        selectedIconId = R.drawable.ic_notes_filled,
+        unselectedIconId = R.drawable.ic_notes_filled,
         iconTextId = R.string.notes
+    ),
+
+    TopLevelDestination(
+        route = CarsDestination.route,
+        selectedIconId = R.drawable.ic_car_filled,
+        unselectedIconId = R.drawable.ic_car_filled,
+        iconTextId = R.string.cars
     ),
 
 )

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.navigation.NavHostController
 import com.ivzb.craftlog.domain.model.Budget
+import com.ivzb.craftlog.domain.model.Car
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.domain.model.Note
@@ -16,6 +17,7 @@ import com.ivzb.craftlog.feature.addeditnote.navigation.EditNoteDestination
 import com.ivzb.craftlog.feature.budget.BUDGET
 import com.ivzb.craftlog.feature.budget.BudgetDestination
 import com.ivzb.craftlog.feature.budgetdetail.BudgetDetailDestination
+import com.ivzb.craftlog.feature.cars.CarsDestination
 import com.ivzb.craftlog.feature.expensedetail.ExpenseDetailDestination
 import com.ivzb.craftlog.feature.expenses.EXPENSE
 import com.ivzb.craftlog.feature.expenses.ExpensesDestination
@@ -91,6 +93,28 @@ fun NavHostController.navigateToAddNote() {
 fun NavHostController.navigateToEditNote(note: Note) {
     setItem(NOTE, note)
     navigate(EditNoteDestination.route)
+}
+
+fun NavHostController.navigateToCars() {
+    navigateSingleTop(CarsDestination.route)
+}
+
+fun NavHostController.navigateToCarDetail(car: Car) {
+    // todo
+//    setItem(CAR, car)
+//    navigate(CarDetailDestination.route)
+}
+
+fun NavHostController.navigateToAddCar() {
+    // todo:
+//    setItem(CAR, null)
+//    navigate(AddCarDestination.route)
+}
+
+fun NavHostController.navigateToEditCar(car: Car) {
+    // todo:
+//    setItem(CAR, car)
+//    navigate(EditCarDestination.route)
 }
 
 fun NavHostController.navigateBack() {

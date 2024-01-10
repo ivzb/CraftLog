@@ -5,11 +5,13 @@ import android.content.Context
 import androidx.room.Room
 import com.ivzb.craftlog.data.CraftLogDatabase
 import com.ivzb.craftlog.data.repository.BudgetRepositoryImpl
-import com.ivzb.craftlog.domain.repository.ExpenseRepository
+import com.ivzb.craftlog.data.repository.CarRepositoryImpl
 import com.ivzb.craftlog.data.repository.ExpenseRepositoryImpl
 import com.ivzb.craftlog.data.repository.InvestmentRepositoryImpl
 import com.ivzb.craftlog.data.repository.NoteRepositoryImpl
 import com.ivzb.craftlog.domain.repository.BudgetRepository
+import com.ivzb.craftlog.domain.repository.CarRepository
+import com.ivzb.craftlog.domain.repository.ExpenseRepository
 import com.ivzb.craftlog.domain.repository.InvestmentRepository
 import com.ivzb.craftlog.domain.repository.NoteRepository
 import com.ivzb.craftlog.util.NetworkUtils
@@ -62,6 +64,10 @@ object DataModule {
     @Provides
     @Singleton
     fun provideNoteRepository(db: CraftLogDatabase): NoteRepository = NoteRepositoryImpl(dao = db.noteDao)
+
+    @Provides
+    @Singleton
+    fun provideCarRepository(db: CraftLogDatabase): CarRepository = CarRepositoryImpl(dao = db.carDao)
 
     @Provides
     @Singleton

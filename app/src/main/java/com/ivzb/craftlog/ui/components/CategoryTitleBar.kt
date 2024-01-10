@@ -19,7 +19,13 @@ import androidx.compose.ui.unit.dp
 import com.ivzb.craftlog.R
 
 @Composable
-fun CategoryTitleBar(title: String, showAddButton: Boolean = true, onAddClick: (() -> Unit)? = null, onMoreClick: () -> Unit) {
+fun CategoryTitleBar(
+    title: String,
+    showAddButton: Boolean = true,
+    showMoreButton: Boolean = true,
+    onAddClick: (() -> Unit)? = null,
+    onMoreClick: (() -> Unit)? = null
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -41,9 +47,11 @@ fun CategoryTitleBar(title: String, showAddButton: Boolean = true, onAddClick: (
 
             if (showAddButton) {
                 Icon(
-                    modifier = Modifier.padding(bottom = 2.dp).clickable {
-                        onAddClick?.invoke()
-                    },
+                    modifier = Modifier
+                        .padding(bottom = 2.dp)
+                        .clickable {
+                            onAddClick?.invoke()
+                        },
                     imageVector = ImageVector.vectorResource(R.drawable.ic_add_circle_outline),
                     contentDescription = stringResource(R.string.add),
                     tint = MaterialTheme.colorScheme.primary
@@ -51,15 +59,17 @@ fun CategoryTitleBar(title: String, showAddButton: Boolean = true, onAddClick: (
             }
         }
 
-        Text(
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .clickable {
-                    onMoreClick()
-                },
-            style = MaterialTheme.typography.labelLarge,
-            text = stringResource(id = R.string.more),
-            color = MaterialTheme.colorScheme.primary
-        )
+        if (showMoreButton) {
+            Text(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .clickable {
+                        onMoreClick?.invoke()
+                    },
+                style = MaterialTheme.typography.labelLarge,
+                text = stringResource(id = R.string.more),
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
     }
 }

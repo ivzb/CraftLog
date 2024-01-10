@@ -4,13 +4,14 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.ivzb.craftlog.data.dao.BudgetDao
+import com.ivzb.craftlog.data.dao.CarDao
 import com.ivzb.craftlog.data.dao.ExpenseDao
 import com.ivzb.craftlog.data.dao.InvestmentDao
 import com.ivzb.craftlog.data.dao.NoteDao
 import com.ivzb.craftlog.data.entity.BudgetEntity
+import com.ivzb.craftlog.data.entity.CarEntity
 import com.ivzb.craftlog.data.entity.ExpenseEntity
 import com.ivzb.craftlog.data.entity.InvestmentEntity
-import com.ivzb.craftlog.data.entity.LinkEntity
 import com.ivzb.craftlog.data.entity.NoteEntity
 
 @Database(
@@ -19,6 +20,7 @@ import com.ivzb.craftlog.data.entity.NoteEntity
         InvestmentEntity::class,
         BudgetEntity::class,
         NoteEntity::class,
+        CarEntity::class,
    ],
     version = 1,
 )
@@ -32,5 +34,7 @@ abstract class CraftLogDatabase : RoomDatabase() {
     abstract val budgetDao: BudgetDao
 
     abstract val noteDao: NoteDao
+
+    abstract val carDao: CarDao
 
 }

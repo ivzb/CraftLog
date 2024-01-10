@@ -15,6 +15,7 @@ import com.ivzb.craftlog.feature.addeditnote.navigation.addNoteGraph
 import com.ivzb.craftlog.feature.addeditnote.navigation.editNoteGraph
 import com.ivzb.craftlog.feature.budget.budgetGraph
 import com.ivzb.craftlog.feature.budgetdetail.budgetDetailGraph
+import com.ivzb.craftlog.feature.cars.carsGraph
 import com.ivzb.craftlog.feature.expensedetail.expenseDetailGraph
 import com.ivzb.craftlog.feature.expenses.expensesGraph
 import com.ivzb.craftlog.feature.finance.financeGraph
@@ -129,6 +130,12 @@ fun CraftLogNavHost(
         )
 
         editNoteGraph(
+            navController = navController,
+            bottomBarVisibility = bottomBarVisibility,
+            fabBehaviour = fabBehaviour,
+        )
+
+        carsGraph(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,
