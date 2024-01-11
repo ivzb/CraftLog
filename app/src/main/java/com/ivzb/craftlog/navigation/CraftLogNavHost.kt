@@ -7,6 +7,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.ivzb.craftlog.FabBehaviour
+import com.ivzb.craftlog.feature.addeditcar.navigation.addCarGraph
+import com.ivzb.craftlog.feature.addeditcar.navigation.editCarGraph
 import com.ivzb.craftlog.feature.addeditexpense.navigation.addExpenseGraph
 import com.ivzb.craftlog.feature.addeditexpense.navigation.editExpenseGraph
 import com.ivzb.craftlog.feature.addeditinvestment.navigation.addInvestmentGraph
@@ -136,6 +138,20 @@ fun CraftLogNavHost(
         )
 
         carsGraph(
+            navController = navController,
+            bottomBarVisibility = bottomBarVisibility,
+            fabBehaviour = fabBehaviour,
+        )
+
+        // todo: car detail
+
+        addCarGraph(
+            navController = navController,
+            bottomBarVisibility = bottomBarVisibility,
+            fabBehaviour = fabBehaviour,
+        )
+
+        editCarGraph(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility,
             fabBehaviour = fabBehaviour,

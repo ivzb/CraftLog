@@ -8,6 +8,8 @@ import com.ivzb.craftlog.domain.model.Car
 import com.ivzb.craftlog.domain.model.Expense
 import com.ivzb.craftlog.domain.model.Investment
 import com.ivzb.craftlog.domain.model.Note
+import com.ivzb.craftlog.feature.addeditcar.navigation.AddCarDestination
+import com.ivzb.craftlog.feature.addeditcar.navigation.EditCarDestination
 import com.ivzb.craftlog.feature.addeditexpense.navigation.AddExpenseDestination
 import com.ivzb.craftlog.feature.addeditexpense.navigation.EditExpenseDestination
 import com.ivzb.craftlog.feature.addeditinvestment.navigation.AddInvestmentDestination
@@ -17,6 +19,7 @@ import com.ivzb.craftlog.feature.addeditnote.navigation.EditNoteDestination
 import com.ivzb.craftlog.feature.budget.BUDGET
 import com.ivzb.craftlog.feature.budget.BudgetDestination
 import com.ivzb.craftlog.feature.budgetdetail.BudgetDetailDestination
+import com.ivzb.craftlog.feature.cars.CAR
 import com.ivzb.craftlog.feature.cars.CarsDestination
 import com.ivzb.craftlog.feature.expensedetail.ExpenseDetailDestination
 import com.ivzb.craftlog.feature.expenses.EXPENSE
@@ -106,15 +109,13 @@ fun NavHostController.navigateToCarDetail(car: Car) {
 }
 
 fun NavHostController.navigateToAddCar() {
-    // todo:
-//    setItem(CAR, null)
-//    navigate(AddCarDestination.route)
+    setItem(CAR, null)
+    navigate(AddCarDestination.route)
 }
 
 fun NavHostController.navigateToEditCar(car: Car) {
-    // todo:
-//    setItem(CAR, car)
-//    navigate(EditCarDestination.route)
+    setItem(CAR, car)
+    navigate(EditCarDestination.route)
 }
 
 fun NavHostController.navigateBack() {

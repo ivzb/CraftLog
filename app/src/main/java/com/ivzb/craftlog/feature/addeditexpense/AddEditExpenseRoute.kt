@@ -101,7 +101,7 @@ fun AddEditExpenseScreen(
             .isExpenseSaved
             .collect {
                 navController.navigateBack()
-                analyticsHelper.logEvent(AnalyticsEvents.EXPENSE_SAVED)
+                analyticsHelper.logEvent(AnalyticsEvents.ADD_EDIT_EXPENSE_SAVED)
             }
     }
 

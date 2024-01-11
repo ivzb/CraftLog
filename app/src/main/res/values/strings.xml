@@ -94,4 +94,11 @@
     <string name="cars">Cars</string>
     <string name="no_cars_yet">No cars yet</string>
     <string name="add_car">Add Car</string>
+    <string name="edit_car">Edit Car</string>
+    <string name="brand">Brand</string>
+    <string name="brand_placeholder">e.g., BMW, Mercedes, VW</string>
+    <string name="model">Model</string>
+    <string name="model_placeholder">e.g., 5 Series, E-Class, Passat</string>
+    <string name="year">Year</string>
+    <string name="year_placeholder">e.g., 2010, 2015, 2020</string>
 </resources>
